@@ -9,32 +9,34 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     paper: {
-        margin: theme.spacing(2,0),
+        margin: theme.spacing(2, 0),
     },
 }));
 
+
+
 function SudokuBox() {
+    const classes = useStyles();
     const [height, setHeight] = React.useState(0);
     const measuredRef = React.useCallback(node => {
         if (node !== null) {
-          setHeight(node.getBoundingClientRect().width);
+            setHeight(node.getBoundingClientRect().width);
         }
-      }, []);
+    }, []);
 
 
 
-    const classes = useStyles();
     let box = "";
     for (let i = 0; i < 9; i++) {
         box += "a";
     }
-    
-    return <Paper className={classes.paper} >
-        <Box height={Math.round(height)} bgcolor="grey.300"  width="100%" ref={measuredRef} display="inline-block">
-        {box}
-      </Box>
-      
-        </Paper>;
+
+    return <Paper className={classes.paper} ref={measuredRef} >
+        <Box height={height} bgcolor="grey.300" width={height}  display="inline-block">
+            {box} {height}
+        </Box>
+
+    </Paper>;
 }
 
 
