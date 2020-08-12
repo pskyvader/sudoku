@@ -89,11 +89,11 @@ export default function HideAppBar(props) {
             <HideOnScroll {...props}>
                 <AppBar>
                     <Toolbar>
-                        <Typography variant="h6">Scroll to Hide App Bar</Typography>
+                        <Typography variant="h6">Sudoku</Typography>
                     </Toolbar>
                 </AppBar>
             </HideOnScroll>
-            <Toolbar />
+            <Toolbar id="back-to-top-anchor" />
             <Container>
 
                 {props.children}
