@@ -11,7 +11,7 @@ import Slide from '@material-ui/core/Slide';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Zoom from '@material-ui/core/Zoom';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -64,11 +64,11 @@ function ScrollTop(props) {
     };
 
     return (
-        <Zoom in={trigger}>
+        <Fade in={trigger}>
             <div onClick={handleClick} role="presentation" className={classes.root}>
                 {children}
             </div>
-        </Zoom>
+        </Fade>
     );
 }
 

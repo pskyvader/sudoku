@@ -11,7 +11,13 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         margin: theme.spacing(2, 0),
     },
+    box:{
+        maxWidth:"calc(90vh - "+theme.mixins.toolbar.height+")",
+        margin:"0 auto",
+    }
 }));
+
+console.log(theme.mixins.toolbar.height,theme.mixins.toolbar,theme.mixins);
 
 
 
@@ -20,8 +26,10 @@ function SudokuBox() {
     const canvas = React.useRef(null);
 
     const [height, setHeight] = React.useState(10);
-    const BoxHeight=()=>{
-        setHeight(canvas.current.clientWidth);
+    const BoxHeight = () => {
+        setTimeout(() => {
+            setHeight(canvas.current.clientWidth);
+        }, 100);
     }
 
     React.useEffect(() => {
@@ -29,7 +37,7 @@ function SudokuBox() {
         window.addEventListener("load", BoxHeight);
         return () => window.removeEventListener("resize", BoxHeight);
     });
-    
+
 
 
 
@@ -51,16 +59,18 @@ function SudokuBox() {
 export default function SpacingGrid() {
     const classes = useStyles();
     return (
-        <Grid container justify="center" className={classes.root} spacing={2}>
-            {[0, 1, 2].map((valuex) => (
-                <Grid key={valuex} item xs={4}>
-                    {[0, 1, 2].map((valuey) => (
-                        <Grid key={valuex + "," + valuey} item xs={12}>
-                            <SudokuBox></SudokuBox>
-                        </Grid>
-                    ))}
-                </Grid>
-            ))}
-        </Grid>
+        <Box className={classes.box}>
+            <Grid  container justify="center" className={classes.root} spacing={2}>
+                {[0, 1, 2].map((valuex) => (
+                    <Grid key={valuex} item xs={4}>
+                        {[0, 1, 2].map((valuey) => (
+                            <Grid key={valuex + "," + valuey} item xs={12}>
+                                <SudokuBox></SudokuBox>
+                            </Grid>
+                        ))}
+                    </Grid>
+                ))}
+            </Grid>
+        </Box>
     )
 }
