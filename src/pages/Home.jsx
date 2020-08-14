@@ -22,9 +22,9 @@ export default function SpacingGrid() {
     const classes = useStyles();
     return (
         <Box className={classes.box}>
-            <Grid container justify="center" className={classes.root} spacing={2}>
+            <Grid container justify="center" className={classes.root} spacing={1}>
                 {[0, 1, 2].map((valuex) => (
-                    <Grid key={valuex} item xs={4}>
+                    <Grid key={valuex} item xs={4}  className={classes.grid}>
                         {[0, 1, 2].map((valuey) => (
                             <Grid key={valuex + "," + valuey} item xs={12}>
                                 <SudokuBox board={board} x={valuex} y={valuey}></SudokuBox>
