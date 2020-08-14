@@ -8,7 +8,7 @@ import SudokuSubBox from "../components/SudokuSubBox";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        margin: theme.spacing(1, 0),
+        margin: theme.spacing(0.5, 0),
     }
 }));
 
@@ -41,9 +41,7 @@ export default function SudokuBox({ board, x, y }) {
         return () => window.removeEventListener("resize", debouncedHandleResize);
     });
 
-    return <Paper className={classes.paper}>
-        <Box height={height} bgcolor="grey.300" width="100%" ref={canvas} display="inline-block">
+    return  <Box height={height} width="100%" ref={canvas}  className={classes.paper}>
             <SudokuSubBox board={board} x={x} y={y} />
-        </Box>
-    </Paper>;
+        </Box>;
 }
