@@ -4,6 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 
+import Sudoku from "../components/Sudoku";
+
+const sudoko=new Sudoku();
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -11,17 +15,17 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         margin: theme.spacing(2, 0),
     },
-    box:{
-        maxWidth:"calc(90vh - "+theme.mixins.toolbar.height+")",
-        margin:"0 auto",
+    box: {
+        maxWidth: "calc(100vh - " + theme.mixins.toolbar.minHeight * 2 + "px)",
+        margin: "0 auto",
     }
 }));
 
-console.log(theme.mixins.toolbar.height,theme.mixins.toolbar,theme.mixins);
 
 
 
-function SudokuBox() {
+function SudokuBox({ x, y }) {
+    console.log(this.sudoku);
     const classes = useStyles();
     const canvas = React.useRef(null);
 
@@ -37,8 +41,6 @@ function SudokuBox() {
         window.addEventListener("load", BoxHeight);
         return () => window.removeEventListener("resize", BoxHeight);
     });
-
-
 
 
     let box = "";
@@ -60,12 +62,12 @@ export default function SpacingGrid() {
     const classes = useStyles();
     return (
         <Box className={classes.box}>
-            <Grid  container justify="center" className={classes.root} spacing={2}>
+            <Grid container justify="center" className={classes.root} spacing={2}>
                 {[0, 1, 2].map((valuex) => (
                     <Grid key={valuex} item xs={4}>
                         {[0, 1, 2].map((valuey) => (
                             <Grid key={valuex + "," + valuey} item xs={12}>
-                                <SudokuBox></SudokuBox>
+                                <SudokuBox x={valuex} y={valuey}></SudokuBox>
                             </Grid>
                         ))}
                     </Grid>
