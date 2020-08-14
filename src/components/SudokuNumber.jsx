@@ -12,7 +12,10 @@ function debounce(fn, ms) {
     };
 }
 
-const SudokuNumber = (props) => {
+const SudokuNumber = ({ field }) => {
+
+    const { number, options, i, j, x, y } = field;
+
     const canvas = React.useRef(null);
 
     const [height, setHeight] = React.useState(10);
@@ -27,8 +30,13 @@ const SudokuNumber = (props) => {
         return () => window.removeEventListener("resize", debouncedHandleResize);
     });
 
-    return <Box height={height} width="100%" ref={canvas}>
-        {props.children} {height}
+
+    const finalnumber = number !== 0 ? number : "";
+
+    const fontsize=height * .75;
+
+    return <Box height={height} width="100%" ref={canvas} fontSize={fontsize}>
+        {finalnumber}
     </Box>
 }
 
