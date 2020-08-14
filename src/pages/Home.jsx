@@ -6,7 +6,7 @@ import Box from '@material-ui/core/Box';
 import Sudoku from "../components/Sudoku";
 import SudokuBox from "../components/SudokuBox";
 
-const board = new Sudoku();
+const board = new Sudoku(3);
 board.RandomNumbers(10);
 
 
@@ -37,9 +37,9 @@ export default function SpacingGrid() {
     return (
         <Box className={classes.box}>
             <Grid container justify="center" className={classes.root} >
-                {[0, 1, 2].map((valuex) => (
+                {board.matrix.map((row,valuex) => (
                     <Grid key={valuex} item xs={4} className={classes.grid}>
-                        {[0, 1, 2].map((valuey) => (
+                        {row.map((column,valuey) => (
                             <Grid key={valuex + "," + valuey} item xs={12} className={classes.subgrid}>
                                 <SudokuBox board={board} x={valuex} y={valuey}></SudokuBox>
                             </Grid>

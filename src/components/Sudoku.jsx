@@ -9,7 +9,7 @@ class SudokuNumber {
         for (let i = 0; i < 3; i++) {
             let rows = [];
             for (let j = 0; j < 3; j++) {
-                rows[j] = { "number": 0, "options": options, i: i, j: j, x: x, y: y };
+                rows[j] = { "number": 0, "options": options, i: i, j: j, x: x, y: y,"locked":false };
             }
             this.submatrix[i] = rows;
         }
@@ -49,6 +49,7 @@ class Sudoku {
                 continue;
             }
             field.number=Math.floor(1+Math.random()*8);
+            field.locked=true;
         }
 
     }

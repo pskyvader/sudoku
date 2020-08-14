@@ -1,5 +1,7 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 
 function debounce(fn, ms) {
     let timer
@@ -12,9 +14,24 @@ function debounce(fn, ms) {
     };
 }
 
-const SudokuNumber = ({ field }) => {
 
-    const { number, options, i, j, x, y } = field;
+
+const useStyles = makeStyles((theme) => ({
+    button: {
+        height: "100%",
+        width: "100%",
+        fontSize: "1em",
+        fontWeight: "normal",
+        minWidth:0
+    },
+}));
+
+
+
+const SudokuNumber = ({ field }) => {
+    const classes = useStyles();
+
+    const { number, options, i, j, x, y, locked } = field;
 
     const canvas = React.useRef(null);
 
@@ -33,10 +50,19 @@ const SudokuNumber = ({ field }) => {
 
     const finalnumber = number !== 0 ? number : "";
 
-    const fontsize=height * .75;
+    let fontsize = height * .75;
+    if (fontsize > 50) {
+        fontsize = 50;
+    }
 
-    return <Box height={height} width="100%" ref={canvas} fontSize={fontsize}>
-        {finalnumber}
+    return <Box height={height} width="100%" ref={canvas} fontSize={fontsize} display="flex" alignItems="center" justifyContent="center">
+        {(
+            (!locked) ?
+                <Button className={classes.button}>{finalnumber}</Button> :
+                <Button disabled className={classes.button}>{finalnumber}</Button>
+        )}
+
+
     </Box>
 }
 
