@@ -17,12 +17,19 @@ const useStyles = makeStyles((theme) => ({
 
 function SudokuBox() {
     const classes = useStyles();
-    const [height, setHeight] = React.useState(0);
-    const measuredRef = React.useCallback(node => {
-        if (node !== null) {
-            setHeight(node.getBoundingClientRect().width);
-        }
-    }, []);
+    const canvas = React.useRef(null);
+
+    const [height, setHeight] = React.useState(10);
+    const BoxHeight=()=>{
+        setHeight(canvas.current.clientWidth);
+    }
+
+    React.useEffect(() => {
+        window.addEventListener("resize", BoxHeight);
+        window.addEventListener("load", BoxHeight);
+        return () => window.removeEventListener("resize", BoxHeight);
+    });
+    
 
 
 
@@ -31,11 +38,10 @@ function SudokuBox() {
         box += "a";
     }
 
-    return <Paper className={classes.paper} ref={measuredRef} >
-        <Box height={height} bgcolor="grey.300" width={height}  display="inline-block">
+    return <Paper className={classes.paper}>
+        <Box height={height} bgcolor="grey.300" width="100%" ref={canvas} display="inline-block">
             {box} {height}
         </Box>
-
     </Paper>;
 }
 
