@@ -17,17 +17,17 @@ const SudokuNumber = (props) => {
 
     const [height, setHeight] = React.useState(10);
     const BoxHeight = () => {
-        setHeight(canvas.current.offsetWidth);
+        setHeight(canvas.current.clientWidth);
     }
 
-    const debouncedHandleResize = debounce(BoxHeight, 1000);
+    const debouncedHandleResize = debounce(BoxHeight, 100);
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
         window.addEventListener("load", BoxHeight);
         return () => window.removeEventListener("resize", debouncedHandleResize);
     });
 
-    return <Box height={height}  border="1px solid red" width="100%" ref={canvas}>
+    return <Box height={height} width="100%" ref={canvas}>
         {props.children} {height}
     </Box>
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 
 import SudokuNumber from "./SudokuNumber";
@@ -8,7 +7,16 @@ import SudokuNumber from "./SudokuNumber";
 
 const useStyles = makeStyles((theme) => ({
     subbox: {
-        textAlign: "center"
+        textAlign: "center",
+        height:"100%"
+    },
+    
+    grid: {
+        borderLeft: theme.spacing(0.125) +"px solid " + theme.palette.info.light,
+    },
+    
+    subgrid: {
+        borderTop: theme.spacing(0.125) +"px solid " + theme.palette.info.light,
     }
 }));
 
@@ -21,15 +29,14 @@ export default function SudokuBox({ board, x, y }) {
 
 
 
-    return <Grid container justify="center" spacing={0} className={classes.subbox}>
+    return <Grid container justify="center" className={classes.subbox}>
         {box.map((row, valuex) => {
             const keyx = key + "-" + valuex;
-            return <Grid key={keyx} item xs={4}>
+            return <Grid key={keyx} item xs={4} className={classes.grid}>
                 {row.map((column, valuey) => {
                     const keyy = keyx + "," + valuey;
-                    return <Grid key={keyy} item xs={12}>
-                        <SudokuNumber>
-                            {column.number}</SudokuNumber>
+                    return <Grid key={keyy} item xs={12}  className={classes.subgrid}>
+                        <SudokuNumber> {column.number}</SudokuNumber>
                     </Grid>
                 })}
             </Grid>

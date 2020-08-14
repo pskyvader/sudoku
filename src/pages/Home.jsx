@@ -6,19 +6,24 @@ import Box from '@material-ui/core/Box';
 import Sudoku from "../components/Sudoku";
 import SudokuBox from "../components/SudokuBox";
 
-const board=new Sudoku();
+const board = new Sudoku();
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        padding:theme.spacing(1,0)
+        margin: theme.spacing(1, 0),
+        borderRight: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
+        borderBottom: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
     },
     box: {
         maxWidth: "calc(100vh - " + theme.mixins.toolbar.minHeight * 2 + "px)",
-        margin: "0 auto",
+        margin: theme.spacing(0, "auto"),
     },
-    grid:{
-        border: theme.spacing(1) +" solid " + theme.palette.grey
+    grid: {
+        borderLeft: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
+    },
+    subgrid: {
+        borderTop: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
     }
 }));
 
@@ -28,9 +33,9 @@ export default function SpacingGrid() {
         <Box className={classes.box}>
             <Grid container justify="center" className={classes.root} >
                 {[0, 1, 2].map((valuex) => (
-                    <Grid key={valuex} item xs={4} >
+                    <Grid key={valuex} item xs={4} className={classes.grid}>
                         {[0, 1, 2].map((valuey) => (
-                            <Grid key={valuex + "," + valuey} item xs={12}  className={classes.grid}>
+                            <Grid key={valuex + "," + valuey} item xs={12} className={classes.subgrid}>
                                 <SudokuBox board={board} x={valuex} y={valuey}></SudokuBox>
                             </Grid>
                         ))}
