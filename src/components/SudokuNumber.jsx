@@ -20,7 +20,7 @@ const SudokuNumber = (props) => {
         setHeight(canvas.current.clientWidth);
     }
 
-    const debouncedHandleResize = debounce(BoxHeight, 100);
+    const debouncedHandleResize = debounce(BoxHeight, 200);
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
         window.addEventListener("load", BoxHeight);

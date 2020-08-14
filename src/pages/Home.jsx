@@ -8,24 +8,28 @@ import SudokuBox from "../components/SudokuBox";
 
 const board = new Sudoku();
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        margin: theme.spacing(1, 0),
-        borderRight: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
-        borderBottom: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
-    },
-    box: {
-        maxWidth: "calc(100vh - " + theme.mixins.toolbar.minHeight * 2 + "px)",
-        margin: theme.spacing(0, "auto"),
-    },
-    grid: {
-        borderLeft: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
-    },
-    subgrid: {
-        borderTop: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
+
+
+const useStyles = makeStyles((theme) => {
+    const border = theme.spacing(0.25) + "px solid " + theme.palette.info.dark;
+    return {
+        box: {
+            maxWidth: "calc(100vh - " + theme.mixins.toolbar.minHeight * 2 + "px)",
+            margin: theme.spacing(1, "auto"),
+        },
+        root: {
+            flexGrow: 1,
+            borderRight: border,
+            borderTop: border,
+        },
+        grid: {
+            borderLeft: border,
+        },
+        subgrid: {
+            borderBottom: border,
+        }
     }
-}));
+});
 
 export default function SpacingGrid() {
     const classes = useStyles();
