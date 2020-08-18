@@ -20,22 +20,23 @@ const useStyles2 = makeStyles((theme) => ({
     button: {
         height: "100%",
         width: "100%",
-        fontSize:"1rem",
+        fontSize: "1rem",
         fontWeight: "normal",
         minWidth: 0,
         borderRadius: 0,
-        padding:theme.spacing(1.5)
+        padding: theme.spacing(1.5)
     },
 }));
 
 
 
-const SudokuPopover = ({SetFinalNumber,handleClose}) => {
+const SudokuPopover = ({ SetFinalNumber, handleClose, field }) => {
     const classes = useStyles2();
     const box = [[1, 4, 7], [2, 5, 8], [3, 6, 9]];
     const key = "popover";
 
     const handleClick = (number) => {
+        field.SetNumber(number);
         SetFinalNumber(number);
         handleClose();
     };
@@ -52,14 +53,14 @@ const SudokuPopover = ({SetFinalNumber,handleClose}) => {
                 })}
             </Grid>
         })}
-        <Button className={classes.button}  onClick={() => handleClick("")}>Clear</Button>
+        <Button className={classes.button} onClick={() => handleClick("")}>Clear</Button>
     </Grid>
 }
 
 
 
 
-export default function SimplePopover({ field,board }) {
+export default function SimplePopover({ field, board }) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -71,17 +72,11 @@ export default function SimplePopover({ field,board }) {
         setAnchorEl(null);
     };
 
-    const { options, i, j, x, y, locked } = field;
-    let { number } = field;
+    const { number, locked } = field;
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
-    const [FinalNumber, SetFinalNumber] = React.useState(number !== 0 ? number : "");
-    number=FinalNumber;
-
-    console.log(field);
-    console.log(board);
-
+    const [FinalNumber, SetFinalNumber] = React.useState(number);
     if (locked) {
         return <Button disabled className={classes.button}>{FinalNumber}</Button>
     } else {
@@ -95,7 +90,7 @@ export default function SimplePopover({ field,board }) {
                     onClose={handleClose}
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
                     transformOrigin={{ vertical: 'top', horizontal: 'center', }} >
-                    <SudokuPopover SetFinalNumber={SetFinalNumber} handleClose={handleClose}></SudokuPopover>
+                    <SudokuPopover SetFinalNumber={SetFinalNumber} handleClose={handleClose} field={field}></SudokuPopover>
                 </Popover>
             </React.Fragment>
         );

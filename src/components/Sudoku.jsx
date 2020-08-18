@@ -1,13 +1,31 @@
+import React from 'react';
+class SudokuValue{
+    constructor(options,x,y,i,j,callback) {
+        this.number="";
+        this.options=options;
+        this.x=x;
+        this.y=y;
+        this.i=i;
+        this.j=j;
+        this.locked=false;
+        this.callback=callback;
+    }
+
+    SetNumber=(number)=>{
+        this.number=number;
+        this.callback.SetError();
+    }
+}
+
+
 class SudokuNumber {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
+    constructor(x, y,callback) {
         this.submatrix = [];
         const options = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         for (let i = 0; i < 3; i++) {
             let rows = [];
             for (let j = 0; j < 3; j++) {
-                rows[j] = { "number": 0, "options": options, i: i, j: j, x: x, y: y,"locked":false };
+                rows[j] = new SudokuValue(options,x,y,i, j,callback);
             }
             this.submatrix[i] = rows;
         }
@@ -22,11 +40,17 @@ class Sudoku {
         for (let i = 0; i < 3; i++) {
             let rows = [];
             for (let j = 0; j < 3; j++) {
-                rows[j] = new SudokuNumber(i, j);
+                rows[j] = new SudokuNumber(i, j,this);
             }
             this.matrix[i] = rows;
         }
         this.EmptySpaces();
+    }
+
+    SetError=()=>{
+        console.log('uwu');
+        this.matrix[0][0].submatrix[0][0].number="E";
+        console.log(this.matrix);
     }
 
     EmptySpaces=()=>{
@@ -34,7 +58,7 @@ class Sudoku {
             for (let j = 0; j < 3; j++) {
                 for (let k = 0; k < 3; k++) {
                     for (let l = 0; l < 3; l++) {
-                        if (this.matrix[i][j].submatrix[k][l].number===0){
+                        if (this.matrix[i][j].submatrix[k][l].number===""){
                             this.emptyspaces.push([i,j,k,l]);
                         }
                     }

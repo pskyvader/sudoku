@@ -27,8 +27,6 @@ export default function SudokuBox({ board, x, y }) {
     let box = board.matrix[x][y].submatrix;
     const key = x + "," + y;
 
-
-
     return <Grid container justify="center" className={classes.subbox}>
         {box.map((row, valuex) => {
             const keyx = key + "-" + valuex;
