@@ -6,8 +6,8 @@ import Box from '@material-ui/core/Box';
 import Sudoku from "../components/Sudoku";
 import SudokuBox from "../components/SudokuBox";
 
-const board = new Sudoku(3);
-board.RandomNumbers(10);
+const board = new Sudoku();
+board.RandomNumbers(30);
 
 
 
