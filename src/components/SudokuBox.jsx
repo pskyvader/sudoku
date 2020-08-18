@@ -16,7 +16,7 @@ function debounce(fn, ms) {
 }
 
 
-export default function SudokuBox({ board, x, y }) {
+export default function SudokuBox(props) {
     const canvas = React.useRef(null);
 
     const [height, setHeight] = React.useState(10);
@@ -32,6 +32,6 @@ export default function SudokuBox({ board, x, y }) {
     });
 
     return  <Box height={height} width="100%" ref={canvas}>
-            <SudokuSubBox board={board} x={x} y={y} />
+            <SudokuSubBox {...props} />
         </Box>;
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 class SudokuValue{
     constructor(options,x,y,i,j,callback) {
         this.number="";
@@ -13,7 +12,7 @@ class SudokuValue{
 
     SetNumber=(number)=>{
         this.number=number;
-        this.callback.SetError();
+        this.SetFinalNumber(number);
     }
 }
 
@@ -50,7 +49,7 @@ class Sudoku {
     SetError=()=>{
         console.log('uwu');
         this.matrix[0][0].submatrix[0][0].number="E";
-        console.log(this.matrix);
+        this.matrix[0][0].submatrix[0][0].SetFinalNumber("E");
     }
 
     EmptySpaces=()=>{
