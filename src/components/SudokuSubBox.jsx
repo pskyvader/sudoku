@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
-import SudokuNumber from "./SudokuNumber";
+import SudokuNumberBox from "./SudokuNumberBox";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,7 @@ export default function SudokuBox({ board, x, y }) {
                 {row.map((column, valuey) => {
                     const keyy = keyx + "," + valuey;
                     return <Grid key={keyy} item xs={12}  className={classes.subgrid}>
-                        <SudokuNumber field={column}/>
+                        <SudokuNumberBox field={column}/>
                     </Grid>
                 })}
             </Grid>

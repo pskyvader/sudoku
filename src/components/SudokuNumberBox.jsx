@@ -13,7 +13,7 @@ function debounce(fn, ms) {
     };
 }
 
-const SudokuNumber = ({ field }) => {
+const SudokuNumberBox = ({ field }) => {
 
     const canvas = React.useRef(null);
 
@@ -39,4 +39,4 @@ const SudokuNumber = ({ field }) => {
     </Box>
 }
 
-export default SudokuNumber;
+export default SudokuNumberBox;

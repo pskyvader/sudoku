@@ -44,7 +44,7 @@ export default function SimplePopover({ field }) {
     }
     else {
         return (
-            <React.Fragment  className={classes.button}>
+            <React.Fragment>
                 <Button aria-describedby={id} className={classes.button} onClick={handleClick}>{finalnumber}</Button>
                 <Popover
                     id={id}
@@ -55,7 +55,7 @@ export default function SimplePopover({ field }) {
                     transformOrigin={{ vertical: 'top', horizontal: 'center', }} >
                     <Typography className={classes.typography}>The content of the Popover.</Typography>
                 </Popover>
-                </React.Fragment>
+            </React.Fragment>
         );
     }
 
