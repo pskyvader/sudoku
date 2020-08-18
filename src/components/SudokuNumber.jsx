@@ -3,11 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
-    typography: {
-        padding: theme.spacing(2),
-    },
     button: {
         height: "100%",
         width: "100%",
@@ -17,6 +15,41 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 0
     },
 }));
+
+
+const useStyles2 = makeStyles((theme) => ({
+    button: {
+        height: "100%",
+        width: "100%",
+        fontSize:"1rem",
+        fontWeight: "normal",
+        minWidth: 0,
+        borderRadius: 0,
+        padding:theme.spacing(1.5)
+    },
+}));
+
+
+
+const SudokuPopover = () => {
+    const classes = useStyles2();
+    const box = [[1, 4, 7], [2, 5, 8], [3, 6, 9]];
+    const key = "popover";
+    return <Grid container justify="center">
+        {box.map((row, valuex) => {
+            const keyx = key + "-" + valuex;
+            return <Grid key={keyx} item xs={4}>
+                {row.map((column, valuey) => {
+                    const keyy = keyx + "," + valuey;
+                    return <Grid key={keyy} item xs={12}>
+                        <Button className={classes.button}>{column}</Button>
+                    </Grid>
+                })}
+            </Grid>
+        })}
+        <Button className={classes.button}>Clear</Button>
+    </Grid>
+}
 
 
 
@@ -41,8 +74,7 @@ export default function SimplePopover({ field }) {
 
     if (locked) {
         return <Button disabled className={classes.button}>{finalnumber}</Button>
-    }
-    else {
+    } else {
         return (
             <React.Fragment>
                 <Button aria-describedby={id} className={classes.button} onClick={handleClick}>{finalnumber}</Button>
@@ -53,10 +85,9 @@ export default function SimplePopover({ field }) {
                     onClose={handleClose}
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
                     transformOrigin={{ vertical: 'top', horizontal: 'center', }} >
-                    <Typography className={classes.typography}>The content of the Popover.</Typography>
+                    <SudokuPopover></SudokuPopover>
                 </Popover>
             </React.Fragment>
         );
     }
-
 }

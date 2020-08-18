@@ -3,13 +3,13 @@ import Box from '@material-ui/core/Box';
 import SudokuNumber from './SudokuNumber';
 
 function debounce(fn, ms) {
-    let timer
+    let timer;
     return _ => {
-        clearTimeout(timer)
+        clearTimeout(timer);
         timer = setTimeout(_ => {
-            timer = null
-            fn.apply(this, arguments)
-        }, ms)
+            timer = null;
+            fn.apply(this, arguments);
+        }, ms);
     };
 }
 
