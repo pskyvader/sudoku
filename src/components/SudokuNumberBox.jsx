@@ -13,7 +13,7 @@ function debounce(fn, ms) {
     };
 }
 
-const SudokuNumberBox = ({ field }) => {
+const SudokuNumberBox = (props) => {
 
     const canvas = React.useRef(null);
 
@@ -35,7 +35,7 @@ const SudokuNumberBox = ({ field }) => {
     }
 
     return <Box height={height} width="100%" ref={canvas} fontSize={fontsize} display="flex" alignItems="center" justifyContent="center">
-        <SudokuNumber field={field} />
+        <SudokuNumber {...props} />
     </Box>
 }
 

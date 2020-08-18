@@ -36,7 +36,7 @@ export default function SudokuBox({ board, x, y }) {
                 {row.map((column, valuey) => {
                     const keyy = keyx + "," + valuey;
                     return <Grid key={keyy} item xs={12}  className={classes.subgrid}>
-                        <SudokuNumberBox field={column}/>
+                        <SudokuNumberBox field={column} board={board}/>
                     </Grid>
                 })}
             </Grid>
