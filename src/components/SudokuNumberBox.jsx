@@ -23,13 +23,10 @@ const SudokuNumberBox = (props) => {
     }
 
     const debouncedHandleResize = debounce(BoxHeight, 200);
+    React.useEffect(BoxHeight, []);
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
-        window.addEventListener("load", debouncedHandleResize);
-        return () => {
-            window.removeEventListener("resize", debouncedHandleResize);
-            window.removeEventListener("load", debouncedHandleResize);
-        }
+        return () => window.removeEventListener("resize", debouncedHandleResize);
     });
 
     let fontsize = height * .75;

@@ -6,23 +6,14 @@ import SudokuNumberBox from "./SudokuNumberBox";
 
 
 const useStyles = makeStyles((theme) => ({
-    subbox: {
-        textAlign: "center",
-        height:"100%"
-    },
-    
-    grid: {
-        borderLeft: theme.spacing(0.125) +"px solid " + theme.palette.info.light,
-    },
-    
-    subgrid: {
-        borderTop: theme.spacing(0.125) +"px solid " + theme.palette.info.light,
-    }
+    subbox: { textAlign: "center", height: "100%" },
+    grid: { borderLeft: theme.spacing(0.125) + "px solid " + theme.palette.info.light, },
+    subgrid: { borderTop: theme.spacing(0.125) + "px solid " + theme.palette.info.light, }
 }));
 
 
 
-export default function SudokuBox({matrix}) {
+export default function SudokuBox({ matrix }) {
     const classes = useStyles();
     let box = matrix.submatrix;
     const key = matrix.x + "," + matrix.y;
@@ -33,7 +24,7 @@ export default function SudokuBox({matrix}) {
             return <Grid key={keyx} item xs={4} className={classes.grid}>
                 {row.map((column, y) => {
                     const keyy = keyx + "," + y;
-                    return <Grid key={keyy} item xs={12}  className={classes.subgrid}>
+                    return <Grid key={keyy} item xs={12} className={classes.subgrid}>
                         <SudokuNumberBox field={column} />
                     </Grid>
                 })}

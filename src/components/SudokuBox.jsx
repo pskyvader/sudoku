@@ -21,20 +21,18 @@ export default function SudokuBox(props) {
 
     const [height, setHeight] = React.useState(null);
     const BoxHeight = () => {
-        console.log("asdf",canvas.current.clientWidth);
         setHeight(canvas.current.clientWidth);
     }
 
     const debouncedHandleResize = debounce(BoxHeight, 100);
-    BoxHeight();
+    React.useEffect(BoxHeight, []);
+
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
-        return () => {
-            window.removeEventListener("resize", debouncedHandleResize);
-        }
+        return () => window.removeEventListener("resize", debouncedHandleResize);
     });
 
-    return  <Box height={height} width="100%" ref={canvas}>
-            <SudokuSubBox {...props} />
-        </Box>;
+    return <Box height={height} width="100%" ref={canvas}>
+        <SudokuSubBox {...props} />
+    </Box>;
 }
