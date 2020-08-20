@@ -1,5 +1,5 @@
 class SudokuValue{
-    constructor(options,x,y,i,j,callback) {
+    constructor(options,x,y,i,j,callbackmatrix,callback) {
         this.number="";
         this.options=options;
         this.x=x;
@@ -7,12 +7,15 @@ class SudokuValue{
         this.i=i;
         this.j=j;
         this.locked=false;
+        this.callbackmatrix=callbackmatrix;
         this.callback=callback;
+        this.error=false;
     }
 
     SetNumber=(number)=>{
         this.SetFinalNumber(number);
-        this.callback.SetError();
+        this.callback.CheckNumbers();
+        this.callbackmatrix.SetError();
     }
 }
 
@@ -26,9 +29,24 @@ class SudokuNumber {
         for (let i = 0; i < 3; i++) {
             let rows = [];
             for (let j = 0; j < 3; j++) {
-                rows[j] = new SudokuValue(options,x,y,i, j,callback);
+                rows[j] = new SudokuValue(options,x,y,i, j,callback,this);
             }
             this.submatrix[i] = rows;
+        }
+    }
+
+    CheckNumbers(){
+        let repeated=[];
+        for (let i = 0; i < this.submatrix.length; i++) {
+            const row = this.submatrix[i];
+            for (let j = 0; j < row.length; j++) {
+                const element = row[j];
+                if(repeated.find(e => e ===element.number)){
+                    element.error=true;
+                }
+                repeated.push(element.number);                
+            }
+            
         }
     }
 }
