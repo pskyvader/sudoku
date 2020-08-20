@@ -14,6 +14,7 @@ class SudokuValue{
 
     SetNumber=(number)=>{
         this.SetFinalNumber(number);
+        this.number=number;
         this.callback.CheckNumbers();
         this.callbackmatrix.SetError();
     }
@@ -43,6 +44,7 @@ class SudokuNumber {
                 const element = row[j];
                 if(repeated.find(e => e ===element.number)){
                     element.error=true;
+                    element.SetError(true);
                 }
                 repeated.push(element.number);                
             }
@@ -67,9 +69,9 @@ class Sudoku {
     }
 
     SetError=()=>{
-        console.log('uwu');
         this.matrix[0][0].submatrix[0][0].number="E";
         this.matrix[0][0].submatrix[0][0].SetFinalNumber("E");
+        console.log('uwu',this.matrix[0][0].submatrix[0][0].number);
     }
 
     EmptySpaces=()=>{

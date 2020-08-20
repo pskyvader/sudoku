@@ -93,12 +93,15 @@ export default function SudokuNumber({ field }) {
     field.SetFinalNumber = SetFinalNumber;
     field.number = FinalNumber;
 
-    const className = clsx(classes.button, error && classes.error);
-    console.log(className);
+    
+    const [FinalError, SetError] = React.useState(error);
+    field.SetError = SetError; 
+    field.error = FinalError; 
 
+    const className = clsx(classes.button, FinalError && classes.error);
 
     if (locked) {
-        return <Button disabled className={className} classes={{ root: classes.error, disabled: error && classes.disabled, }}  >{FinalNumber}</Button>
+        return <Button disabled className={classes.button} classes={{ root: className, disabled:classes.disabled, }}  >{FinalNumber}</Button>
     } else {
         return (
             <React.Fragment>
