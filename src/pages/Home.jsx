@@ -6,8 +6,10 @@ import Box from '@material-ui/core/Box';
 import Sudoku from "../components/Sudoku";
 import SudokuBox from "../components/SudokuBox";
 
-const board1 = new Sudoku();
-board1.RandomNumbers(30);
+
+
+const board = new Sudoku();
+board.RandomNumbers(30);
 
 
 
@@ -34,15 +36,14 @@ const useStyles = makeStyles((theme) => {
 
 export default function SpacingGrid() {
     const classes = useStyles();
-    const [Board, setBoard] = React.useState(board1);
     return (
         <Box className={classes.box}>
             <Grid container justify="center" className={classes.root} >
-                {Board.matrix.map((row,valuex) => (
-                    <Grid key={valuex} item xs={4} className={classes.grid}>
-                        {row.map((column,valuey) => (
-                            <Grid key={valuex + "," + valuey} item xs={12} className={classes.subgrid}>
-                                <SudokuBox Board={Board} setBoard={setBoard} x={valuex} y={valuey}></SudokuBox>
+                {board.matrix.map((row, x) => (
+                    <Grid key={x} item xs={4} className={classes.grid}>
+                        {row.map((column, y) => (
+                            <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
+                                <SudokuBox matrix={column}></SudokuBox>
                             </Grid>
                         ))}
                     </Grid>

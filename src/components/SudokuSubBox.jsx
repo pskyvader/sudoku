@@ -22,19 +22,19 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function SudokuBox({ Board, x, y ,setBoard }) {
+export default function SudokuBox({matrix}) {
     const classes = useStyles();
-    let box = Board.matrix[x][y].submatrix;
-    const key = x + "," + y;
+    let box = matrix.submatrix;
+    const key = matrix.x + "," + matrix.y;
 
     return <Grid container justify="center" className={classes.subbox}>
-        {box.map((row, valuex) => {
-            const keyx = key + "-" + valuex;
+        {box.map((row, x) => {
+            const keyx = key + "-" + x;
             return <Grid key={keyx} item xs={4} className={classes.grid}>
-                {row.map((column, valuey) => {
-                    const keyy = keyx + "," + valuey;
+                {row.map((column, y) => {
+                    const keyy = keyx + "," + y;
                     return <Grid key={keyy} item xs={12}  className={classes.subgrid}>
-                        <SudokuNumberBox field={column} Board={Board} setBoard={setBoard}/>
+                        <SudokuNumberBox field={column} />
                     </Grid>
                 })}
             </Grid>

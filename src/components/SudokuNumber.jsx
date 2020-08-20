@@ -4,8 +4,6 @@ import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-import Sudoku from "../components/Sudoku";
-
 const useStyles = makeStyles((theme) => ({
     button: {
         height: "100%",
@@ -64,7 +62,7 @@ const SudokuPopover = (props) => {
 
 
 
-export default function SudokuNumber(props) {
+export default function SudokuNumber({field}) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -75,14 +73,16 @@ export default function SudokuNumber(props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    let { number, locked } = props.field;
+    let { number, locked } = field;
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
     
     const [FinalNumber, SetFinalNumber] = React.useState(number);
-    props.field.SetFinalNumber=SetFinalNumber;
-    props.field.number=FinalNumber;
+    field.SetFinalNumber=SetFinalNumber;
+    field.number=FinalNumber;
+
+    
     if (locked) {
         return <Button disabled className={classes.button}>{FinalNumber}</Button>
     } else {
@@ -96,7 +96,7 @@ export default function SudokuNumber(props) {
                     onClose={handleClose}
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
                     transformOrigin={{ vertical: 'top', horizontal: 'center', }} >
-                    <SudokuPopover handleClose={handleClose} {...props}></SudokuPopover>
+                    <SudokuPopover handleClose={handleClose} field={field}></SudokuPopover>
                 </Popover>
             </React.Fragment>
         );
