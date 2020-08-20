@@ -24,7 +24,10 @@ const useStyles2 = makeStyles((theme) => ({
         fontWeight: "normal",
         minWidth: 0,
         borderRadius: 0,
-        padding: theme.spacing(1.5)
+        padding: theme.spacing(1),
+        [theme.breakpoints.up('md')]: {
+            padding: theme.spacing(1.5)
+        },
     },
 }));
 
@@ -62,7 +65,7 @@ const SudokuPopover = (props) => {
 
 
 
-export default function SudokuNumber({field}) {
+export default function SudokuNumber({ field }) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -77,12 +80,12 @@ export default function SudokuNumber({field}) {
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
-    
-    const [FinalNumber, SetFinalNumber] = React.useState(number);
-    field.SetFinalNumber=SetFinalNumber;
-    field.number=FinalNumber;
 
-    
+    const [FinalNumber, SetFinalNumber] = React.useState(number);
+    field.SetFinalNumber = SetFinalNumber;
+    field.number = FinalNumber;
+
+
     if (locked) {
         return <Button disabled className={classes.button}>{FinalNumber}</Button>
     } else {

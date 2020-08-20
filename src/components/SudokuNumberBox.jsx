@@ -17,7 +17,7 @@ const SudokuNumberBox = (props) => {
 
     const canvas = React.useRef(null);
 
-    const [height, setHeight] = React.useState(10);
+    const [height, setHeight] = React.useState(null);
     const BoxHeight = () => {
         setHeight(canvas.current.clientWidth);
     }
@@ -25,8 +25,11 @@ const SudokuNumberBox = (props) => {
     const debouncedHandleResize = debounce(BoxHeight, 200);
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
-        window.addEventListener("load", BoxHeight);
-        return () => window.removeEventListener("resize", debouncedHandleResize);
+        window.addEventListener("load", debouncedHandleResize);
+        return () => {
+            window.removeEventListener("resize", debouncedHandleResize);
+            window.removeEventListener("load", debouncedHandleResize);
+        }
     });
 
     let fontsize = height * .75;

@@ -19,16 +19,19 @@ function debounce(fn, ms) {
 export default function SudokuBox(props) {
     const canvas = React.useRef(null);
 
-    const [height, setHeight] = React.useState(10);
+    const [height, setHeight] = React.useState(null);
     const BoxHeight = () => {
+        console.log("asdf",canvas.current.clientWidth);
         setHeight(canvas.current.clientWidth);
     }
 
     const debouncedHandleResize = debounce(BoxHeight, 100);
+    BoxHeight();
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
-        window.addEventListener("load", BoxHeight);
-        return () => window.removeEventListener("resize", debouncedHandleResize);
+        return () => {
+            window.removeEventListener("resize", debouncedHandleResize);
+        }
     });
 
     return  <Box height={height} width="100%" ref={canvas}>
