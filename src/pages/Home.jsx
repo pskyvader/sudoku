@@ -34,16 +34,40 @@ const useStyles = makeStyles((theme) => {
     }
 });
 
+function debounce(fn, ms) {
+    let timer
+    return _ => {
+        clearTimeout(timer)
+        timer = setTimeout(_ => {
+            timer = null
+            fn.apply(this, arguments)
+        }, ms)
+    };
+}
+
 export default function SpacingGrid() {
+    const canvas = React.useRef(null);
+    const [height, setHeight] = React.useState(null);
+    const BoxHeight = () => {
+        setHeight(canvas.current.clientWidth);
+    }
+
+    const debouncedHandleResize = debounce(BoxHeight, 100);
+    React.useEffect(BoxHeight, []);
+    React.useEffect(() => {
+        window.addEventListener("resize", debouncedHandleResize);
+        return () => window.removeEventListener("resize", debouncedHandleResize);
+    });
+
     const classes = useStyles();
     return (
-        <Box className={classes.box}>
+        <Box className={classes.box} ref={canvas}>
             <Grid container justify="center" className={classes.root} >
                 {board.matrix.map((row, x) => (
                     <Grid key={x} item xs={4} className={classes.grid}>
                         {row.map((column, y) => (
                             <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                <SudokuBox matrix={column}></SudokuBox>
+                                <SudokuBox matrix={column} height={(height-9)/3}></SudokuBox>
                             </Grid>
                         ))}
                     </Grid>
