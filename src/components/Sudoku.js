@@ -1,5 +1,5 @@
 class SudokuValue {
-    constructor(options, x, y, i, j, callbackmatrix, callback) {
+    constructor(options, x, y, i, j, callback) {
         this.number = "";
         this.options = options;
         this.x = x;
@@ -7,7 +7,6 @@ class SudokuValue {
         this.i = i;
         this.j = j;
         this.locked = false;
-        this.callbackmatrix = callbackmatrix;
         this.callback = callback;
         this.error = false;
     }
@@ -15,10 +14,7 @@ class SudokuValue {
     SetNumber = (number) => {
         this.SetFinalNumber(number);
         this.number = number;
-        this.callbackmatrix.CleanDuplicated();
-        this.callback.CheckSquare();
-        this.callback.CheckVertical(this.x, this.i);
-        this.callback.CheckHorizontal(this.y, this.j);
+        this.callback.Duplicates();
     }
 }
 
@@ -34,7 +30,7 @@ class SudokuNumber {
         for (let i = 0; i < 3; i++) {
             let rows = [];
             for (let j = 0; j < 3; j++) {
-                rows[j] = new SudokuValue(options, x, y, i, j, callback, this);
+                rows[j] = new SudokuValue(options, x, y, i, j, this);
                 this.checklist.push(rows[j]);
                 this.callback.verticallines[x][i].push(rows[j]);
                 this.callback.horizontallines[y][j].push(rows[j]);
@@ -43,19 +39,10 @@ class SudokuNumber {
             this.submatrix[i] = rows;
         }
     }
-
-    CheckSquare = () => {
-        this.callback.MarkDuplicates(this.checklist);
+    Duplicates=()=>{
+        this.callback.CleanDuplicated();
+        this.callback.CheckDuplicates();
     }
-    CheckVertical = (x, i) => {
-        const vertical = this.callback.verticallines[x][i];
-        this.callback.MarkDuplicates(vertical);
-    }
-    CheckHorizontal = (y, j) => {
-        const horizontal = this.callback.horizontallines[y][j];
-        this.callback.MarkDuplicates(horizontal);
-    }
-
 }
 
 
@@ -83,6 +70,23 @@ class Sudoku {
             element.SetError(false);
         }
     }
+
+
+    CheckDuplicates = () => {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                const square=this.matrix[i][j].checklist;
+                this.MarkDuplicates(square);
+
+                const vertical = this.verticallines[i][j];
+                this.MarkDuplicates(vertical);
+
+                const horizontal = this.horizontallines[i][j];
+                this.MarkDuplicates(horizontal);
+            }
+        }
+    }
+
 
 
     MarkDuplicates = (arr) => {
@@ -134,8 +138,6 @@ class Sudoku {
             this.emptyspaces.splice(pos, 1);
         }
     }
-
-
 }
 
 export default Sudoku;
