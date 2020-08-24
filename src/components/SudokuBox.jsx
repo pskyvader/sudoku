@@ -35,8 +35,9 @@ const SudokuSubBox = ({ matrix, height }) => {
 
 const SudokuBox = (props) => {
     const { height } = props;
+    const subheight=height / 3 - 1; // x / 3 (3 squares) -1 (1px borders ) 
     return <Box height={height} width="100%">
-        <SudokuSubBox {...props} height={(height - 3) / 3} />
+        <SudokuSubBox {...props} height={subheight} />
     </Box>;
 }
 

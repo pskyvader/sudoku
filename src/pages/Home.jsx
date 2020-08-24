@@ -35,9 +35,9 @@ const useStyles = makeStyles((theme) => {
 });
 
 function debounce(fn, ms) {
-    let timer
+    let timer;
     return _ => {
-        clearTimeout(timer)
+        clearTimeout(timer);
         timer = setTimeout(_ => {
             timer = null
             fn.apply(this, arguments)
@@ -45,11 +45,11 @@ function debounce(fn, ms) {
     };
 }
 
-export default function SpacingGrid() {
+const Home = (props) => {
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(null);
     const BoxHeight = () => {
-        setHeight(canvas.current.clientWidth);
+        setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
     }
 
     const debouncedHandleResize = debounce(BoxHeight, 100);
@@ -67,7 +67,7 @@ export default function SpacingGrid() {
                     <Grid key={x} item xs={4} className={classes.grid}>
                         {row.map((column, y) => (
                             <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                <SudokuBox matrix={column} height={(height-9)/3}></SudokuBox>
+                                <SudokuBox matrix={column} height={height}></SudokuBox>
                             </Grid>
                         ))}
                     </Grid>
@@ -76,3 +76,7 @@ export default function SpacingGrid() {
         </Box>
     )
 }
+
+
+
+export default Home;

@@ -15,7 +15,7 @@ class SudokuValue {
     SetNumber = (number) => {
         this.SetFinalNumber(number);
         this.number = number;
-        this.callback.Clean(this.x,this.y,this.i,this.j);
+        this.callbackmatrix.CleanDuplicated();
         this.callback.CheckSquare();
         this.callback.CheckVertical(this.x, this.i);
         this.callback.CheckHorizontal(this.y, this.j);
@@ -38,37 +38,52 @@ class SudokuNumber {
                 this.checklist.push(rows[j]);
                 this.callback.verticallines[x][i].push(rows[j]);
                 this.callback.horizontallines[y][j].push(rows[j]);
+                this.callback.list.push(rows[j]);
             }
             this.submatrix[i] = rows;
         }
     }
 
-    Clean=(x,y,i,j)=>{
+    CheckSquare = () => {
+        this.callback.MarkDuplicates(this.checklist);
+    }
+    CheckVertical = (x, i) => {
         const vertical = this.callback.verticallines[x][i];
+        this.callback.MarkDuplicates(vertical);
+    }
+    CheckHorizontal = (y, j) => {
         const horizontal = this.callback.horizontallines[y][j];
-        this.CleanDuplicated(this.checklist);
-        this.CleanDuplicated(vertical);
-        this.CleanDuplicated(horizontal);
+        this.callback.MarkDuplicates(horizontal);
     }
 
-    CleanDuplicated = (arr) => {
-        for (let i = 0; i < arr.length; i++) {
-            const element = arr[i];
+}
+
+
+class Sudoku {
+    constructor() {
+        this.matrix = [];
+        this.emptyspaces = [];
+        this.verticallines = [[[], [], []], [[], [], []], [[], [], []]]; //3x3 vertical lines
+        this.horizontallines = [[[], [], []], [[], [], []], [[], [], []]]; //3x3 horizontal lines
+        this.list=[]; //complete list
+        for (let i = 0; i < 3; i++) {
+            let rows = [];
+            for (let j = 0; j < 3; j++) {
+                rows[j] = new SudokuNumber(i, j, this);
+            }
+            this.matrix[i] = rows;
+        }
+        this.EmptySpaces();
+    }
+
+
+    CleanDuplicated = () => {
+        for (let i = 0; i < this.list.length; i++) {
+            const element = this.list[i];
             element.SetError(false);
         }
     }
 
-    CheckSquare = () => {
-        this.MarkDuplicates(this.checklist);
-    }
-    CheckVertical = (x, i) => {
-        const vertical = this.callback.verticallines[x][i];
-        this.MarkDuplicates(vertical);
-    }
-    CheckHorizontal = (y, j) => {
-        const horizontal = this.callback.horizontallines[y][j];
-        this.MarkDuplicates(horizontal);
-    }
 
     MarkDuplicates = (arr) => {
         for (let i = 0; i < arr.length; i++) {
@@ -83,37 +98,18 @@ class SudokuNumber {
         let count = arr.reduce(function (n, element) {
             return n + (search !== "" && element.number === search);
         }, 0);
-
         return (count > 1);
-    }
-}
-
-
-class Sudoku {
-    constructor() {
-        this.matrix = [];
-        this.emptyspaces = [];
-        this.verticallines = [[[], [], []], [[], [], []], [[], [], []]]; //3x3 vertical lines
-        this.horizontallines = [[[], [], []], [[], [], []], [[], [], []]]; //3x3 horizontal lines
-        for (let i = 0; i < 3; i++) {
-            let rows = [];
-            for (let j = 0; j < 3; j++) {
-                rows[j] = new SudokuNumber(i, j, this);
-            }
-            this.matrix[i] = rows;
-        }
-        this.EmptySpaces();
     }
 
 
 
     EmptySpaces = () => {
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                for (let k = 0; k < 3; k++) {
-                    for (let l = 0; l < 3; l++) {
-                        if (this.matrix[i][j].submatrix[k][l].number === "") {
-                            this.emptyspaces.push([i, j, k, l]);
+        for (let x = 0; x < 3; x++) {
+            for (let y = 0; y < 3; y++) {
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 3; j++) {
+                        if (this.matrix[x][y].submatrix[i][j].number === "") {
+                            this.emptyspaces.push([x, y, i, j]);
                         }
                     }
                 }
