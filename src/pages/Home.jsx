@@ -7,10 +7,8 @@ import Sudoku from "../components/Sudoku";
 import SudokuBox from "../components/SudokuBox";
 
 
-
 const board = new Sudoku();
 board.RandomNumbers(30);
-
 
 
 const useStyles = makeStyles((theme) => {

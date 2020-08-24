@@ -67,35 +67,48 @@ class Sudoku {
     CleanDuplicated = () => {
         for (let i = 0; i < this.list.length; i++) {
             const element = this.list[i];
-            element.SetError(false);
+            if(element.SetError!==undefined){
+                element.SetError(false);
+            }else{
+                element.error=false;
+            }
         }
     }
 
 
     CheckDuplicates = () => {
+        let count=0;
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
                 const square=this.matrix[i][j].checklist;
-                this.MarkDuplicates(square);
+                count+=this.MarkDuplicates(square);
 
                 const vertical = this.verticallines[i][j];
-                this.MarkDuplicates(vertical);
+                count+=this.MarkDuplicates(vertical);
 
                 const horizontal = this.horizontallines[i][j];
-                this.MarkDuplicates(horizontal);
+                count+=this.MarkDuplicates(horizontal);
             }
         }
+        return count;
     }
 
 
 
     MarkDuplicates = (arr) => {
+        let count=0;
         for (let i = 0; i < arr.length; i++) {
             const element = arr[i];
             if (this.duplicated(arr, element.number)) {
-                element.SetError(true);
+                if(element.SetError!==undefined){
+                    element.SetError(true);
+                }else{
+                    element.error=true;
+                }
+                count++;
             }
         }
+        return count;
     }
 
     duplicated = (arr, search) => {
@@ -122,7 +135,7 @@ class Sudoku {
     }
 
 
-    RandomNumbers = (quantity) => {
+    RandomNumbers = (quantity,number) => {
         if (quantity > 81 || quantity < 1) {
             throw console.error("quantity out of range");
         }
@@ -133,11 +146,35 @@ class Sudoku {
 
 
             let field = this.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
-            field.number = Math.floor(1 + Math.random() * 8);
+
+            //field.number = Math.floor(1 + Math.random() * 8);
+            field.number=number;
+
+            this.CleanDuplicated();
+            const duplicated=this.CheckDuplicates();
+            if (duplicated>0){
+                field.number="";
+                index--;
+                continue;
+            }
+
             field.locked = true;
             this.emptyspaces.splice(pos, 1);
         }
     }
+
+    CreateBoard=(n)=>{
+        if (n > 81 || n < 1) {
+            throw console.error("number out of range");
+        }
+        this.RandomNumbers(9,1);
+        this.Resolve();
+    }
+    Resolve=()=>{
+
+    }
+
+
 }
 
 export default Sudoku;
