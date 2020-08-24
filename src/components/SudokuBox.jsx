@@ -31,8 +31,7 @@ export default function SudokuBox(props) {
         window.addEventListener("resize", debouncedHandleResize);
         return () => window.removeEventListener("resize", debouncedHandleResize);
     });
-
     return <Box height={height} width="100%" ref={canvas}>
-        <SudokuSubBox {...props} />
+        <SudokuSubBox {...props} height={height} />
     </Box>;
 }

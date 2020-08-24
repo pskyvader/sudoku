@@ -33,6 +33,7 @@ const SudokuNumberBox = (props) => {
     if (fontsize > 50) {
         fontsize = 50;
     }
+    console.log("number",height,props.height/3);
 
     return <Box height={height} width="100%" ref={canvas} fontSize={fontsize} display="flex" alignItems="center" justifyContent="center">
         <SudokuNumber {...props} />

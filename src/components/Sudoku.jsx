@@ -15,6 +15,7 @@ class SudokuValue {
     SetNumber = (number) => {
         this.SetFinalNumber(number);
         this.number = number;
+        this.callback.Clean(this.x,this.y,this.i,this.j);
         this.callback.CheckSquare();
         this.callback.CheckVertical(this.x, this.i);
         this.callback.CheckHorizontal(this.y, this.j);
@@ -36,9 +37,24 @@ class SudokuNumber {
                 rows[j] = new SudokuValue(options, x, y, i, j, callback, this);
                 this.checklist.push(rows[j]);
                 this.callback.verticallines[x][i].push(rows[j]);
-                this.callback.verticallines[y][j].push(rows[j]);
+                this.callback.horizontallines[y][j].push(rows[j]);
             }
             this.submatrix[i] = rows;
+        }
+    }
+
+    Clean=(x,y,i,j)=>{
+        const vertical = this.callback.verticallines[x][i];
+        const horizontal = this.callback.horizontallines[y][j];
+        this.CleanDuplicated(this.checklist);
+        this.CleanDuplicated(vertical);
+        this.CleanDuplicated(horizontal);
+    }
+
+    CleanDuplicated = (arr) => {
+        for (let i = 0; i < arr.length; i++) {
+            const element = arr[i];
+            element.SetError(false);
         }
     }
 
@@ -59,8 +75,6 @@ class SudokuNumber {
             const element = arr[i];
             if (this.duplicated(arr, element.number)) {
                 element.SetError(true);
-            } else if (element.error) {
-                element.SetError(false);
             }
         }
     }
@@ -89,7 +103,6 @@ class Sudoku {
             this.matrix[i] = rows;
         }
         this.EmptySpaces();
-        console.log(this.verticallines, this.horizontallines);
     }
 
 
