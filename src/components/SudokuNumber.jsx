@@ -12,15 +12,20 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "1em",
         fontWeight: "normal",
         minWidth: 0,
-        borderRadius: 0
-    },
-    error:{
-        color:"red",
+        borderRadius: 0,
         '&$disabled': {
-            color: 'red',
+            color: theme.palette.grey[500],
+            backgroundColor: theme.palette.grey[200],
         },
     },
-    disabled:{}
+    error: {
+        color: theme.palette.error.main,
+        '&$disabled': {
+            color: theme.palette.error.contrastText,
+            backgroundColor: theme.palette.error.light
+        },
+    },
+    disabled: {}
 }));
 
 
@@ -84,7 +89,7 @@ export default function SudokuNumber({ field }) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    let { number, locked,error } = field;
+    let { number, locked, error } = field;
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
@@ -93,15 +98,15 @@ export default function SudokuNumber({ field }) {
     field.SetFinalNumber = SetFinalNumber;
     field.number = FinalNumber;
 
-    
+
     const [FinalError, SetError] = React.useState(error);
-    field.SetError = SetError; 
-    field.error = FinalError; 
+    field.SetError = SetError;
+    field.error = FinalError;
 
     const className = clsx(classes.button, FinalError && classes.error);
 
     if (locked) {
-        return <Button disabled  classes={{ root: className, disabled:classes.disabled, }}  >{FinalNumber}</Button>
+        return <Button disabled classes={{ root: className, disabled: classes.disabled, }}  >{FinalNumber}</Button>
     } else {
         return (
             <React.Fragment>

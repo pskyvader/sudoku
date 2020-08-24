@@ -15,8 +15,9 @@ class SudokuValue {
     SetNumber = (number) => {
         this.SetFinalNumber(number);
         this.number = number;
-        this.callback.CheckNumbers();
-        this.callbackmatrix.SetError();
+        this.callback.CheckSquare();
+        this.callback.CheckVertical(this.x, this.i);
+        this.callback.CheckHorizontal(this.y, this.j);
     }
 }
 
@@ -25,6 +26,7 @@ class SudokuNumber {
     constructor(x, y, callback) {
         this.x = x;
         this.y = y;
+        this.callback = callback;
         this.submatrix = [];
         this.checklist = [];
         const options = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -33,23 +35,42 @@ class SudokuNumber {
             for (let j = 0; j < 3; j++) {
                 rows[j] = new SudokuValue(options, x, y, i, j, callback, this);
                 this.checklist.push(rows[j]);
+                this.callback.verticallines[x][i].push(rows[j]);
+                this.callback.verticallines[y][j].push(rows[j]);
             }
             this.submatrix[i] = rows;
         }
     }
 
-    CheckNumbers = () => {
-        var duplicated = (arr,search) => arr.reduce(function (n, element) {
-            return n + (search!=="" && element.number === search);
-        }, 0);
-        for (let i = 0; i < this.checklist.length; i++) {
-            const element = this.checklist[i];
-            if (duplicated(this.checklist,element.number)>1) {
+    CheckSquare = () => {
+        this.MarkDuplicates(this.checklist);
+    }
+    CheckVertical = (x, i) => {
+        const vertical = this.callback.verticallines[x][i];
+        this.MarkDuplicates(vertical);
+    }
+    CheckHorizontal = (y, j) => {
+        const horizontal = this.callback.horizontallines[y][j];
+        this.MarkDuplicates(horizontal);
+    }
+
+    MarkDuplicates = (arr) => {
+        for (let i = 0; i < arr.length; i++) {
+            const element = arr[i];
+            if (this.duplicated(arr, element.number)) {
                 element.SetError(true);
-            }else if(element.error){
+            } else if (element.error) {
                 element.SetError(false);
             }
         }
+    }
+
+    duplicated = (arr, search) => {
+        let count = arr.reduce(function (n, element) {
+            return n + (search !== "" && element.number === search);
+        }, 0);
+
+        return (count > 1);
     }
 }
 
@@ -58,6 +79,8 @@ class Sudoku {
     constructor() {
         this.matrix = [];
         this.emptyspaces = [];
+        this.verticallines = [[[], [], []], [[], [], []], [[], [], []]]; //3x3 vertical lines
+        this.horizontallines = [[[], [], []], [[], [], []], [[], [], []]]; //3x3 horizontal lines
         for (let i = 0; i < 3; i++) {
             let rows = [];
             for (let j = 0; j < 3; j++) {
@@ -66,13 +89,10 @@ class Sudoku {
             this.matrix[i] = rows;
         }
         this.EmptySpaces();
+        console.log(this.verticallines, this.horizontallines);
     }
 
-    SetError = () => {
-        this.matrix[0][0].submatrix[0][0].number = "E";
-        this.matrix[0][0].submatrix[0][0].SetFinalNumber("E");
-        console.log('uwu', this.matrix[0][0].submatrix[0][0].number);
-    }
+
 
     EmptySpaces = () => {
         for (let i = 0; i < 3; i++) {
