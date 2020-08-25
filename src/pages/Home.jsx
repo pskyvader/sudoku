@@ -3,12 +3,11 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 
-import Sudoku from "../components/Sudoku";
+import SudokuResolver from "../logic/SudokuResolver";
 import SudokuBox from "../components/SudokuBox";
 
 
-const board = new Sudoku();
-board.RandomNumbers(30);
+const board = new SudokuResolver(30);
 
 
 const useStyles = makeStyles((theme) => {
