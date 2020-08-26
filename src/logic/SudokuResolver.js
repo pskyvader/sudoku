@@ -1,14 +1,14 @@
 import Sudoku from './Sudoku';
 
-class SudokuResolver extends Sudoku{
-    constructor(n){
+class SudokuResolver extends Sudoku {
+    constructor(n) {
         super();
         this.CreateBoard(n);
     }
-    
+
 
     RandomNumbers = (quantity) => {
-        const t=this;
+        const t = this;
         if (quantity > 81 || quantity < 1) {
             throw console.error("quantity out of range");
         }
@@ -34,7 +34,7 @@ class SudokuResolver extends Sudoku{
     }
 
     CreateBoard = (n) => {
-        const t=this;
+        const t = this;
         if (n > 81 || n < 1) {
             throw console.error("number out of range");
         }
@@ -43,8 +43,37 @@ class SudokuResolver extends Sudoku{
     }
 
     Resolve = () => {
-
+        const t = this;
+        t.GetOptions();
     }
+
+    GetOptions = () => {
+        const t = this;
+        for (let i = 0; i < t.list.length; i++) {
+            const element=t.list[i];
+            t.CheckOptions(element);
+        }
+    }
+    CheckOptions=(number)=>{
+        const t=this;
+        let list = new Set([1,2,3,4,5,6,7,8,9]);
+        const {x,y,i,j}=number;
+        t.DuplicatesList(t.matrix[x][i].checklist,list);
+        t.DuplicatesList(t.verticallines[i][j],list);
+        t.DuplicatesList(t.horizontallines[i][j],list);
+        console.log(x,y,list);
+    }
+
+    DuplicatesList = (arr,list) => {
+        for (let i = 0; i < arr.length; i++) {
+            const element = arr[i];
+            if(element.number!==""){
+                list.delete(element.number);
+            }
+        }
+        return list;
+    }
+
 }
 
 export default SudokuResolver;
