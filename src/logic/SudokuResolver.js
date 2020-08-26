@@ -50,24 +50,23 @@ class SudokuResolver extends Sudoku {
     GetOptions = () => {
         const t = this;
         for (let i = 0; i < t.list.length; i++) {
-            const element=t.list[i];
+            const element = t.list[i];
             t.CheckOptions(element);
         }
     }
-    CheckOptions=(number)=>{
-        const t=this;
-        let list = new Set([1,2,3,4,5,6,7,8,9]);
-        const {x,y,i,j}=number;
-        t.DuplicatesList(t.matrix[x][i].checklist,list);
-        t.DuplicatesList(t.verticallines[i][j],list);
-        t.DuplicatesList(t.horizontallines[i][j],list);
-        console.log(x,y,list);
+    CheckOptions = (number) => {
+        const t = this;
+        let list = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        const { x, y, i, j } = number;
+        t.DuplicatesList(t.matrix[x][y].checklist, list);
+        t.DuplicatesList(t.verticallines[x][i], list);
+        t.DuplicatesList(t.horizontallines[y][j], list);
     }
 
-    DuplicatesList = (arr,list) => {
+    DuplicatesList = (arr, list) => {
         for (let i = 0; i < arr.length; i++) {
             const element = arr[i];
-            if(element.number!==""){
+            if (element.number !== "") {
                 list.delete(element.number);
             }
         }
