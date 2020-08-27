@@ -68,16 +68,6 @@ const SudokuNumber = ({ field }) => {
         return (
             <React.Fragment>
                 <SudokuOptions options={options}/>
-                <Button aria-describedby={id} className={className} onClick={handleClick}>{FinalNumber}</Button>
-                <Popover
-                    id={id}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
-                    transformOrigin={{ vertical: 'top', horizontal: 'center', }} >
-                    <SudokuPopover handleClose={handleClose} field={field}></SudokuPopover>
-                </Popover>
             </React.Fragment>
         );
     }
