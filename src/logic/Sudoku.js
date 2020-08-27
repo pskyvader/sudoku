@@ -4,6 +4,10 @@ import SudokuNumber from './SudokuNumber';
 
 class Sudoku {
     constructor() { //creates an empty sudoku board
+        this.CreateEmptyBoard();
+    }
+
+    CreateEmptyBoard = () => {
         this.matrix = [];
         this.emptyspaces = [];
         this.verticallines = [ [ [], [], [] ], [ [], [], [] ], [ [], [], [] ] ]; //3x3 vertical lines

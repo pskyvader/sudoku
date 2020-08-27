@@ -1,7 +1,7 @@
 class SudokuValue {
     constructor(x, y, i, j, callback) {
         this.number = "";
-        this.options = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        this.options = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
         this.x = x;
         this.y = y;
         this.i = i;

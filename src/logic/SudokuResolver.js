@@ -36,24 +36,49 @@ class SudokuResolver extends Sudoku {
     CreateBoard = (n) => {
         const t = this;
         if (n > 81 || n < 1) {
-            throw console.error("number out of range");
+            throw Error("number out of range");
         }
         t.RandomNumbers(30);
-        t.Resolve();
+        
+        try {
+            t.Resolve();
+        } catch (error) {
+            console.log(error);
+            t.CreateEmptyBoard();
+            t.CreateBoard(n);
+        }
     }
 
     Resolve = () => {
         const t = this;
         t.GetOptions();
+        t.FillSingleOption();
     }
 
     GetOptions = () => {
         const t = this;
+        // empty options for numbers already filled
+        for (let i = 0; i < t.list.length; i++) { 
+            const element = t.list[i];
+            if (element.number!==""){
+                element.options=[];
+            }
+        }
         for (let i = 0; i < t.list.length; i++) {
             const element = t.list[i];
             t.CheckOptions(element);
         }
     }
+    FillSingleOption=()=>{
+        const t=this;
+        for (let index = 0; index < t.list.length; index++) {
+            const element = t.list[index];
+            if (element.options.length===1){
+                element.number=element.options[0];
+            }
+        }
+    }
+
     CheckOptions = (number) => {
         const t = this;
         let list = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
@@ -61,6 +86,7 @@ class SudokuResolver extends Sudoku {
         t.DuplicatesList(t.matrix[x][y].checklist, list);
         t.DuplicatesList(t.verticallines[x][i], list);
         t.DuplicatesList(t.horizontallines[y][j], list);
+        number.options=list;
     }
 
     DuplicatesList = (arr, list) => {
@@ -69,6 +95,9 @@ class SudokuResolver extends Sudoku {
             if (element.number !== "") {
                 list.delete(element.number);
             }
+        }
+        if (list.length===0){
+            throw Error("Empty options");
         }
         return list;
     }

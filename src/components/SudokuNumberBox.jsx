@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 import SudokuPopover from './SudokuPopover';
+import SudokuOptions from './SudokuOptions';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -46,7 +47,7 @@ const SudokuNumber = ({ field }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    let { number, locked, error } = field;
+    let { number, locked, error,options } = field;
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
@@ -66,6 +67,7 @@ const SudokuNumber = ({ field }) => {
     } else {
         return (
             <React.Fragment>
+                <SudokuOptions options={options}/>
                 <Button aria-describedby={id} className={className} onClick={handleClick}>{FinalNumber}</Button>
                 <Popover
                     id={id}
