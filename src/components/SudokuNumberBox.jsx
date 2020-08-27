@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const SudokuNumber = ({ field, fontsize }) => {
+const SudokuNumber = ({ field }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -64,13 +64,13 @@ const SudokuNumber = ({ field, fontsize }) => {
 
     if (locked) {
         return <Button disabled classes={{ root: className, disabled: classes.disabled, }}  >
-            <SudokuOptions options={options} fontsize={fontsize}> {FinalNumber}</SudokuOptions>
+            <SudokuOptions options={options}> {FinalNumber}</SudokuOptions>
         </Button>
     } else {
         return (
             <React.Fragment>
                 <Button aria-describedby={id} className={className} onClick={handleClick}>
-                    <SudokuOptions options={options} fontsize={fontsize}> {FinalNumber}</SudokuOptions>
+                    <SudokuOptions options={options}> {FinalNumber}</SudokuOptions>
                 </Button>
                 <Popover
                     id={id}
@@ -96,7 +96,7 @@ const SudokuNumberBox = (props) => {
     }
 
     return <Box height={height} width="100%" fontSize={fontsize} display="flex" alignItems="center" justifyContent="center">
-        <SudokuNumber fontsize={fontsize} {...props} />
+        <SudokuNumber {...props} />
     </Box>
 }
 

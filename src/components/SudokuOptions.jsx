@@ -1,24 +1,17 @@
 import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
-
-const styledBy = (property) => (props) => {
-    return props[property]*.4;
-}
-
-
-const styles = {
-    options: {
-        flexGrow: 1,
-        fontSize: styledBy("fontsize"),
-        display: "block"
-    }
-}
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+    },
+    options: {
+        flexGrow: 1,
+        fontSize: "0.3em",
+        display: "block",
+        lineHeight: "1em",
     },
     number: {
         lineHeight: "1em",
@@ -26,21 +19,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const StyledGrid = withStyles(styles)(({ classes, fontsize, ...other }) => (
-    <Grid item xs={12} className={classes.options}  {...other}>
-    </Grid>
-));
-
-
-export default function FullWidthGrid({ options, fontsize, children }) {
+export default function FullWidthGrid({ options, children }) {
     const classes = useStyles();
-    options = Array.from(options);
-
+    options = Array.from(options).join("");
     return (
         <Grid container>
-            <StyledGrid item xs={12} fontsize={fontsize}>
-                {options.map((row) => { return row; })}
-            </StyledGrid>
+            <Grid item xs={12} className={classes.options}>
+                {options}
+            </Grid>
             <Grid item xs={12} className={classes.number}>
                 {children}</Grid>
         </Grid>

@@ -29,6 +29,7 @@ class SudokuResolver extends Sudoku {
             }
 
             field.locked = true;
+            field.options.clear();
             t.emptyspaces.splice(pos, 1);
         }
     }
@@ -39,7 +40,7 @@ class SudokuResolver extends Sudoku {
             throw Error("number out of range");
         }
         t.RandomNumbers(30);
-        
+
         try {
             t.Resolve();
         } catch (error) {
@@ -57,24 +58,22 @@ class SudokuResolver extends Sudoku {
 
     GetOptions = () => {
         const t = this;
-        // empty options for numbers already filled
-        for (let i = 0; i < t.list.length; i++) { 
-            const element = t.list[i];
-            if (element.number!==""){
-                element.options=[];
-            }
-        }
         for (let i = 0; i < t.list.length; i++) {
             const element = t.list[i];
-            t.CheckOptions(element);
+            if (element.number === "") {
+                t.CheckOptions(element);
+            }
         }
     }
-    FillSingleOption=()=>{
-        const t=this;
+    FillSingleOption = () => {
+        const t = this;
         for (let index = 0; index < t.list.length; index++) {
             const element = t.list[index];
-            if (element.options.length===1){
-                element.number=element.options[0];
+            if(element.number===""){
+                if (element.options.size === 1) {
+                    element.number = element.options.values().next().value;
+                    element.options.clear();
+                }
             }
         }
     }
@@ -86,7 +85,7 @@ class SudokuResolver extends Sudoku {
         t.DuplicatesList(t.matrix[x][y].checklist, list);
         t.DuplicatesList(t.verticallines[x][i], list);
         t.DuplicatesList(t.horizontallines[y][j], list);
-        number.options=list;
+        number.options = list;
     }
 
     DuplicatesList = (arr, list) => {
@@ -96,7 +95,7 @@ class SudokuResolver extends Sudoku {
                 list.delete(element.number);
             }
         }
-        if (list.length===0){
+        if (list.length === 0) {
             throw Error("Empty options");
         }
         return list;
