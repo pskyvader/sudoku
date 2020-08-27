@@ -47,7 +47,7 @@ const SudokuNumber = ({ field }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    let { number, locked, error,options } = field;
+    let { number, locked, error, options } = field;
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
@@ -67,7 +67,18 @@ const SudokuNumber = ({ field }) => {
     } else {
         return (
             <React.Fragment>
-                <SudokuOptions options={options}/>
+                <Button aria-describedby={id} className={className} onClick={handleClick}>
+                    <SudokuOptions options={options}> {FinalNumber}</SudokuOptions>
+                </Button>
+                <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'center', }} >
+                    <SudokuPopover handleClose={handleClose} field={field}></SudokuPopover>
+                </Popover>
             </React.Fragment>
         );
     }

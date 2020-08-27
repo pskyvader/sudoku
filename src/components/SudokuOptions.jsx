@@ -1,17 +1,26 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
-const SudokuOptions=({options})=>{
-    const a= <Grid container justify="center">
-        {options.forEach((row) => {
-            console.log(row);
-            return <Grid key={row} item xs={4}>
-                {row}
-            </Grid>
-        })}
-    </Grid>
-    console.log(a);
-    return a;
-}
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        fontSize: theme.spacing(1)
+    },
+}));
 
-export default SudokuOptions;
+export default function FullWidthGrid({ options,children }) {
+    const classes = useStyles();
+    options = Array.from(options);
+
+    return (
+        <div>
+            <div className={classes.root}>
+            {options.map((row) => { return row; })}
+
+            </div>
+            <div>{children}</div>
+            
+        </div>
+    );
+}
