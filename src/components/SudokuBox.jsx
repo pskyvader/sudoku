@@ -8,8 +8,8 @@ import SudokuNumberBox from "./SudokuNumberBox";
 
 const useStyles = makeStyles((theme) => ({
     subbox: { textAlign: "center", height: "100%" },
-    grid: { borderLeft: theme.spacing(0.125) + "px solid " + theme.palette.info.light, },
-    subgrid: { borderTop: theme.spacing(0.125) + "px solid " + theme.palette.info.light, }
+    grid: { borderRight: theme.spacing(0.125) + "px solid " + theme.palette.info.main, },
+    subgrid: { borderBottom: theme.spacing(0.125) + "px solid " + theme.palette.info.main, }
 }));
 
 
@@ -35,7 +35,7 @@ const SudokuSubBox = ({ matrix, height }) => {
 
 const SudokuBox = (props) => {
     const { height } = props;
-    const subheight=height / 3 - 1; // x / 3 (3 squares) -1 (1px borders ) 
+    const subheight = height / 3 - 1; // x / 3 (3 squares) -1 (1px borders ) 
     return <Box height={height} width="100%">
         <SudokuSubBox {...props} height={subheight} />
     </Box>;

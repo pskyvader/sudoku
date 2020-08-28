@@ -55,7 +55,7 @@ class SudokuResolver extends Sudoku {
     Resolve = () => {
         const t = this;
         let changes=1;
-        t.GetOptions();
+        //t.GetOptions();
         while(changes>0){
             changes=t.FillSingleOption();
         }

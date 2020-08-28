@@ -14,7 +14,7 @@ class SudokuValue {
     SetNumber = (number) => {
         this.SetFinalNumber(number);
         this.number = number;
-        this.options.clear();
+        //this.options.clear();
         this.callback.Duplicates();
     }
 }

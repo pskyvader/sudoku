@@ -8,14 +8,11 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     options: {
-        flexGrow: 1,
         fontSize: "0.3em",
-        display: "block",
         lineHeight: "1em",
     },
     number: {
         lineHeight: "1em",
-        display: "block"
     }
 }));
 
@@ -28,7 +25,8 @@ export default function FullWidthGrid({ options, children }) {
                 {options}
             </Grid>
             <Grid item xs={12} className={classes.number}>
-                {children}</Grid>
+                {children}
+            </Grid>
         </Grid>
     );
 }

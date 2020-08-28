@@ -14,7 +14,8 @@ console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
 
 
 const useStyles = makeStyles((theme) => {
-    const border = theme.spacing(0.25) + "px solid " + theme.palette.info.dark;
+    const mainborder = theme.spacing(0.25+0.125) + "px solid " + theme.palette.info.main;
+    const border = theme.spacing(0.25) + "px solid " + theme.palette.info.main;
     return {
         box: {
             maxWidth: "calc(100vh - " + theme.mixins.toolbar.minHeight * 2 + "px)",
@@ -22,11 +23,11 @@ const useStyles = makeStyles((theme) => {
         },
         root: {
             flexGrow: 1,
-            borderRight: border,
-            borderTop: border,
+            borderLeft: mainborder,
+            borderTop: mainborder,
         },
         grid: {
-            borderLeft: border,
+            borderRight: border,
         },
         subgrid: {
             borderBottom: border,
