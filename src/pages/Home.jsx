@@ -7,7 +7,10 @@ import SudokuResolver from "../logic/SudokuResolver";
 import SudokuBox from "../components/SudokuBox";
 
 
+var t0 = performance.now();
 const board = new SudokuResolver(30);
+var t1 = performance.now();
+console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
 
 
 const useStyles = makeStyles((theme) => {

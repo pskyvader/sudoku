@@ -3,6 +3,7 @@ import Sudoku from './Sudoku';
 class SudokuResolver extends Sudoku {
     constructor(n) {
         super();
+        this.errorcount=0;
         this.CreateBoard(n);
     }
 
@@ -44,7 +45,8 @@ class SudokuResolver extends Sudoku {
         try {
             t.Resolve();
         } catch (error) {
-            console.log(error);
+            t.errorcount+=1;
+            console.log(error.message,t.errorcount);
             t.CreateEmptyBoard();
             t.CreateBoard(n);
         }
@@ -52,8 +54,11 @@ class SudokuResolver extends Sudoku {
 
     Resolve = () => {
         const t = this;
+        let changes=1;
         t.GetOptions();
-        t.FillSingleOption();
+        while(changes>0){
+            changes=t.FillSingleOption();
+        }
     }
 
     GetOptions = () => {
@@ -66,16 +71,20 @@ class SudokuResolver extends Sudoku {
         }
     }
     FillSingleOption = () => {
+        let changes=0;
         const t = this;
         for (let index = 0; index < t.list.length; index++) {
             const element = t.list[index];
             if(element.number===""){
+                t.CheckOptions(element);
                 if (element.options.size === 1) {
                     element.number = element.options.values().next().value;
                     element.options.clear();
+                    changes++;
                 }
             }
         }
+        return changes;
     }
 
     CheckOptions = (number) => {
@@ -95,7 +104,7 @@ class SudokuResolver extends Sudoku {
                 list.delete(element.number);
             }
         }
-        if (list.length === 0) {
+        if (list.size === 0) {
             throw Error("Empty options");
         }
         return list;
