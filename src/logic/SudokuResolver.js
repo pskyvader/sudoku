@@ -3,7 +3,7 @@ import Sudoku from './Sudoku';
 class SudokuResolver extends Sudoku {
     constructor(n) {
         super();
-        this.errorcount=0;
+        this.errorcount = 0;
         this.CreateBoard(n);
     }
 
@@ -45,8 +45,8 @@ class SudokuResolver extends Sudoku {
         try {
             t.Resolve();
         } catch (error) {
-            t.errorcount+=1;
-            console.log(error.message,t.errorcount);
+            t.errorcount += 1;
+            console.log(error.message, t.errorcount);
             t.CreateEmptyBoard();
             t.CreateBoard(n);
         }
@@ -54,11 +54,13 @@ class SudokuResolver extends Sudoku {
 
     Resolve = () => {
         const t = this;
-        let changes=1;
+        let changes = 1;
         //t.GetOptions();
-        while(changes>0){
-            changes=t.FillSingleOption();
+        while (changes > 0) {
+            changes=0;
+            changes += t.FillSingleOption(); // check if there are any field with only one option and use it
         }
+        t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
     }
 
     GetOptions = () => {
@@ -70,12 +72,13 @@ class SudokuResolver extends Sudoku {
             }
         }
     }
+
     FillSingleOption = () => {
-        let changes=0;
         const t = this;
+        let changes = 0;
         for (let index = 0; index < t.list.length; index++) {
             const element = t.list[index];
-            if(element.number===""){
+            if (element.number === "") {
                 t.CheckOptions(element);
                 if (element.options.size === 1) {
                     element.number = element.options.values().next().value;
@@ -85,6 +88,45 @@ class SudokuResolver extends Sudoku {
             }
         }
         return changes;
+    }
+
+    FillByLine = () => {
+        const t = this;
+        let changes = 0;
+        for (let index = 0; index < t.list.length; index++) {
+            const element = t.list[index];
+            t.CheckUnique(element);
+            
+        }
+        return changes;
+    }
+
+    CheckUnique=(number)=>{
+        const t = this;
+        let unique = 0;
+        const { x, y, i, j } = number;
+        t.UniqueList(t.matrix[x][y].checklist);
+
+    }
+
+    UniqueList = (arr) => {
+        const t=this;
+        let options=new Set();
+        for (let i = 0; i < arr.length; i++) {
+            const element = arr[i];
+            if (element.number !== "") {
+                t.CheckOptions();
+                options.add(element.number);
+            }
+        }
+        for (let i = 0; i < arr.length; i++) {
+            const element = arr[i];
+            if (element.number !== "") {
+                console.log(element.options,options);
+                const diff = element.options.filter(x => !options.includes(x) );
+                console.log(diff);
+            }
+        }
     }
 
     CheckOptions = (number) => {

@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     options: {
         fontSize: "0.3em",
         lineHeight: "1em",
+        overflowWrap:"break-word"
     },
     number: {
         lineHeight: "1em",

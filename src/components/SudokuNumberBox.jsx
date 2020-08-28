@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: "normal",
         minWidth: 0,
         borderRadius: 0,
+        padding:0,
         '&$disabled': {
             color: theme.palette.grey[500],
             backgroundColor: theme.palette.grey[200],
