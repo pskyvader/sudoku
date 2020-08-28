@@ -55,12 +55,11 @@ class SudokuResolver extends Sudoku {
     Resolve = () => {
         const t = this;
         let changes = 1;
-        //t.GetOptions();
         while (changes > 0) {
-            changes=0;
+            changes = 0;
             changes += t.FillSingleOption(); // check if there are any field with only one option and use it
+            changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
         }
-        t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
     }
 
     GetOptions = () => {
@@ -96,41 +95,64 @@ class SudokuResolver extends Sudoku {
         for (let index = 0; index < t.list.length; index++) {
             const element = t.list[index];
             if (element.number === "") {
-                t.CheckUnique(element);
+                if (t.CheckUnique(element)) {
+                    element.options.clear();
+                    changes++;
+                }
             }
         }
         return changes;
     }
 
-    CheckUnique=(number)=>{
+    CheckUnique = (number) => {
         const t = this;
         let unique = 0;
         const { x, y, i, j } = number;
-        t.UniqueList(t.matrix[x][y].checklist,number);
-
+        unique = t.UniqueList(t.matrix[x][y].checklist, number);
+        if (unique !== 0) {
+            number.number = unique;
+            return true;
+        }
+        unique = t.UniqueList(t.verticallines[x][i], number);
+        if (unique !== 0) {
+            number.number = unique;
+            return true;
+        }
+        unique = t.UniqueList(t.horizontallines[y][j], number);
+        if (unique !== 0) {
+            number.number = unique;
+            return true;
+        }
+        return false;
     }
 
-    UniqueList = (arr,number) => {
-        const t=this;
-        let options=new Set();
+    UniqueList = (arr, number) => {
+        const t = this;
+        let options = new Set();
         for (let i = 0; i < arr.length; i++) {
             const element = arr[i];
-            if (element.number === "") {
+            if (element.number === "" && element!==number) {
                 t.CheckOptions(element);
                 options = new Set([...options, ...element.options]);
             }
         }
-        //console.log(options,number.options);
-        let difference = new Set([...options].filter(x => !number.options.has(x)));
-        if(number.options.size===0){
-            console.log(number.options,number.x,number.y,number.i,number.j);
+        t.CheckOptions(number);
+        let difference = new Set([...number.options].filter(x => !options.has(x)));
+        if (difference.size === 1) {
+            return difference.values().next().value;
         }
+        return 0;
     }
 
     CheckOptions = (number) => {
         const t = this;
         let list = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-        const { x, y, i, j } = number;
+        const {
+            x,
+            y,
+            i,
+            j
+        } = number;
         t.DuplicatesList(t.matrix[x][y].checklist, list);
         t.DuplicatesList(t.verticallines[x][i], list);
         t.DuplicatesList(t.horizontallines[y][j], list);
