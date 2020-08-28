@@ -63,24 +63,56 @@ class SudokuResolver extends Sudoku {
             }
         }
 
-        let clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
-        let q = Object.assign(Object.create(Object.getPrototypeOf(clone)), clone);
-        const randomtry = q.Random();
-        randomtry.number = randomtry.options.values().next().value;
-        let last=0;
-        while (!q.CheckCompleteBoard() && randomtry.number !== last) {
-            last=randomtry.number;
-            console.log(randomtry.number,randomtry.options);
-            q = Object.assign(Object.create(Object.getPrototypeOf(clone)), clone);
-            try {
-                q.Resolve();
-            } catch (error) {
-                console.log(error.message, q.errorcount, "le");
+        if (!t.CheckCompleteBoard()) {
+            const clonelist = t.CloneBoard();
+            const randomtry = t.Random();
+            let randomoptions = [...randomtry.options];
+            randomtry.number = randomoptions[0];
+            let last = 0;
+            let i=0;
+            while (!t.CheckCompleteBoard() && randomtry.number !== last && randomtry.number!==undefined) {
+                last = randomtry.number;
+                t.RestoreBoard(clonelist);
+                randomtry.number = last;
+                try {
+                    t.Resolve();
+                } catch (error) {
+                    console.log(error.message, t.errorcount, "le");
+                } finally {
+                    if(randomoptions!==randomtry.options){
+                        randomoptions = [...randomtry.options];
+                    }else{
+                        i++;
+                    }
+                    randomtry.number = randomoptions[i];
+                }
             }
-            randomtry.number = randomtry.options.values().next().value;
-            console.log(randomtry.number,last);
         }
+        if (!t.CheckCompleteBoard()) {
+            t.Resolve();
+        }
+    }
 
+    CloneBoard = () => {
+        const t = this;
+        let clonelist = [];
+        for (let i = 0; i < t.list.length; i++) {
+            const e = t.list[i];
+            clonelist.push([e.x, e.y, e.i, e.j, e.number]);
+        }
+        return clonelist;
+    }
+    RestoreBoard = (clonelist) => {
+        const t = this;
+        for (let index = 0; index < clonelist.length; index++) {
+            const e = clonelist[index];
+            const x = e[0];
+            const y = e[1];
+            const i = e[2];
+            const j = e[3];
+            const number = e[4];
+            t.matrix[x][y].submatrix[i][j].number = number;
+        }
 
     }
 
@@ -94,6 +126,7 @@ class SudokuResolver extends Sudoku {
         }
         return true;
     }
+
 
     Random = (min = 3) => {
         const t = this;
