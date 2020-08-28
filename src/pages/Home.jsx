@@ -14,7 +14,7 @@ console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
 
 
 const useStyles = makeStyles((theme) => {
-    const mainborder = theme.spacing(0.25+0.125) + "px solid " + theme.palette.info.main;
+    const mainborder = theme.spacing(0.25 + 0.125) + "px solid " + theme.palette.info.main;
     const border = theme.spacing(0.25) + "px solid " + theme.palette.info.main;
     return {
         box: {
@@ -46,9 +46,9 @@ function debounce(fn, ms) {
     };
 }
 
-const Home = (props) => {
+const Home = () => {
     const canvas = React.useRef(null);
-    const [height, setHeight] = React.useState(null);
+    const [height, setHeight] = React.useState(100);
     const BoxHeight = () => {
         setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
     }
@@ -59,6 +59,14 @@ const Home = (props) => {
         window.addEventListener("resize", debouncedHandleResize);
         return () => window.removeEventListener("resize", debouncedHandleResize);
     });
+
+    React.useEffect(() => {
+        window.onbeforeunload = confirmExit;
+        function confirmExit() {
+            return "show warning";
+        }
+    }, [])
+
 
     const classes = useStyles();
     return (
