@@ -95,8 +95,9 @@ class SudokuResolver extends Sudoku {
         let changes = 0;
         for (let index = 0; index < t.list.length; index++) {
             const element = t.list[index];
-            t.CheckUnique(element);
-            
+            if (element.number === "") {
+                t.CheckUnique(element);
+            }
         }
         return changes;
     }
@@ -105,27 +106,24 @@ class SudokuResolver extends Sudoku {
         const t = this;
         let unique = 0;
         const { x, y, i, j } = number;
-        t.UniqueList(t.matrix[x][y].checklist);
+        t.UniqueList(t.matrix[x][y].checklist,number);
 
     }
 
-    UniqueList = (arr) => {
+    UniqueList = (arr,number) => {
         const t=this;
         let options=new Set();
         for (let i = 0; i < arr.length; i++) {
             const element = arr[i];
-            if (element.number !== "") {
-                t.CheckOptions();
-                options.add(element.number);
+            if (element.number === "") {
+                t.CheckOptions(element);
+                options = new Set([...options, ...element.options]);
             }
         }
-        for (let i = 0; i < arr.length; i++) {
-            const element = arr[i];
-            if (element.number !== "") {
-                console.log(element.options,options);
-                const diff = element.options.filter(x => !options.includes(x) );
-                console.log(diff);
-            }
+        //console.log(options,number.options);
+        let difference = new Set([...options].filter(x => !number.options.has(x)));
+        if(number.options.size===0){
+            console.log(number.options,number.x,number.y,number.i,number.j);
         }
     }
 
@@ -149,7 +147,6 @@ class SudokuResolver extends Sudoku {
         if (list.size === 0) {
             throw Error("Empty options");
         }
-        return list;
     }
 
 }
