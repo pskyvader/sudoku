@@ -5,12 +5,13 @@ import Box from '@material-ui/core/Box';
 
 import SudokuResolver from "../logic/SudokuResolver";
 import SudokuBox from "../components/SudokuBox";
+import LocalStorage from "../logic/LocalStorage";
 
 
 var t0 = performance.now();
-const board = new SudokuResolver(30);
+const board = new SudokuResolver(54);
 var t1 = performance.now();
-console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
+console.log("Call to CreateSudoku took " + (t1 - t0) + " milliseconds.")
 
 
 const useStyles = makeStyles((theme) => {
@@ -48,9 +49,12 @@ function debounce(fn, ms) {
 
 const Home = () => {
     const canvas = React.useRef(null);
-    const [height, setHeight] = React.useState(100);
+    const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
     const BoxHeight = () => {
         setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
+    }
+    const SaveHeight = () => {
+        LocalStorage.set("box_height", height);
     }
 
     const debouncedHandleResize = debounce(BoxHeight, 100);
@@ -59,13 +63,11 @@ const Home = () => {
         window.addEventListener("resize", debouncedHandleResize);
         return () => window.removeEventListener("resize", debouncedHandleResize);
     });
-
     React.useEffect(() => {
-        window.onbeforeunload = confirmExit;
-        function confirmExit() {
-            return "show warning";
-        }
-    }, [])
+        window.addEventListener("beforeunload", SaveHeight);
+        return () => window.removeEventListener("beforeunload", SaveHeight);
+    });
+
 
 
     const classes = useStyles();

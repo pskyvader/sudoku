@@ -39,7 +39,7 @@ class SudokuResolver extends Sudoku {
         if (n > 81 || n < 1) {
             throw Error("number out of range");
         }
-        t.RandomNumbers(10);
+        t.RandomNumbers(27);
 
         try {
             t.Resolve();
@@ -95,7 +95,6 @@ class SudokuResolver extends Sudoku {
             let last = 0;
             let i = 0;
             while (!t.CheckCompleteBoard() && randomtry.number !== last && randomtry.number !== undefined) {
-                console.log(randomtry.number ,randomtry.options,deep );
                 last = randomtry.number;
                 t.RestoreBoard(clonelist);
                 randomtry.number = last;
@@ -169,15 +168,6 @@ class SudokuResolver extends Sudoku {
         return t.Random(min + 1);
     }
 
-    GetOptions = () => {
-        const t = this;
-        for (let i = 0; i < t.list.length; i++) {
-            const element = t.list[i];
-            if (element.number === "") {
-                t.CheckOptions(element);
-            }
-        }
-    }
 
     FillSingleOption = () => {
         const t = this;
@@ -214,12 +204,7 @@ class SudokuResolver extends Sudoku {
     CheckUnique = (number) => {
         const t = this;
         let unique = 0;
-        const {
-            x,
-            y,
-            i,
-            j
-        } = number;
+        const { x, y, i, j } = number;
         unique = t.UniqueList(t.matrix[x][y].checklist, number);
         if (unique !== 0) {
             number.number = unique;
