@@ -8,10 +8,11 @@ import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
 
 
-var t0 = performance.now();
-const board = new SudokuResolver(54);
-var t1 = performance.now();
-console.log("Call to CreateSudoku took " + (t1 - t0) + " milliseconds.")
+
+
+
+const cacheboard= LocalStorage.get("sudoku_board", null);
+let baseboard= new SudokuResolver(45,cacheboard);
 
 
 const useStyles = makeStyles((theme) => {
@@ -47,14 +48,19 @@ function debounce(fn, ms) {
     };
 }
 
+
 const Home = () => {
+    const [board, setBoard] = React.useState(baseboard);
+
+
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
     const BoxHeight = () => {
         setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
     }
-    const SaveHeight = () => {
+    const Save = () => {
         LocalStorage.set("box_height", height);
+        LocalStorage.set("sudoku_board", board.CloneBoard());
     }
 
     const debouncedHandleResize = debounce(BoxHeight, 100);
@@ -64,13 +70,16 @@ const Home = () => {
         return () => window.removeEventListener("resize", debouncedHandleResize);
     });
     React.useEffect(() => {
-        window.addEventListener("beforeunload", SaveHeight);
-        return () => window.removeEventListener("beforeunload", SaveHeight);
+        window.addEventListener("beforeunload", Save);
+        return () => window.removeEventListener("beforeunload", Save);
     });
 
 
 
     const classes = useStyles();
+    if(board==null){
+        return <Box className={classes.box} ref={canvas}></Box>;
+    }
     return (
         <Box className={classes.box} ref={canvas}>
             <Grid container justify="center" className={classes.root} >

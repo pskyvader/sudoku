@@ -1,11 +1,20 @@
 import Sudoku from './Sudoku';
 
 class SudokuResolver extends Sudoku {
-    constructor(n) {
+    constructor(n, cacheboard = null) {
         super();
         this.errorcount = 0;
-        this.CreateBoard(n);
+        if (cacheboard === null) {
+            var t0 = performance.now();
+            this.CreateBoard(n);
+            var t1 = performance.now();
+            console.log("Call to CreateSudoku took " + (t1 - t0) + " milliseconds.");
+        } else {
+            this.RestoreBoard(cacheboard);
+        }
     }
+
+
 
 
     RandomNumbers = (number) => {
@@ -13,7 +22,7 @@ class SudokuResolver extends Sudoku {
         if (number > 81 || number < 1) {
             throw console.error("number out of range");
         }
-        const emptyspaces= [...t.emptyspaces];
+        const emptyspaces = [...t.emptyspaces];
         for (let index = 0; index < number; index++) {
             const pos = Math.floor(Math.random() * (emptyspaces.length - 1));
             const current = emptyspaces[pos];
@@ -34,7 +43,7 @@ class SudokuResolver extends Sudoku {
         }
     }
 
-    CreateBoard = (n,deep=0) => {
+    CreateBoard = (n, deep = 0) => {
         const t = this;
         if (n > 81 || n < 1) {
             throw Error("number out of range");
@@ -45,20 +54,20 @@ class SudokuResolver extends Sudoku {
             t.Resolve();
         } catch (error) {
             t.errorcount += 1;
-            console.log(error.message, t.errorcount,"deep:",deep);
+            console.log(error.message, t.errorcount, "deep:", deep);
             t.CreateEmptyBoard();
-            t.CreateBoard(n,deep+1);
+            t.CreateBoard(n, deep + 1);
         }
-        if(deep===0){
+        if (deep === 0) {
             t.CleanBoard(n);
         }
     }
-    CleanBoard=(n)=>{
+    CleanBoard = (n) => {
         const t = this;
         if (n > 81 || n < 1) {
             throw console.error("number out of range");
         }
-        const emptyspaces=t.emptyspaces;
+        const emptyspaces = t.emptyspaces;
         for (let index = 0; index < n; index++) {
             const pos = Math.floor(Math.random() * (emptyspaces.length - 1));
             const current = emptyspaces[pos];
@@ -71,12 +80,12 @@ class SudokuResolver extends Sudoku {
             const current = emptyspaces[index];
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
             field.locked = false;
-            field.number="";
+            field.number = "";
         }
 
     }
 
-    Resolve = (deep=0) => {
+    Resolve = (deep = 0) => {
         const t = this;
         let changes = 1;
         while (changes > 0) {
@@ -99,9 +108,9 @@ class SudokuResolver extends Sudoku {
                 t.RestoreBoard(clonelist);
                 randomtry.number = last;
                 try {
-                    t.Resolve(deep+1);
+                    t.Resolve(deep + 1);
                 } catch (error) {
-                    console.log(error.message, t.errorcount, "Submatrix","deep:",deep);
+                    console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
                     if (randomoptions !== randomtry.options) {
                         randomoptions = [...randomtry.options];
@@ -124,7 +133,16 @@ class SudokuResolver extends Sudoku {
         let clonelist = [];
         for (let i = 0; i < t.list.length; i++) {
             const e = t.list[i];
-            clonelist.push([e.x, e.y, e.i, e.j, e.number]);
+            clonelist.push({
+                x: e.x,
+                y: e.y,
+                i: e.i,
+                j: e.j,
+                number: e.number,
+                options: e.options,
+                locked: e.locked,
+                error: e.error
+            });
         }
         return clonelist;
     }
@@ -132,14 +150,12 @@ class SudokuResolver extends Sudoku {
         const t = this;
         for (let index = 0; index < clonelist.length; index++) {
             const e = clonelist[index];
-            const x = e[0];
-            const y = e[1];
-            const i = e[2];
-            const j = e[3];
-            const number = e[4];
-            t.matrix[x][y].submatrix[i][j].number = number;
+            const element = t.matrix[e.x][e.y].submatrix[e.i][e.j];
+            element.number = e.number;
+            element.options = e.options;
+            element.locked = e.locked;
+            element.error = e.error;
         }
-
     }
 
     CheckCompleteBoard = () => {
@@ -204,7 +220,12 @@ class SudokuResolver extends Sudoku {
     CheckUnique = (number) => {
         const t = this;
         let unique = 0;
-        const { x, y, i, j } = number;
+        const {
+            x,
+            y,
+            i,
+            j
+        } = number;
         unique = t.UniqueList(t.matrix[x][y].checklist, number);
         if (unique !== 0) {
             number.number = unique;
