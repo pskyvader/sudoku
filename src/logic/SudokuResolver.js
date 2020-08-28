@@ -62,16 +62,25 @@ class SudokuResolver extends Sudoku {
                 changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
             }
         }
-        if (!this.CheckCompleteBoard()) {
-            let clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
-            const randomtry = t.Random();
-            randomtry.number = randomtry.options.values().next.value;
+
+        let clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+        let q = Object.assign(Object.create(Object.getPrototypeOf(clone)), clone);
+        const randomtry = q.Random();
+        randomtry.number = randomtry.options.values().next().value;
+        let last=0;
+        while (!q.CheckCompleteBoard() && randomtry.number !== last) {
+            last=randomtry.number;
+            console.log(randomtry.number,randomtry.options);
+            q = Object.assign(Object.create(Object.getPrototypeOf(clone)), clone);
             try {
-                t.Resolve();
+                q.Resolve();
             } catch (error) {
-                console.log(error.message, t.errorcount, "le");
+                console.log(error.message, q.errorcount, "le");
             }
+            randomtry.number = randomtry.options.values().next().value;
+            console.log(randomtry.number,last);
         }
+
 
     }
 
