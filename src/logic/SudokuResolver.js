@@ -40,7 +40,7 @@ class SudokuResolver extends Sudoku {
         if (n > 81 || n < 1) {
             throw Error("number out of range");
         }
-        t.RandomNumbers(30);
+        t.RandomNumbers(27);
 
         try {
             t.Resolve();
@@ -58,8 +58,46 @@ class SudokuResolver extends Sudoku {
         while (changes > 0) {
             changes = 0;
             changes += t.FillSingleOption(); // check if there are any field with only one option and use it
-            changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
+            if (changes === 0) {
+                changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
+            }
         }
+        if (!this.CheckCompleteBoard()) {
+            let clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+            const randomtry = t.Random();
+            randomtry.number = randomtry.options.values().next.value;
+            try {
+                t.Resolve();
+            } catch (error) {
+                console.log(error.message, t.errorcount, "le");
+            }
+        }
+
+    }
+
+    CheckCompleteBoard = () => {
+        const t = this;
+        for (let i = 0; i < t.list.length; i++) {
+            const element = t.list[i];
+            if (element.number === "") {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    Random = (min = 3) => {
+        const t = this;
+        for (let i = 0; i < t.list.length; i++) {
+            const element = t.list[i];
+            if (element.number === "") {
+                t.CheckOptions(element);
+                if (element.options.size < min) {
+                    return element;
+                }
+            }
+        }
+        return t.Random(min + 1);
     }
 
     GetOptions = () => {
@@ -107,7 +145,12 @@ class SudokuResolver extends Sudoku {
     CheckUnique = (number) => {
         const t = this;
         let unique = 0;
-        const { x, y, i, j } = number;
+        const {
+            x,
+            y,
+            i,
+            j
+        } = number;
         unique = t.UniqueList(t.matrix[x][y].checklist, number);
         if (unique !== 0) {
             number.number = unique;
@@ -131,7 +174,7 @@ class SudokuResolver extends Sudoku {
         let options = new Set();
         for (let i = 0; i < arr.length; i++) {
             const element = arr[i];
-            if (element.number === "" && element!==number) {
+            if (element.number === "" && element !== number) {
                 t.CheckOptions(element);
                 options = new Set([...options, ...element.options]);
             }
