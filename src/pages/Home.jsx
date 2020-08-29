@@ -11,8 +11,7 @@ import LocalStorage from "../logic/LocalStorage";
 
 
 
-const cacheboard= LocalStorage.get("sudoku_board", null);
-let baseboard= new SudokuResolver(45,cacheboard);
+const cacheboard = LocalStorage.get("sudoku_board", null);
 
 
 const useStyles = makeStyles((theme) => {
@@ -49,7 +48,9 @@ function debounce(fn, ms) {
 }
 
 
-const Home = () => {
+const Home = ({Number}) => {
+    console.log(Number);
+    let baseboard = new SudokuResolver(Number, cacheboard);
     const [board, setBoard] = React.useState(baseboard);
 
 
@@ -77,9 +78,6 @@ const Home = () => {
 
 
     const classes = useStyles();
-    if(board==null){
-        return <Box className={classes.box} ref={canvas}></Box>;
-    }
     return (
         <Box className={classes.box} ref={canvas}>
             <Grid container justify="center" className={classes.root} >
