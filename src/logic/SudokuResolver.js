@@ -146,7 +146,7 @@ class SudokuResolver extends Sudoku {
             element.SetValue(e.number);
             element.options = e.options;
             element.locked = e.locked;
-            element.error = e.error;
+            element.SetValueError(e.error);
         }
     }
 

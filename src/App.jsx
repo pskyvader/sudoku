@@ -8,14 +8,12 @@ import LocalStorage from "./logic/LocalStorage";
 
 
 const cacheboard = LocalStorage.get("sudoku_board", null);
-const baseboard = new SudokuResolver(45);
+const baseboard = new SudokuResolver(45, cacheboard);
 
 function App() {
-    const [board, setBoard] = React.useState(baseboard);
-
     return (
-        <Header setBoard={setBoard}>
-            <Home board={board}/>
+        <Header board={baseboard}>
+            <Home board={baseboard} />
         </Header>
     );
 }

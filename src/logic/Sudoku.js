@@ -27,11 +27,7 @@ class Sudoku {
     CleanDuplicated = () => {
         for (let i = 0; i < this.list.length; i++) {
             const element = this.list[i];
-            if (element.SetError !== undefined) {
-                element.SetError(false);
-            } else {
-                element.error = false;
-            }
+            element.SetValueError(false);
         }
     }
 
@@ -60,11 +56,7 @@ class Sudoku {
         for (let i = 0; i < arr.length; i++) {
             const element = arr[i];
             if (this.duplicated(arr, element.number)) {
-                if (element.SetError !== undefined) {
-                    element.SetError(true);
-                } else {
-                    element.error = true;
-                }
+                element.SetValueError(true);
                 count++;
             }
         }

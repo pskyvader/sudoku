@@ -66,9 +66,6 @@ const Home = ({ board }) => {
 
 
     const classes = useStyles();
-    if(board===null){
-        return <Box className={classes.box} ref={canvas}/>
-    }
     return (
         <Box className={classes.box} ref={canvas}>
             <Grid container justify="center" className={classes.root} >

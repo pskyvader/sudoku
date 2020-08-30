@@ -16,12 +16,17 @@ class SudokuValue {
         //this.options.clear();
         this.callback.Duplicates();
     }
-    SetValue=(number)=>{
-        if(this.SetFinalNumber!==undefined){
+    SetValue = (number) => {
+        if (this.SetFinalNumber !== undefined) {
             this.SetFinalNumber(number);
-        }else{
-            this.number = number;
         }
+        this.number = number;
+    }
+    SetValueError = (error) => {
+        if (this.SetError !== undefined) {
+            this.SetError(error);
+        }
+        this.error = error;
     }
 }
 

@@ -23,12 +23,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
-    const { setBoard } = props;
+    const { board } = props;
     function handleClick(e) {
         e.preventDefault();
         const newboard=new SudokuResolver(45);
-        setBoard(null);
-        setBoard(newboard);
+        board.RestoreBoard(newboard.CloneBoard());
     }
     return (
         <div className={classes.root}>
