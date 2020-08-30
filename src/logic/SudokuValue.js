@@ -12,10 +12,16 @@ class SudokuValue {
     }
 
     SetNumber = (number) => {
-        this.SetFinalNumber(number);
-        this.number = number;
+        this.SetValue(number);
         //this.options.clear();
         this.callback.Duplicates();
+    }
+    SetValue=(number)=>{
+        if(this.SetFinalNumber!==undefined){
+            this.SetFinalNumber(number);
+        }else{
+            this.number = number;
+        }
     }
 }
 

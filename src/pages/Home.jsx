@@ -3,15 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 
-import SudokuResolver from "../logic/SudokuResolver";
 import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
-
-
-
-
-
-const cacheboard = LocalStorage.get("sudoku_board", null);
 
 
 const useStyles = makeStyles((theme) => {
@@ -48,12 +41,7 @@ function debounce(fn, ms) {
 }
 
 
-const Home = ({Number}) => {
-    console.log(Number);
-    let baseboard = new SudokuResolver(Number, cacheboard);
-    const [board, setBoard] = React.useState(baseboard);
-
-
+const Home = ({ board }) => {
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
     const BoxHeight = () => {
@@ -78,6 +66,9 @@ const Home = ({Number}) => {
 
 
     const classes = useStyles();
+    if(board===null){
+        return <Box className={classes.box} ref={canvas}/>
+    }
     return (
         <Box className={classes.box} ref={canvas}>
             <Grid container justify="center" className={classes.root} >

@@ -28,7 +28,7 @@ class SudokuResolver extends Sudoku {
             const current = emptyspaces[pos];
 
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
-            field.number = Math.floor(1 + Math.random() * 8);
+            field.SetValue(Math.floor(1 + Math.random() * 8));
             t.CleanDuplicated();
             const duplicated = t.CheckDuplicates();
             if (duplicated > 0) {
@@ -123,6 +123,7 @@ class SudokuResolver extends Sudoku {
             if (!t.CheckCompleteBoard()) {
                 t.Resolve();
             } else {
+                randomtry.SetValue(randomtry.number);
                 randomtry.options.clear();
             }
         }
@@ -133,16 +134,7 @@ class SudokuResolver extends Sudoku {
         let clonelist = [];
         for (let i = 0; i < t.list.length; i++) {
             const e = t.list[i];
-            clonelist.push({
-                x: e.x,
-                y: e.y,
-                i: e.i,
-                j: e.j,
-                number: e.number,
-                options: e.options,
-                locked: e.locked,
-                error: e.error
-            });
+            clonelist.push({ x: e.x, y: e.y, i: e.i, j: e.j, number: e.number, options: e.options, locked: e.locked, error: e.error });
         }
         return clonelist;
     }
@@ -151,7 +143,7 @@ class SudokuResolver extends Sudoku {
         for (let index = 0; index < clonelist.length; index++) {
             const e = clonelist[index];
             const element = t.matrix[e.x][e.y].submatrix[e.i][e.j];
-            element.number = e.number;
+            element.SetValue(e.number);
             element.options = e.options;
             element.locked = e.locked;
             element.error = e.error;
@@ -193,7 +185,7 @@ class SudokuResolver extends Sudoku {
             if (element.number === "") {
                 t.CheckOptions(element);
                 if (element.options.size === 1) {
-                    element.number = element.options.values().next().value;
+                    element.SetValue(element.options.values().next().value);
                     element.options.clear();
                     changes++;
                 }
@@ -228,17 +220,17 @@ class SudokuResolver extends Sudoku {
         } = number;
         unique = t.UniqueList(t.matrix[x][y].checklist, number);
         if (unique !== 0) {
-            number.number = unique;
+            number.SetValue(unique);
             return true;
         }
         unique = t.UniqueList(t.verticallines[x][i], number);
         if (unique !== 0) {
-            number.number = unique;
+            number.SetValue(unique);
             return true;
         }
         unique = t.UniqueList(t.horizontallines[y][j], number);
         if (unique !== 0) {
-            number.number = unique;
+            number.SetValue(unique);
             return true;
         }
         return false;

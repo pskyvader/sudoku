@@ -50,6 +50,8 @@ const SudokuNumber = ({ field }) => {
     };
     let { number, locked, error, options } = field;
 
+    console.log(number);
+
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 

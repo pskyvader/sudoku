@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Container from '@material-ui/core/Container';
+import SudokuResolver from "../logic/SudokuResolver";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,11 +23,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
-    let Number=45;
-
+    const { setBoard } = props;
     function handleClick(e) {
         e.preventDefault();
-        Number=45;
+        const newboard=new SudokuResolver(45);
+        setBoard(null);
+        setBoard(newboard);
     }
     return (
         <div className={classes.root}>
@@ -41,7 +43,7 @@ export default function ButtonAppBar(props) {
             </AppBar>
             <Toolbar />
             <Container>
-                {props.children({ Number: Number})}
+                {props.children}
             </Container>
         </div>
     );
