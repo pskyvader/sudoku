@@ -1,14 +1,13 @@
 import React from 'react';
-import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Container from '@material-ui/core/Container';
-// import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-// import MenuIcon from '@material-ui/icons/Menu';
+import MenuIcon from '@material-ui/icons/Menu';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import FaceIcon from '@material-ui/icons/Face';
@@ -49,9 +48,12 @@ const useStyles = makeStyles((theme) => {
         },
         buttonstar: {
             position: "absolute",
-            bottom: 1,
-            right: 1,
-            fontSize: "0.75rem"
+            bottom: theme.spacing(0.25),
+            right: theme.spacing(0.25),
+            fontSize: "0.75rem",
+            borderRadius:"100%",
+            backgroundColor:"white",
+            color:warning.light
         },
         button1: buttoncolor(info, getContrastText),
         button2: buttoncolor(success, getContrastText),
@@ -85,12 +87,12 @@ export default function ButtonAppBar(props) {
         <div className={classes.root}>
             <AppBar position="fixed">
                 <Toolbar>
-                    {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon />
-                    </IconButton> */}
+                    </IconButton>
                     <Typography variant="h6" className={classes.title}> Sudoku </Typography>
 
-                    <ButtonGroup>
+                    <ButtonGroup size="small">
                         <Button className={classes.button1} onClick={() => ResetBoard(63)}>
                             <EmojiEmotionsIcon />
                             {Difficulty === 63 ? <StarsIcon className={classes.buttonstar} /> : ""}

@@ -53,7 +53,8 @@ const Home = ({ board }) => {
     }
 
     const debouncedHandleResize = debounce(BoxHeight, 100);
-    React.useEffect(BoxHeight, []);
+    //React.useEffect(BoxHeight, []);
+    React.useLayoutEffect(BoxHeight, []);
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
         return () => window.removeEventListener("resize", debouncedHandleResize);
