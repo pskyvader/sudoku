@@ -3,40 +3,79 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 
-import Sudoku from "../components/Sudoku";
 import SudokuBox from "../components/SudokuBox";
+import LocalStorage from "../logic/LocalStorage";
 
-const board = new Sudoku();
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        margin: theme.spacing(1, 0),
-        borderRight: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
-        borderBottom: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
-    },
-    box: {
-        maxWidth: "calc(100vh - " + theme.mixins.toolbar.minHeight * 2 + "px)",
-        margin: theme.spacing(0, "auto"),
-    },
-    grid: {
-        borderLeft: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
-    },
-    subgrid: {
-        borderTop: theme.spacing(0.25) + "px solid " + theme.palette.info.dark,
+const useStyles = makeStyles((theme) => {
+    const mainborder = theme.spacing(0.25 + 0.125) + "px solid " + theme.palette.info.main;
+    const border = theme.spacing(0.25) + "px solid " + theme.palette.info.main;
+    return {
+        box: {
+            maxWidth: "calc(100vh - " + theme.mixins.toolbar.minHeight * 2 + "px)",
+            margin: theme.spacing(1, "auto"),
+        },
+        root: {
+            flexGrow: 1,
+            borderLeft: mainborder,
+            borderTop: mainborder,
+        },
+        grid: {
+            borderRight: border,
+        },
+        subgrid: {
+            borderBottom: border,
+        }
     }
-}));
+});
 
-export default function SpacingGrid() {
+function debounce(fn, ms) {
+    let timer;
+    return _ => {
+        clearTimeout(timer);
+        timer = setTimeout(_ => {
+            timer = null
+            fn.apply(this, arguments)
+        }, ms)
+    };
+}
+
+
+const Home = ({ board }) => {
+    const canvas = React.useRef(null);
+    const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
+    const [Checked, setChecked] = React.useState(false);
+    const BoxHeight = () => {
+        setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
+    }
+    const Save = () => {
+        LocalStorage.set("box_height", height);
+        LocalStorage.set("sudoku_board", board.CloneBoard());
+    }
+
+    const debouncedHandleResize = debounce(BoxHeight, 100);
+    //React.useEffect(BoxHeight, []);
+    React.useLayoutEffect(BoxHeight, []);
+    React.useEffect(() => {
+        window.addEventListener("resize", debouncedHandleResize);
+        return () => window.removeEventListener("resize", debouncedHandleResize);
+    });
+    React.useEffect(() => {
+        window.addEventListener("beforeunload", Save);
+        return () => window.removeEventListener("beforeunload", Save);
+    });
+
+
+
     const classes = useStyles();
     return (
-        <Box className={classes.box}>
+        <Box className={classes.box} ref={canvas}>
             <Grid container justify="center" className={classes.root} >
-                {[0, 1, 2].map((valuex) => (
-                    <Grid key={valuex} item xs={4} className={classes.grid}>
-                        {[0, 1, 2].map((valuey) => (
-                            <Grid key={valuex + "," + valuey} item xs={12} className={classes.subgrid}>
-                                <SudokuBox board={board} x={valuex} y={valuey}></SudokuBox>
+                {board.matrix.map((row, x) => (
+                    <Grid key={x} item xs={4} className={classes.grid}>
+                        {row.map((column, y) => (
+                            <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
+                                <SudokuBox matrix={column} height={height} Checked={Checked} setChecked={setChecked} />
                             </Grid>
                         ))}
                     </Grid>
@@ -45,3 +84,7 @@ export default function SpacingGrid() {
         </Box>
     )
 }
+
+
+
+export default Home;

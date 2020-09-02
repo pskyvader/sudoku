@@ -1,111 +1,124 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import Container from '@material-ui/core/Container';
-import Slide from '@material-ui/core/Slide';
+import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+import FaceIcon from '@material-ui/icons/Face';
+import MoodBadIcon from '@material-ui/icons/MoodBad';
+import StarsIcon from '@material-ui/icons/Stars';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Fade from '@material-ui/core/Fade';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-      position: 'fixed',
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
-    },
-  }));
+// import IconButton from '@material-ui/core/IconButton';
+// import MenuIcon from '@material-ui/icons/Menu';
 
-  
-function HideOnScroll(props) {
-    const { children, window } = props;
-    // Note that you normally won't need to set the window ref as useScrollTrigger
-    // will default to window.
-    // This is only being set here because the demo is in an iframe.
-    const trigger = useScrollTrigger({ target: window ? window() : undefined });
 
-    return (
-        <Slide appear={false} direction="down" in={!trigger}>
-            {children}
-        </Slide>
-    );
+import SudokuResolver from "../logic/SudokuResolver";
+import LocalStorage from "../logic/LocalStorage";
+
+
+const buttoncolor = (pallete, getContrastText) => {
+    return {
+        backgroundColor: pallete.main,
+        color: getContrastText(pallete.main),
+        border: "none",
+        '&:hover': {
+            backgroundColor: pallete.dark,
+            color: getContrastText(pallete.dark),
+            border: "none",
+        },
+    }
 }
 
-/**
- * Injected by the documentation to work in an iframe.
- * You won't need it on your project.
- */
-HideOnScroll.propTypes = { children: PropTypes.element.isRequired, window: PropTypes.func, };
+
+const useStyles = makeStyles((theme) => {
+    const { info, success, warning, error, getContrastText } = theme.palette;
+
+    return {
+        root: {
+            flexGrow: 1,
+        },
+        menuButton: {
+            marginRight: theme.spacing(2),
+        },
+        title: {
+            flexGrow: 1,
+        },
+        buttonstar: {
+            position: "absolute",
+            bottom: theme.spacing(0.25),
+            right: theme.spacing(0.25),
+            fontSize: "0.75rem",
+            borderRadius:"100%",
+            backgroundColor:"white",
+            color:warning.light
+        },
+        button1: buttoncolor(info, getContrastText),
+        button2: buttoncolor(success, getContrastText),
+        button3: buttoncolor(warning, getContrastText),
+        button4: buttoncolor(error, getContrastText)
+    }
+
+}
 
 
-function ScrollTop(props) {
-    const { children, window } = props;
+);
+
+export default function ButtonAppBar(props) {
     const classes = useStyles();
-    // Note that you normally won't need to set the window ref as useScrollTrigger
-    // will default to window.
-    // This is only being set here because the demo is in an iframe.
-    const trigger = useScrollTrigger({
-        target: window ? window() : undefined,
-        disableHysteresis: true,
-        threshold: 100,
+    const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
+    const { board } = props;
+
+    function ResetBoard(n) {
+        const newboard = new SudokuResolver(n);
+        setDifficulty(n);
+        board.RestoreBoard(newboard.CloneBoard());
+    }
+    const Save = () => {
+        LocalStorage.set("difficulty", Difficulty);
+    }
+    React.useEffect(() => {
+        window.addEventListener("beforeunload", Save);
+        return () => window.removeEventListener("beforeunload", Save);
     });
-
-    const handleClick = (event) => {
-        const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor');
-
-        if (anchor) {
-            anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    };
-
     return (
-        <Fade in={trigger}>
-            <div onClick={handleClick} role="presentation" className={classes.root}>
-                {children}
-            </div>
-        </Fade>
-    );
-}
+        <div className={classes.root}>
+            <AppBar position="fixed">
+                <Toolbar>
+                    {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                        <MenuIcon />
+                    </IconButton> */}
+                    <Typography variant="h6" className={classes.title}> Sudoku </Typography>
 
+                    <ButtonGroup size="small">
+                        <Button className={classes.button1} onClick={() => ResetBoard(63)}>
+                            <EmojiEmotionsIcon />
+                            {Difficulty === 63 ? <StarsIcon className={classes.buttonstar} /> : ""}
+                        </Button>
+                        <Button className={classes.button2} onClick={() => ResetBoard(45)}>
+                            <InsertEmoticonIcon />
+                            {Difficulty === 45 ? <StarsIcon className={classes.buttonstar} /> : ""}
+                        </Button>
+                        <Button className={classes.button3} onClick={() => ResetBoard(36)}>
+                            <FaceIcon />
+                            {Difficulty === 36 ? <StarsIcon className={classes.buttonstar} /> : ""}
+                        </Button>
+                        <Button className={classes.button4} onClick={() => ResetBoard(27)}>
+                            <MoodBadIcon />
+                            {Difficulty === 27 ? <StarsIcon className={classes.buttonstar} /> : ""}
+                        </Button>
+                    </ButtonGroup>
 
-ScrollTop.propTypes = {
-    children: PropTypes.element.isRequired,
-    /**
-     * Injected by the documentation to work in an iframe.
-     * You won't need it on your project.
-     */
-    window: PropTypes.func,
-  };
-
-export default function HideAppBar(props) {
-    return (
-        <React.Fragment>
-            <CssBaseline />
-            <HideOnScroll {...props}>
-                <AppBar>
-                    <Toolbar>
-                        <Typography variant="h6">Sudoku</Typography>
-                    </Toolbar>
-                </AppBar>
-            </HideOnScroll>
-            <Toolbar id="back-to-top-anchor" />
+                </Toolbar>
+            </AppBar>
+            <Toolbar />
             <Container>
-
                 {props.children}
-
-
-                <ScrollTop {...props}>
-                    <Fab color="secondary" size="small" aria-label="scroll back to top">
-                        <KeyboardArrowUpIcon />
-                    </Fab>
-                </ScrollTop>
-
             </Container>
-        </React.Fragment>
+        </div>
     );
 }
