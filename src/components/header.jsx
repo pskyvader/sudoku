@@ -3,16 +3,18 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import MenuIcon from '@material-ui/icons/Menu';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import FaceIcon from '@material-ui/icons/Face';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
 import StarsIcon from '@material-ui/icons/Stars';
+
+
+// import IconButton from '@material-ui/core/IconButton';
+// import MenuIcon from '@material-ui/icons/Menu';
 
 
 import SudokuResolver from "../logic/SudokuResolver";
@@ -87,9 +89,9 @@ export default function ButtonAppBar(props) {
         <div className={classes.root}>
             <AppBar position="fixed">
                 <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                    {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <Typography variant="h6" className={classes.title}> Sudoku </Typography>
 
                     <ButtonGroup size="small">

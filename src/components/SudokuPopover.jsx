@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => {
             height: "100%",
             width: "100%",
             fontWeight: "normal",
-            margin: 0
+            margin: 0,
+            borderRadius: 0,
         },
         checkbox: {
             padding: 0,
@@ -37,12 +38,18 @@ const useStyles = makeStyles((theme) => {
         },
         optioncolor: {
             color: getContrastText(primary.main),
+            "&:hover": {
+                backgroundColor: primary.light,
+            }
         },
         optionbackground: {
             backgroundColor: primary.main
         },
         checkedoption: {
-            backgroundColor: secondary.main
+            backgroundColor: secondary.main,
+            "&:hover": {
+                backgroundColor: secondary.light,
+            }
         }
     }
 });
@@ -64,20 +71,25 @@ const SudokuPopover = (props) => {
     const key = "popover";
 
     const setNumber = (number) => {
+        field.options.clear();
         field.SetNumber(number);
         handleClose();
     };
 
     const changeOptions = (number) => {
-        if (field.options.has(number)) {
-            field.options.delete(number);
+        if (number === "") {
+            field.options.clear();
         } else {
-            field.options.add(number);
+            if (field.options.has(number)) {
+                field.options.delete(number);
+            } else {
+                field.options.add(number);
+            }
         }
-        field.SetValueOptions(field.options);
+        SetChangeOption(!ChangeOption);
     };
 
-    return <Grid container justify="center" className={clsx(Checked ? classes.optionbackground : "",ChangeOption)} >
+    return <Grid container justify="center" className={clsx(Checked ? classes.optionbackground : "", ChangeOption)} >
         {box.map((row, valuex) => {
             const keyx = key + "-" + valuex;
             return <Grid key={keyx} item xs={4}>
@@ -101,7 +113,7 @@ const SudokuPopover = (props) => {
                 </Button>
             </Grid>
             <Grid item xs={12}>
-                <Button className={clsx(classes.options, optioncolor)} onClick={() => setNumber("")}>Clear</Button>
+                <Button className={clsx(classes.options, optioncolor)} onClick={() => Checked ? changeOptions("") : setNumber("")}>Clear</Button>
             </Grid>
         </Grid>
 
