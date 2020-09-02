@@ -61,17 +61,21 @@ const SudokuNumber = ({ field, Checked, setChecked }) => {
     field.SetError = SetError;
     field.error = FinalError;
 
+    const [Options, SetOptions] = React.useState(options);
+    field.SetOptions = SetOptions;
+    field.options = Options;
+
     const className = clsx(classes.button, FinalError && classes.error);
 
     if (locked) {
         return <Button disabled classes={{ root: className, disabled: classes.disabled, }}  >
-            <SudokuOptions options={options}> {FinalNumber}</SudokuOptions>
+            <SudokuOptions options={field.options}> {FinalNumber}</SudokuOptions>
         </Button>
     } else {
         return (
             <React.Fragment>
                 <Button aria-describedby={id} className={className} onClick={handleClick}>
-                    <SudokuOptions options={options}> {FinalNumber}</SudokuOptions>
+                    <SudokuOptions options={field.options}> {FinalNumber}</SudokuOptions>
                 </Button>
                 <Popover
                     id={id}

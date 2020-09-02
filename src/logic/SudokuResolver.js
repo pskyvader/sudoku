@@ -144,7 +144,7 @@ class SudokuResolver extends Sudoku {
             const e = clonelist[index];
             const element = t.matrix[e.x][e.y].submatrix[e.i][e.j];
             element.SetValue(e.number);
-            element.options = new Set(e.options);
+            element.SetValueOptions(new Set(e.options));
             element.locked = e.locked;
             element.SetValueError(e.error);
         }

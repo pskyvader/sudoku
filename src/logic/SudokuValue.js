@@ -28,6 +28,12 @@ class SudokuValue {
         }
         this.error = error;
     }
+    SetValueOptions = (options) => {
+        if (this.SetOptions !== undefined) {
+            this.SetOptions(options);
+        }
+        this.options = options;
+    }
 }
 
 export default SudokuValue;

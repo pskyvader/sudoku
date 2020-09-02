@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles((theme) => {
-    const { primary, getContrastText } = theme.palette;
+    const { primary, secondary, getContrastText } = theme.palette;
     return {
         button: {
             height: "100%",
@@ -30,30 +30,29 @@ const useStyles = makeStyles((theme) => {
         checkbox: {
             padding: 0,
             paddingRight: theme.spacing(1),
-            color: primary.light,
+            color: primary.main,
         },
         label: {
             width: 0
         },
         optioncolor: {
-            color: getContrastText(primary.light),
+            color: getContrastText(primary.main),
         },
         optionbackground: {
-            backgroundColor: primary.light
+            backgroundColor: primary.main
         },
         checkedoption: {
-            backgroundColor: primary.main
+            backgroundColor: secondary.main
         }
     }
-}
-
-
-);
+});
 
 
 
 const SudokuPopover = (props) => {
     const { handleClose, field, Checked, setChecked } = props;
+
+    const [ChangeOption, SetChangeOption] = React.useState(false);
 
     const handleChange = () => {
         setChecked(!Checked);
@@ -68,11 +67,17 @@ const SudokuPopover = (props) => {
         field.SetNumber(number);
         handleClose();
     };
-    const setOptions = (number) => {
-        field.options.add(number);
+
+    const changeOptions = (number) => {
+        if (field.options.has(number)) {
+            field.options.delete(number);
+        } else {
+            field.options.add(number);
+        }
+        field.SetValueOptions(field.options);
     };
 
-    return <Grid container justify="center" className={clsx(Checked ? classes.optionbackground : "")} >
+    return <Grid container justify="center" className={clsx(Checked ? classes.optionbackground : "",ChangeOption)} >
         {box.map((row, valuex) => {
             const keyx = key + "-" + valuex;
             return <Grid key={keyx} item xs={4}>
@@ -80,7 +85,7 @@ const SudokuPopover = (props) => {
                     const keyy = keyx + "," + valuey;
                     const classname = clsx(classes.button, optioncolor, Checked && field.options.has(number) ? classes.checkedoption : "");
                     return <Grid key={keyy} item xs={12}>
-                        <Button className={classname} onClick={() => Checked ? setOptions(number) : setNumber(number)}>
+                        <Button className={classname} onClick={() => Checked ? changeOptions(number) : setNumber(number)}>
                             {number}
                         </Button>
                     </Grid>
