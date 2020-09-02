@@ -2,6 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: "normal",
         height: "100%",
         width: "100%",
-        padding: 0,
     }
 }));
 
@@ -29,13 +31,17 @@ const useStyles = makeStyles((theme) => ({
 
 const SudokuPopover = (props) => {
     const { handleClose, field } = props;
+    const [Checked, setChecked] = React.useState(true);
 
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+      };
 
     const classes = useStyles();
     const box = [[1, 4, 7], [2, 5, 8], [3, 6, 9]];
     const key = "popover";
 
-    const handleClick = (number) => {
+    const setNumber = (number) => {
         field.SetNumber(number);
         handleClose();
     };
@@ -47,21 +53,20 @@ const SudokuPopover = (props) => {
                 {row.map((number, valuey) => {
                     const keyy = keyx + "," + valuey;
                     return <Grid key={keyy} item xs={12}>
-                        <Button className={classes.button} onClick={() => handleClick(number)}>{number}</Button>
+                        <Button className={classes.button} onClick={() => setNumber(number)}>{number}</Button>
                     </Grid>
                 })}
             </Grid>
         })}
-        
-        <Grid item xs={6}>
-            <Grid key="options" item xs={12}>
-                <Button size="small" className={classes.optionbutton2} onClick={() => handleClick("")}>Options</Button>
-            </Grid>
-        </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={12} justify="center">
+            <Grid key="options" item xs={12}>
+            
+    <FormGroup row>
+                <FormControlLabel control={<Checkbox checked={Checked} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }} />} label="Options" /></FormGroup>
+            </Grid>
             <Grid key="clear" item xs={12}>
-                <Button size="small" className={classes.optionbutton2} onClick={() => handleClick("")}>Clear</Button>
+                <Button size="small" className={classes.optionbutton} onClick={() => setNumber("")}>Clear</Button>
             </Grid>
         </Grid>
 
