@@ -44,6 +44,7 @@ function debounce(fn, ms) {
 const Home = ({ board }) => {
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
+    const [Checked, setChecked] = React.useState(false);
     const BoxHeight = () => {
         setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
     }
@@ -74,7 +75,7 @@ const Home = ({ board }) => {
                     <Grid key={x} item xs={4} className={classes.grid}>
                         {row.map((column, y) => (
                             <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                <SudokuBox matrix={column} height={height}></SudokuBox>
+                                <SudokuBox matrix={column} height={height} Checked={Checked} setChecked={setChecked} />
                             </Grid>
                         ))}
                     </Grid>

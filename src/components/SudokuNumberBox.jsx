@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const SudokuNumber = ({ field }) => {
+const SudokuNumber = ({ field, Checked, setChecked }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -80,7 +80,7 @@ const SudokuNumber = ({ field }) => {
                     onClose={handleClose}
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
                     transformOrigin={{ vertical: 'top', horizontal: 'center', }} >
-                    <SudokuPopover handleClose={handleClose} field={field}></SudokuPopover>
+                    <SudokuPopover handleClose={handleClose} field={field}  Checked={Checked} setChecked={setChecked}/>
                 </Popover>
             </React.Fragment>
         );
