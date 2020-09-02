@@ -134,7 +134,7 @@ class SudokuResolver extends Sudoku {
         let clonelist = [];
         for (let i = 0; i < t.list.length; i++) {
             const e = t.list[i];
-            clonelist.push({ x: e.x, y: e.y, i: e.i, j: e.j, number: e.number, options: e.options, locked: e.locked, error: e.error });
+            clonelist.push({ x: e.x, y: e.y, i: e.i, j: e.j, number: e.number, options: [...e.options], locked: e.locked, error: e.error });
         }
         return clonelist;
     }
@@ -144,7 +144,7 @@ class SudokuResolver extends Sudoku {
             const e = clonelist[index];
             const element = t.matrix[e.x][e.y].submatrix[e.i][e.j];
             element.SetValue(e.number);
-            element.options = e.options;
+            element.options = new Set(e.options);
             element.locked = e.locked;
             element.SetValueError(e.error);
         }

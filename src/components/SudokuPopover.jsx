@@ -6,40 +6,49 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 
-const useStyles = makeStyles((theme) => ({
-    button: {
-        height: "100%",
-        width: "100%",
-        fontSize: "1rem",
-        fontWeight: "normal",
-        minWidth: 0,
-        borderRadius: 0,
-        padding: theme.spacing(1),
-        [theme.breakpoints.up('md')]: {
-            padding: theme.spacing(1.5)
+const useStyles = makeStyles((theme) => {
+    const { primary, getContrastText } = theme.palette;
+    return {
+        button: {
+            height: "100%",
+            width: "100%",
+            fontSize: "1rem",
+            fontWeight: "normal",
+            minWidth: 0,
+            borderRadius: 0,
+            padding: theme.spacing(1),
+            [theme.breakpoints.up('md')]: {
+                padding: theme.spacing(1.5)
+            }
+        },
+        options: {
+            height: "100%",
+            width: "100%",
+            fontWeight: "normal",
+            margin: 0
+        },
+        checkbox: {
+            padding: 0,
+            paddingRight: theme.spacing(1),
+            color: primary.light,
+        },
+        label: {
+            width: 0
+        },
+        optioncolor: {
+            color: getContrastText(primary.light),
+        },
+        optionbackground: {
+            backgroundColor: primary.light
+        },
+        checkedoption: {
+            backgroundColor: primary.main
         }
-    },
-    options: {
-        height: "100%",
-        width: "100%",
-        fontWeight: "normal",
-        margin: 0
-    },
-    checkbox: {
-        padding: 0,
-        paddingRight: theme.spacing(1),
-        color: theme.palette.primary.main,
-    },
-    label: {
-        width: 0
-    },
-    optioncolor: {
-        color: theme.palette.getContrastText(theme.palette.primary.main),
-    },
-    optionbackground: {
-        backgroundColor: theme.palette.primary.main
     }
-}));
+}
+
+
+);
 
 
 
@@ -60,9 +69,7 @@ const SudokuPopover = (props) => {
         handleClose();
     };
     const setOptions = (number) => {
-        console.log(field.options);
         field.options.add(number);
-        console.log(number);
     };
 
     return <Grid container justify="center" className={clsx(Checked ? classes.optionbackground : "")} >
@@ -71,21 +78,24 @@ const SudokuPopover = (props) => {
             return <Grid key={keyx} item xs={4}>
                 {row.map((number, valuey) => {
                     const keyy = keyx + "," + valuey;
+                    const classname = clsx(classes.button, optioncolor, Checked && field.options.has(number) ? classes.checkedoption : "");
                     return <Grid key={keyy} item xs={12}>
-                        <Button className={clsx(classes.button, optioncolor)} onClick={() => Checked ? setOptions(number) : setNumber(number)}>{number}</Button>
+                        <Button className={classname} onClick={() => Checked ? setOptions(number) : setNumber(number)}>
+                            {number}
+                        </Button>
                     </Grid>
                 })}
             </Grid>
         })}
 
         <Grid item xs={12}>
-            <Grid key="options" item xs={12}>
+            <Grid item xs={12}>
                 <Button classes={{ label: classes.label }} className={clsx(classes.options, optioncolor)} onClick={handleChange}>
                     <Checkbox color="default" className={clsx(classes.checkbox, optioncolor)} checked={Checked} onChange={handleChange} inputProps={{ 'aria-label': 'Option checkbox' }} disableRipple />
                     Options
                 </Button>
             </Grid>
-            <Grid key="clear" item xs={12}>
+            <Grid item xs={12}>
                 <Button className={clsx(classes.options, optioncolor)} onClick={() => setNumber("")}>Clear</Button>
             </Grid>
         </Grid>
