@@ -19,11 +19,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FullWidthGrid({ options, children }) {
     const classes = useStyles();
-    options = Array.from(options).join("");
+    //options = Array.from(options).join("");
     return (
         <Grid container>
             <Grid item xs={12} className={classes.options}>
-                {options}
+                {Array.from(options).join("")}
             </Grid>
             <Grid item xs={12} className={classes.number}>
                 {children}
