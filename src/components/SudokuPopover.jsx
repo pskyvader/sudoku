@@ -17,6 +17,12 @@ const useStyles = makeStyles((theme) => ({
             padding: theme.spacing(1.5)
         },
     },
+    optionbutton: {
+        fontWeight: "normal",
+        height: "100%",
+        width: "100%",
+        padding: 0,
+    }
 }));
 
 
@@ -46,7 +52,19 @@ const SudokuPopover = (props) => {
                 })}
             </Grid>
         })}
-        <Button className={classes.button} onClick={() => handleClick("")}>Clear</Button>
+        
+        <Grid item xs={6}>
+            <Grid key="options" item xs={12}>
+                <Button size="small" className={classes.optionbutton2} onClick={() => handleClick("")}>Options</Button>
+            </Grid>
+        </Grid>
+
+        <Grid item xs={6}>
+            <Grid key="clear" item xs={12}>
+                <Button size="small" className={classes.optionbutton2} onClick={() => handleClick("")}>Clear</Button>
+            </Grid>
+        </Grid>
+
     </Grid>
 }
 
