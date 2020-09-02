@@ -20,10 +20,19 @@ const useStyles = makeStyles((theme) => ({
             padding: theme.spacing(1.5)
         },
     },
-    optionbutton: {
-        fontWeight: "normal",
+    options: {
         height: "100%",
         width: "100%",
+        fontSize: "1rem",
+        fontWeight: "normal",
+        margin: 0
+    },
+    checkbox:{
+        padding:0,
+        paddingRight:theme.spacing(1),
+    },
+    label:{
+        width:0
     }
 }));
 
@@ -31,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
 
 const SudokuPopover = (props) => {
     const { handleClose, field } = props;
-    const [Checked, setChecked] = React.useState(true);
+    const [Checked, setChecked] = React.useState(false);
 
     const handleChange = (event) => {
-        setChecked(event.target.checked);
-      };
+        setChecked(!Checked);
+    };
 
     const classes = useStyles();
     const box = [[1, 4, 7], [2, 5, 8], [3, 6, 9]];
@@ -59,14 +68,15 @@ const SudokuPopover = (props) => {
             </Grid>
         })}
 
-        <Grid item xs={12} justify="center">
+        <Grid item xs={12}>
             <Grid key="options" item xs={12}>
-            
-    <FormGroup row>
-                <FormControlLabel control={<Checkbox checked={Checked} onChange={handleChange} inputProps={{ 'aria-label': 'primary checkbox' }} />} label="Options" /></FormGroup>
+                <Button classes={{label:classes.label}}  className={classes.options} onClick={handleChange}>
+                    <Checkbox className={classes.checkbox} checked={Checked} color="primary" onChange={handleChange} inputProps={{ 'aria-label': 'Option checkbox' }} disableRipple />
+                    Options
+                </Button>
             </Grid>
             <Grid key="clear" item xs={12}>
-                <Button size="small" className={classes.optionbutton} onClick={() => setNumber("")}>Clear</Button>
+                <Button className={classes.options} onClick={() => setNumber("")}>Clear</Button>
             </Grid>
         </Grid>
 
