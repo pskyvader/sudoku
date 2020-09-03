@@ -1,6 +1,6 @@
-import React from 'react';
-import Header from './components/header';
-import Home from './pages/Home';
+import React, { lazy, Suspense } from 'react';
+// import Header from './components/header';
+// import Home from './pages/Home';
 import './App.css';
 
 import SudokuResolver from "./logic/SudokuResolver";
@@ -11,12 +11,26 @@ const cacheboard = LocalStorage.get("sudoku_board", null);
 const baseboard = new SudokuResolver(45, cacheboard);
 
 
-function App() {
-    return (
-        <Header board={baseboard}>
+const renderLoader = () => <p>Loading</p>;
+
+const Header = lazy(() => import('./components/header'));
+const Home = lazy(() => import('./pages/Home'));
+
+
+const App = () => (
+    <Suspense fallback={renderLoader()}>
+      <Header board={baseboard}>
             <Home board={baseboard} />
         </Header>
-    );
-}
+    </Suspense>
+  )
+
+// function App() {
+//     return (
+//         <Header board={baseboard}>
+//             <Home board={baseboard} />
+//         </Header>
+//     );
+// }
 
 export default App;
