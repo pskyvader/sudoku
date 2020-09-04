@@ -63,13 +63,16 @@ const useStyles = makeStyles((theme) => {
         button4: buttoncolor(error, getContrastText)
     }
 
-});
+}
+
+
+);
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
     const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
     const { board } = props;
-
+    console.log(board);
     function ResetBoard(n) {
         const newboard = new SudokuResolver(n);
         setDifficulty(n);
@@ -82,8 +85,9 @@ export default function ButtonAppBar(props) {
         window.addEventListener("beforeunload", Save);
         return () => window.removeEventListener("beforeunload", Save);
     });
-    return (<React.Fragment>
-    <AppBar position="fixed">
+    return (
+        <div className={classes.root}>
+            <AppBar position="fixed">
                 <Toolbar>
                     {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon />
@@ -112,6 +116,9 @@ export default function ButtonAppBar(props) {
                 </Toolbar>
             </AppBar>
             <Toolbar />
-            </React.Fragment>
+            <Container>
+                {props.children}
+            </Container>
+        </div>
     );
 }
