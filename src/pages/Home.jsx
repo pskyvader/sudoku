@@ -10,6 +10,9 @@ import LocalStorage from "../logic/LocalStorage";
 import React, { lazy, Suspense } from 'react';
 const SudokuBox = lazy(() => import('../components/SudokuBox'));
 
+const renderLoader = () => null;
+
+
 
 const useStyles = makeStyles((theme) => {
     const mainborder = theme.spacing(0.25 + 0.125) + "px solid " + theme.palette.info.main;
@@ -70,8 +73,6 @@ const Home = ({ board }) => {
     });
 
 
-
-    const renderLoader = () => <p>...</p>;
 
     const classes = useStyles();
     return (
