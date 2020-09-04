@@ -2,7 +2,7 @@
   "name": "sudoku",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/sudoku",
+  "homepage": ".",
   "dependencies": {
     "@material-ui/core": "^5.0.0-alpha.6",
     "@material-ui/icons": "^5.0.0-alpha.4",

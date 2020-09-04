@@ -13,10 +13,6 @@ class SudokuResolver extends Sudoku {
             this.RestoreBoard(cacheboard);
         }
     }
-
-
-
-
     RandomNumbers = (number) => {
         const t = this;
         if (number > 81 || number < 1) {

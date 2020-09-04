@@ -1,10 +1,15 @@
-import React, { lazy, Suspense } from 'react';
+// import React from 'react';
 import Header from './components/header';
 // import Home from './pages/Home';
-import './App.css';
+// import './App.css';
 
 import SudokuResolver from "./logic/SudokuResolver";
 import LocalStorage from "./logic/LocalStorage";
+
+
+import React, { lazy, Suspense } from 'react';
+// const Header = lazy(() => import('./components/header'));
+const Home = lazy(() => import('./pages/Home'));
 
 
 const cacheboard = LocalStorage.get("sudoku_board", null);
@@ -13,8 +18,6 @@ const baseboard = new SudokuResolver(45, cacheboard);
 
 const renderLoader = () => <p>...</p>;
 
-//const Header = lazy(() => import('./components/header'));
-const Home = lazy(() => import('./pages/Home'));
 
 
 
