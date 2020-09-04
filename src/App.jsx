@@ -1,8 +1,10 @@
 // import React from 'react';
 // import Header from './components/header';
- import Home from './pages/Home';
+import Home from './pages/Home';
 
+import Container from '@material-ui/core/Container';
 
+import { makeStyles } from '@material-ui/core/styles';
 import SudokuResolver from "./logic/SudokuResolver";
 import LocalStorage from "./logic/LocalStorage";
 
@@ -19,18 +21,39 @@ const baseboard = new SudokuResolver(45, cacheboard);
 const renderLoader = () => null;
 
 
+const useStyles = makeStyles((theme) => {
+
+    return {
+        root: {
+            flexGrow: 1,
+        }
+    }
+
+});
 
 
+const App = () => {
 
-const App = () => (
-    <Suspense fallback={renderLoader()}>
-        <Header board={baseboard}>
-            {/* <Suspense fallback={renderLoader()}> */}
+    const classes = useStyles();
+
+    return (<Suspense fallback={renderLoader()}>
+        <div className={classes.root}>
+            <Header board={baseboard}>
+                {/* <Suspense fallback={renderLoader()}> */}
+                {/* <Home board={baseboard} /> */}
+                {/* </Suspense> */}
+            </Header>
+
+
+            <Container>
                 <Home board={baseboard} />
-            {/* </Suspense> */}
-        </Header>
-    </Suspense>
-)
+            </Container>
+        </div>
+
+    </Suspense>)
+}
+
+
 
 // function App() {
 //     return (

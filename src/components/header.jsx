@@ -63,10 +63,7 @@ const useStyles = makeStyles((theme) => {
         button4: buttoncolor(error, getContrastText)
     }
 
-}
-
-
-);
+});
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
@@ -85,9 +82,8 @@ export default function ButtonAppBar(props) {
         window.addEventListener("beforeunload", Save);
         return () => window.removeEventListener("beforeunload", Save);
     });
-    return (
-        <div className={classes.root}>
-            <AppBar position="fixed">
+    return (<React.Fragment>
+    <AppBar position="fixed">
                 <Toolbar>
                     {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon />
@@ -116,9 +112,6 @@ export default function ButtonAppBar(props) {
                 </Toolbar>
             </AppBar>
             <Toolbar />
-            <Container>
-                {props.children}
-            </Container>
-        </div>
+            </React.Fragment>
     );
 }
