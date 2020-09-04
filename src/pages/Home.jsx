@@ -1,10 +1,14 @@
-import React from 'react';
+// import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 
-import SudokuBox from "../components/SudokuBox";
+// import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
+
+
+import React, { lazy, Suspense } from 'react';
+const SudokuBox = lazy(() => import('../components/SudokuBox'));
 
 
 const useStyles = makeStyles((theme) => {
@@ -67,6 +71,8 @@ const Home = ({ board }) => {
 
 
 
+    const renderLoader = () => <p>...</p>;
+
     const classes = useStyles();
     return (
         <Box className={classes.box} ref={canvas}>
@@ -75,7 +81,9 @@ const Home = ({ board }) => {
                     <Grid key={x} item xs={4} className={classes.grid}>
                         {row.map((column, y) => (
                             <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
+                            <Suspense fallback={renderLoader()}>
                                 <SudokuBox matrix={column} height={height} Checked={Checked} setChecked={setChecked} />
+                                </Suspense>
                             </Grid>
                         ))}
                     </Grid>
