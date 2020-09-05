@@ -72,7 +72,6 @@ export default function ButtonAppBar(props) {
     const classes = useStyles();
     const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
     const { board } = props;
-    console.log(board);
     function ResetBoard(n) {
         const newboard = new SudokuResolver(n);
         setDifficulty(n);

@@ -44,17 +44,18 @@ function debounce(fn, ms) {
 const Home = ({ board }) => {
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
-    const [Checked, setChecked] = React.useState(false);
+    const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
+
     const BoxHeight = () => {
         setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
     }
     const Save = () => {
         LocalStorage.set("box_height", height);
         LocalStorage.set("sudoku_board", board.CloneBoard());
+        LocalStorage.set("options_active", OptionsActive);
     }
 
     const debouncedHandleResize = debounce(BoxHeight, 100);
-    //React.useEffect(BoxHeight, []);
     React.useLayoutEffect(BoxHeight, []);
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
@@ -75,7 +76,7 @@ const Home = ({ board }) => {
                     <Grid key={x} item xs={4} className={classes.grid}>
                         {row.map((column, y) => (
                             <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                <SudokuBox matrix={column} height={height} Checked={Checked} setChecked={setChecked} />
+                                <SudokuBox matrix={column} height={height} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} />
                             </Grid>
                         ))}
                     </Grid>

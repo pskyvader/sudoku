@@ -50,7 +50,7 @@ class SudokuResolver extends Sudoku {
             t.Resolve();
         } catch (error) {
             t.errorcount += 1;
-            console.log(error.message, t.errorcount, "deep:", deep);
+            // console.log(error.message, t.errorcount, "deep:", deep);
             t.CreateEmptyBoard();
             t.CreateBoard(n, deep + 1);
         }
@@ -106,7 +106,7 @@ class SudokuResolver extends Sudoku {
                 try {
                     t.Resolve(deep + 1);
                 } catch (error) {
-                    console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
+                    // console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
                     if (randomoptions !== randomtry.options) {
                         randomoptions = [...randomtry.options];
@@ -144,6 +144,7 @@ class SudokuResolver extends Sudoku {
             element.locked = e.locked;
             element.SetValueError(e.error);
         }
+        this.CheckSuccess();
     }
 
     CheckCompleteBoard = () => {
