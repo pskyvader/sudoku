@@ -23,16 +23,23 @@ class Sudoku {
             this.matrix[x] = rows;
         }
     }
+    
+    SetSuccessValue=(value)=>{
+        if (this.setSuccess !== undefined) {
+            this.setSuccess(value);
+        }
+        this.success = value;
+    }
 
     CheckSuccess = () => {
         for (let i = 0; i < this.list.length; i++) {
             const element = this.list[i];
             if (element.number === "" || element.error) {
-                this.success = false;
+                this.SetSuccessValue(false);
                 return;
             }
         }
-        this.success = true;
+        this.SetSuccessValue(true);
     }
 
 

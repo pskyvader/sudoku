@@ -42,9 +42,14 @@ function debounce(fn, ms) {
 
 
 const Home = ({ board }) => {
+    const classes = useStyles();
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
     const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
+
+    const [Success, setSuccess] = React.useState(board.success);
+    board.setSuccess = setSuccess;
+    board.success = Success;
 
     const BoxHeight = () => {
         setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
@@ -68,9 +73,9 @@ const Home = ({ board }) => {
 
 
 
-    const classes = useStyles();
     return (
         <Box className={classes.box} ref={canvas}>
+            {Success ? "Yeeeeeehhh" : null}
             <Grid container justify="center" className={classes.root} >
                 {board.matrix.map((row, x) => (
                     <Grid key={x} item xs={4} className={classes.grid}>

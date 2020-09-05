@@ -110,7 +110,7 @@ const SudokuPopover = (props) => {
         <Grid item xs={12}>
             <Grid item xs={12}>
                 <Button classes={{ label: classes.label }} className={clsx(classes.options, optioncolor)} onClick={handleChange}>
-                    <Checkbox color="default" className={clsx(classes.checkbox, optioncolor)} OptionsActive={OptionsActive} onChange={handleChange} inputProps={{ 'aria-label': 'Option checkbox' }} disableRipple />
+                    <Checkbox color="default" className={clsx(classes.checkbox, optioncolor)} checked={OptionsActive} onChange={handleChange} inputProps={{ 'aria-label': 'Option checkbox' }} disableRipple />
                     Options
                 </Button>
             </Grid>
