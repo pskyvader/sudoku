@@ -22,6 +22,7 @@ class SudokuNumber {
     Duplicates = () => {
         this.callback.CleanDuplicated();
         this.callback.CheckDuplicates();
+        this.callback.CheckSuccess();
     }
 }
 

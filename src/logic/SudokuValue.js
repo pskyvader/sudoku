@@ -13,7 +13,6 @@ class SudokuValue {
 
     SetNumber = (number) => {
         this.SetValue(number);
-        //this.options.clear();
         this.callback.Duplicates();
     }
     SetValue = (number) => {

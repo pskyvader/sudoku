@@ -8,6 +8,7 @@ class Sudoku {
     }
 
     CreateEmptyBoard = () => {
+        this.success = false;
         this.matrix = [];
         this.emptyspaces = [];
         this.verticallines = [ [ [], [], [] ], [ [], [], [] ], [ [], [], [] ] ]; //3x3 vertical lines
@@ -21,6 +22,24 @@ class Sudoku {
             }
             this.matrix[x] = rows;
         }
+    }
+    
+    SetSuccessValue=(value)=>{
+        if (this.setSuccess !== undefined) {
+            this.setSuccess(value);
+        }
+        this.success = value;
+    }
+
+    CheckSuccess = () => {
+        for (let i = 0; i < this.list.length; i++) {
+            const element = this.list[i];
+            if (element.number === "" || element.error) {
+                this.SetSuccessValue(false);
+                return;
+            }
+        }
+        this.SetSuccessValue(true);
     }
 
 

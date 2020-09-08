@@ -8,19 +8,16 @@ class SudokuResolver extends Sudoku {
             var t0 = performance.now();
             this.CreateBoard(n);
             var t1 = performance.now();
-            console.log("Call to CreateSudoku took " + (t1 - t0) + " milliseconds.");
+            console.log("CreateSudoku took " + (t1 - t0) + " milliseconds.");
+            //console.log(t1 - t0);
         } else {
             this.RestoreBoard(cacheboard);
         }
     }
-
-
-
-
     RandomNumbers = (number) => {
         const t = this;
         if (number > 81 || number < 1) {
-            throw console.error("number out of range");
+            throw Error("number out of range");
         }
         const emptyspaces = [...t.emptyspaces];
         for (let index = 0; index < number; index++) {
@@ -36,8 +33,6 @@ class SudokuResolver extends Sudoku {
                 index--;
                 continue;
             }
-
-            field.locked = true;
             field.options.clear();
             emptyspaces.splice(pos, 1);
         }
@@ -54,7 +49,7 @@ class SudokuResolver extends Sudoku {
             t.Resolve();
         } catch (error) {
             t.errorcount += 1;
-            console.log(error.message, t.errorcount, "deep:", deep);
+            //console.log(error.message, t.errorcount, "deep:", deep);
             t.CreateEmptyBoard();
             t.CreateBoard(n, deep + 1);
         }
@@ -65,25 +60,102 @@ class SudokuResolver extends Sudoku {
     CleanBoard = (n) => {
         const t = this;
         if (n > 81 || n < 1) {
-            throw console.error("number out of range");
+            throw Error("number out of range");
         }
-        const emptyspaces = t.emptyspaces;
-        for (let index = 0; index < n; index++) {
+        const emptyspaces = [...t.emptyspaces];
+        let removed = 0;
+
+        while (removed < 81 - n && emptyspaces.length > 0) {
             const pos = Math.floor(Math.random() * (emptyspaces.length - 1));
             const current = emptyspaces[pos];
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
-            field.locked = true;
+            const tmp = field.number;
+            field.number = "";
+            const clonelist = t.CloneBoard();
+            const solutions = t.ResolveUnique();
+            t.RestoreBoard(clonelist);
+            if(solutions===0){
+                console.log(solutions,"solutions");
+            }
+            if (solutions===1) {
+                removed++;
+            } else {
+                field.number = tmp;
+            }
             emptyspaces.splice(pos, 1);
         }
-
-        for (let index = 0; index < emptyspaces.length; index++) {
-            const current = emptyspaces[index];
+        for (let index = 0; index < t.emptyspaces.length; index++) {
+            const current = t.emptyspaces[index];
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
-            field.locked = false;
-            field.number = "";
+            if(field.number!==""){
+                field.locked=true;
+            }
+        }
+    }
+
+
+    ResolveUnique = (deep = 0,solutions=0) => {
+        if (solutions>1){
+            return solutions;
+        }
+        const t = this;
+        let changes = 1;
+        while (changes > 0) {
+            changes = 0;
+            changes += t.FillSingleOption(); // check if there are any field with only one option and use it
+            if (changes === 0) {
+                changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
+            }
         }
 
+        if (!t.CheckCompleteBoard()) {
+            const clonelist = t.CloneBoard();
+            const randomtry = t.Random();
+            let randomoptions = [...randomtry.options];
+            randomtry.number = randomoptions[0];
+            let last = 0;
+            let i = 0;
+            //let solutions = 0;
+            while (randomtry.number !== last && randomtry.number !== undefined) {
+                last = randomtry.number;
+                t.RestoreBoard(clonelist);
+                randomtry.number = last;
+                try {
+                    let sol=solutions;
+                    solutions=t.ResolveUnique(deep + 1,solutions);
+                    if(solutions>sol){
+                        solutions++;
+                    }
+                } catch (error) {
+                    //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
+                } finally {
+                    if(!t.arrayEquals(randomoptions,[...randomtry.options])){
+                        randomoptions = [...randomtry.options];
+                        i=0;
+                    } else {
+                        i++;
+                    }
+                    randomtry.number = randomoptions[i];
+                }
+            }
+            randomtry.number = "";
+
+            if (solutions > 1) {
+                return solutions;
+            }
+
+            if (!t.CheckCompleteBoard()) {
+                return t.ResolveUnique(deep + 1,solutions);
+            } else {
+                solutions++;
+                return solutions;
+            }
+        } else {
+            solutions++;
+            return solutions;
+        }
     }
+
 
     Resolve = (deep = 0) => {
         const t = this;
@@ -110,16 +182,20 @@ class SudokuResolver extends Sudoku {
                 try {
                     t.Resolve(deep + 1);
                 } catch (error) {
-                    console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
+                    //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
-                    if (randomoptions !== randomtry.options) {
+                    if(!t.arrayEquals(randomoptions,[...randomtry.options])){
                         randomoptions = [...randomtry.options];
+                        i=0;
                     } else {
                         i++;
                     }
                     randomtry.number = randomoptions[i];
                 }
             }
+            randomtry.number="";
+
+
             if (!t.CheckCompleteBoard()) {
                 t.Resolve();
             } else {
@@ -134,7 +210,16 @@ class SudokuResolver extends Sudoku {
         let clonelist = [];
         for (let i = 0; i < t.list.length; i++) {
             const e = t.list[i];
-            clonelist.push({ x: e.x, y: e.y, i: e.i, j: e.j, number: e.number, options: [...e.options], locked: e.locked, error: e.error });
+            clonelist.push({
+                x: e.x,
+                y: e.y,
+                i: e.i,
+                j: e.j,
+                number: e.number,
+                options: [...e.options],
+                locked: e.locked,
+                error: e.error
+            });
         }
         return clonelist;
     }
@@ -148,6 +233,7 @@ class SudokuResolver extends Sudoku {
             element.locked = e.locked;
             element.SetValueError(e.error);
         }
+        this.CheckSuccess();
     }
 
     CheckCompleteBoard = () => {
@@ -162,7 +248,7 @@ class SudokuResolver extends Sudoku {
     }
 
 
-    Random = (min = 3) => {
+    Random = (min = 3) => { //returns a cell with less options than MIN
         const t = this;
         for (let i = 0; i < t.list.length; i++) {
             const element = t.list[i];
@@ -280,6 +366,13 @@ class SudokuResolver extends Sudoku {
             throw Error("Empty options");
         }
     }
+
+    arrayEquals=(a, b)=> {
+        return Array.isArray(a) &&
+          Array.isArray(b) &&
+          a.length === b.length &&
+          a.every((val, index) => val === b[index]);
+      }
 
 }
 
