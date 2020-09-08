@@ -73,8 +73,8 @@ class SudokuResolver extends Sudoku {
             const clonelist = t.CloneBoard();
             const unique = t.ResolveUnique();
             t.RestoreBoard(clonelist);
-            console.log(unique);
-            if (unique) {
+            console.log(unique,"solutions");
+            if (unique===1) {
                 removed++;
             } else {
                 field.number = tmp;
@@ -91,7 +91,7 @@ class SudokuResolver extends Sudoku {
     }
 
 
-    ResolveUnique = (deep = 0) => {
+    ResolveUnique = (deep = 0,solutions=0) => {
         const t = this;
         let changes = 1;
         while (changes > 0) {
@@ -109,18 +109,23 @@ class SudokuResolver extends Sudoku {
             randomtry.number = randomoptions[0];
             let last = 0;
             let i = 0;
-            let solutions = 0;
+            //let solutions = 0;
             while (randomtry.number !== last && randomtry.number !== undefined) {
                 last = randomtry.number;
                 t.RestoreBoard(clonelist);
                 randomtry.number = last;
                 try {
-                    if (t.ResolveUnique(deep + 1)) {
-                        if(t.CheckCompleteBoard()){
-                            solutions++;
-                        }
-                        // solutions++;
+                    let sol=solutions;
+                    solutions=t.ResolveUnique(deep + 1,solutions);
+                    if(solutions>sol){
+                        solutions++;
                     }
+                    // if (t.ResolveUnique(deep + 1,solutions)) {
+                    //     if(t.CheckCompleteBoard()){
+                    //         solutions++;
+                    //     }
+                    //     // solutions++;
+                    // }
                 } catch (error) {
                     //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
@@ -136,17 +141,19 @@ class SudokuResolver extends Sudoku {
             randomtry.number = "";
 
             if (solutions > 1) {
-                return false;
+                return solutions;
             }
 
             if (!t.CheckCompleteBoard()) {
                 console.log("Asdfadf");
-                return t.ResolveUnique();
+                return t.ResolveUnique(deep + 1,solutions);
             } else {
-                return true;
+                solutions++;
+                return solutions;
             }
         } else {
-            return true;
+            solutions++;
+            return solutions;
         }
     }
 
