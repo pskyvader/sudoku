@@ -12,8 +12,7 @@ const Home = lazy(() => import('./pages/Home'));
 const renderLoader = () => null;
 
 
-//const cacheboard = LocalStorage.get("sudoku_board", null);
-const cacheboard=null;
+const cacheboard = LocalStorage.get("sudoku_board", null);
 const baseboard = new SudokuResolver(45, cacheboard);
 
 
