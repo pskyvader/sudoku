@@ -94,17 +94,12 @@ class SudokuResolver extends Sudoku {
     ResolveUnique = (deep = 0) => {
         const t = this;
         let changes = 1;
-        try {
-            while (changes > 0) {
-                changes = 0;
-                changes += t.FillSingleOption(); // check if there are any field with only one option and use it
-                if (changes === 0) {
-                    changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
-                }
+        while (changes > 0) {
+            changes = 0;
+            changes += t.FillSingleOption(); // check if there are any field with only one option and use it
+            if (changes === 0) {
+                changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
             }
-        } catch (error) {
-            //console.log(error.message, t.errorcount, "Empty options", "deep:", deep);
-            return false;
         }
 
         if (!t.CheckCompleteBoard()) {
@@ -121,11 +116,10 @@ class SudokuResolver extends Sudoku {
                 randomtry.number = last;
                 try {
                     if (t.ResolveUnique(deep + 1)) {
-                        // if(t.CheckCompleteBoard()){
-                        //     solutions++;
-                        // }
-                        
-                        solutions++;
+                        if(t.CheckCompleteBoard()){
+                            solutions++;
+                        }
+                        // solutions++;
                     }
                 } catch (error) {
                     //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
@@ -141,7 +135,7 @@ class SudokuResolver extends Sudoku {
             }
             randomtry.number = "";
 
-            if (solutions > 1 || solutions===0) {
+            if (solutions > 1) {
                 return false;
             }
 
