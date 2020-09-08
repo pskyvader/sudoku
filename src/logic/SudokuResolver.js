@@ -8,7 +8,8 @@ class SudokuResolver extends Sudoku {
             var t0 = performance.now();
             this.CreateBoard(n);
             var t1 = performance.now();
-            console.log("Call to CreateSudoku took " + (t1 - t0) + " milliseconds.");
+            console.log("CreateSudoku took " + (t1 - t0) + " milliseconds.");
+            //console.log(t1 - t0);
         } else {
             this.RestoreBoard(cacheboard);
         }
@@ -71,10 +72,12 @@ class SudokuResolver extends Sudoku {
             const tmp = field.number;
             field.number = "";
             const clonelist = t.CloneBoard();
-            const unique = t.ResolveUnique();
+            const solutions = t.ResolveUnique();
             t.RestoreBoard(clonelist);
-            console.log(unique,"solutions");
-            if (unique===1) {
+            if(solutions===0){
+                console.log(solutions,"solutions");
+            }
+            if (solutions===1) {
                 removed++;
             } else {
                 field.number = tmp;
@@ -92,6 +95,9 @@ class SudokuResolver extends Sudoku {
 
 
     ResolveUnique = (deep = 0,solutions=0) => {
+        if (solutions>1){
+            return solutions;
+        }
         const t = this;
         let changes = 1;
         while (changes > 0) {
@@ -120,12 +126,6 @@ class SudokuResolver extends Sudoku {
                     if(solutions>sol){
                         solutions++;
                     }
-                    // if (t.ResolveUnique(deep + 1,solutions)) {
-                    //     if(t.CheckCompleteBoard()){
-                    //         solutions++;
-                    //     }
-                    //     // solutions++;
-                    // }
                 } catch (error) {
                     //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
@@ -145,7 +145,6 @@ class SudokuResolver extends Sudoku {
             }
 
             if (!t.CheckCompleteBoard()) {
-                console.log("Asdfadf");
                 return t.ResolveUnique(deep + 1,solutions);
             } else {
                 solutions++;
