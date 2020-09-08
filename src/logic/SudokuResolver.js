@@ -53,7 +53,6 @@ class SudokuResolver extends Sudoku {
             t.CreateBoard(n, deep + 1);
         }
         if (deep === 0) {
-            return;
             t.CleanBoard(n);
         }
     }
@@ -129,14 +128,17 @@ class SudokuResolver extends Sudoku {
                 } catch (error) {
                     //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
-                    if (randomoptions.length !== randomtry.options.size) {
+                    if(!t.arrayEquals(randomoptions,[...randomtry.options])){
                         randomoptions = [...randomtry.options];
+                        i=0;
                     } else {
                         i++;
                     }
                     randomtry.number = randomoptions[i];
                 }
             }
+            randomtry.number = "";
+
             if (solutions > 1) {
                 return false;
             }
@@ -181,13 +183,16 @@ class SudokuResolver extends Sudoku {
                 } finally {
                     if(!t.arrayEquals(randomoptions,[...randomtry.options])){
                         randomoptions = [...randomtry.options];
+                        i=0;
                     } else {
                         i++;
                     }
-                    console.log(randomoptions,i);
                     randomtry.number = randomoptions[i];
                 }
             }
+            randomtry.number="";
+
+
             if (!t.CheckCompleteBoard()) {
                 t.Resolve();
             } else {
