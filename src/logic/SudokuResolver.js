@@ -121,9 +121,11 @@ class SudokuResolver extends Sudoku {
                 randomtry.number = last;
                 try {
                     if (t.ResolveUnique(deep + 1)) {
-                        if(t.CheckCompleteBoard()){
-                            solutions++;
-                        }
+                        // if(t.CheckCompleteBoard()){
+                        //     solutions++;
+                        // }
+                        
+                        solutions++;
                     }
                 } catch (error) {
                     //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
@@ -139,7 +141,7 @@ class SudokuResolver extends Sudoku {
             }
             randomtry.number = "";
 
-            if (solutions > 1) {
+            if (solutions > 1 || solutions===0) {
                 return false;
             }
 
