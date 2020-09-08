@@ -140,6 +140,7 @@ class SudokuResolver extends Sudoku {
             }
 
             if (!t.CheckCompleteBoard()) {
+                console.log("Asdfadf");
                 return t.ResolveUnique();
             } else {
                 return true;
