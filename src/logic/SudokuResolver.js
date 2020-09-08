@@ -16,7 +16,7 @@ class SudokuResolver extends Sudoku {
     RandomNumbers = (number) => {
         const t = this;
         if (number > 81 || number < 1) {
-            throw console.error("number out of range");
+            throw Error("number out of range");
         }
         const emptyspaces = [...t.emptyspaces];
         for (let index = 0; index < number; index++) {
@@ -48,20 +48,21 @@ class SudokuResolver extends Sudoku {
             t.Resolve();
         } catch (error) {
             t.errorcount += 1;
-            console.log(error.message, t.errorcount, "deep:", deep);
+            //console.log(error.message, t.errorcount, "deep:", deep);
             t.CreateEmptyBoard();
             t.CreateBoard(n, deep + 1);
         }
         if (deep === 0) {
+            return;
             t.CleanBoard(n);
         }
     }
     CleanBoard = (n) => {
         const t = this;
         if (n > 81 || n < 1) {
-            throw console.error("number out of range");
+            throw Error("number out of range");
         }
-        const emptyspaces = t.emptyspaces;
+        const emptyspaces = [...t.emptyspaces];
         let removed = 0;
 
         while (removed < 81 - n && emptyspaces.length > 0) {
@@ -87,9 +88,7 @@ class SudokuResolver extends Sudoku {
             if(field.number!==""){
                 field.locked=true;
             }
-            
         }
-        console.log("removed",removed,"empty",emptyspaces.length,81 - n,n);
     }
 
 
@@ -105,7 +104,7 @@ class SudokuResolver extends Sudoku {
                 }
             }
         } catch (error) {
-            console.log(error.message, t.errorcount, "Empty options", "deep:", deep);
+            //console.log(error.message, t.errorcount, "Empty options", "deep:", deep);
             return false;
         }
 
@@ -123,14 +122,14 @@ class SudokuResolver extends Sudoku {
                 randomtry.number = last;
                 try {
                     if (t.ResolveUnique(deep + 1)) {
-                        solutions++;
-                    } else {
-                        return false;
+                        if(t.CheckCompleteBoard()){
+                            solutions++;
+                        }
                     }
                 } catch (error) {
-                    console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
+                    //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
-                    if (randomoptions !== randomtry.options) {
+                    if (randomoptions.length !== randomtry.options.size) {
                         randomoptions = [...randomtry.options];
                     } else {
                         i++;
@@ -138,7 +137,6 @@ class SudokuResolver extends Sudoku {
                     randomtry.number = randomoptions[i];
                 }
             }
-            console.log(solutions);
             if (solutions > 1) {
                 return false;
             }
@@ -179,13 +177,14 @@ class SudokuResolver extends Sudoku {
                 try {
                     t.Resolve(deep + 1);
                 } catch (error) {
-                    console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
+                    //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
-                    if (randomoptions !== randomtry.options) {
+                    if(!t.arrayEquals(randomoptions,[...randomtry.options])){
                         randomoptions = [...randomtry.options];
                     } else {
                         i++;
                     }
+                    console.log(randomoptions,i);
                     randomtry.number = randomoptions[i];
                 }
             }
@@ -359,6 +358,13 @@ class SudokuResolver extends Sudoku {
             throw Error("Empty options");
         }
     }
+
+    arrayEquals=(a, b)=> {
+        return Array.isArray(a) &&
+          Array.isArray(b) &&
+          a.length === b.length &&
+          a.every((val, index) => val === b[index]);
+      }
 
 }
 
