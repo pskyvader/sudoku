@@ -50,7 +50,7 @@ class SudokuResolver extends Sudoku {
             t.Resolve();
         } catch (error) {
             t.errorcount += 1;
-            // console.log(error.message, t.errorcount, "deep:", deep);
+            console.log(error.message, t.errorcount, "deep:", deep);
             t.CreateEmptyBoard();
             t.CreateBoard(n, deep + 1);
         }
@@ -64,6 +64,8 @@ class SudokuResolver extends Sudoku {
             throw console.error("number out of range");
         }
         const emptyspaces = t.emptyspaces;
+
+
         for (let index = 0; index < n; index++) {
             const pos = Math.floor(Math.random() * (emptyspaces.length - 1));
             const current = emptyspaces[pos];
@@ -80,6 +82,52 @@ class SudokuResolver extends Sudoku {
         }
 
     }
+
+
+    ResolveUnique = (deep = 0) => {
+        const t = this;
+        let changes = 1;
+        while (changes > 0) {
+            changes = 0;
+            changes += t.FillSingleOption(); // check if there are any field with only one option and use it
+            if (changes === 0) {
+                changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
+            }
+        }
+
+        if (!t.CheckCompleteBoard()) {
+            const clonelist = t.CloneBoard();
+            const randomtry = t.Random();
+            let randomoptions = [...randomtry.options];
+            randomtry.number = randomoptions[0];
+            let last = 0;
+            let i = 0;
+            while (!t.CheckCompleteBoard() && randomtry.number !== last && randomtry.number !== undefined) {
+                last = randomtry.number;
+                t.RestoreBoard(clonelist);
+                randomtry.number = last;
+                try {
+                    t.Resolve(deep + 1);
+                } catch (error) {
+                    //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
+                } finally {
+                    if (randomoptions !== randomtry.options) {
+                        randomoptions = [...randomtry.options];
+                    } else {
+                        i++;
+                    }
+                    randomtry.number = randomoptions[i];
+                }
+            }
+            if (!t.CheckCompleteBoard()) {
+                t.Resolve();
+            } else {
+                randomtry.SetValue(randomtry.number);
+                randomtry.options.clear();
+            }
+        }
+    }
+
 
     Resolve = (deep = 0) => {
         const t = this;
@@ -106,7 +154,7 @@ class SudokuResolver extends Sudoku {
                 try {
                     t.Resolve(deep + 1);
                 } catch (error) {
-                    // console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
+                    console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
                     if (randomoptions !== randomtry.options) {
                         randomoptions = [...randomtry.options];
