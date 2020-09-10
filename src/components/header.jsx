@@ -18,7 +18,6 @@ import StarsIcon from '@material-ui/icons/Stars';
 
 
 import SudokuResolver from "../logic/SudokuResolver";
-import LocalStorage from "../logic/LocalStorage";
 
 
 const buttoncolor = (pallete, getContrastText) => {
@@ -53,9 +52,9 @@ const useStyles = makeStyles((theme) => {
             bottom: theme.spacing(0.25),
             right: theme.spacing(0.25),
             fontSize: "0.75rem",
-            borderRadius:"100%",
-            backgroundColor:"white",
-            color:warning.light
+            borderRadius: "100%",
+            backgroundColor: "white",
+            color: warning.light
         },
         button1: buttoncolor(info, getContrastText),
         button2: buttoncolor(success, getContrastText),
@@ -68,22 +67,42 @@ const useStyles = makeStyles((theme) => {
 
 );
 
-export default function ButtonAppBar(props) {
+
+const DifficultyButtons = (props) => {
+    const { board,setDifficulty,Difficulty } = props;
+    
     const classes = useStyles();
-    const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
-    const { board } = props;
     function ResetBoard(n) {
         const newboard = new SudokuResolver(n);
         setDifficulty(n);
         board.RestoreBoard(newboard.CloneBoard());
     }
-    const Save = () => {
-        LocalStorage.set("difficulty", Difficulty);
-    }
-    React.useEffect(() => {
-        window.addEventListener("beforeunload", Save);
-        return () => window.removeEventListener("beforeunload", Save);
-    });
+
+
+    return <ButtonGroup size="small">
+        <Button className={classes.button1} onClick={() => ResetBoard(80)}>
+            <EmojiEmotionsIcon />
+            {Difficulty === 80 ? <StarsIcon className={classes.buttonstar} /> : ""}
+        </Button>
+        <Button className={classes.button2} onClick={() => ResetBoard(45)}>
+            <InsertEmoticonIcon />
+            {Difficulty === 45 ? <StarsIcon className={classes.buttonstar} /> : ""}
+        </Button>
+        <Button className={classes.button3} onClick={() => ResetBoard(36)}>
+            <FaceIcon />
+            {Difficulty === 36 ? <StarsIcon className={classes.buttonstar} /> : ""}
+        </Button>
+        <Button className={classes.button4} onClick={() => ResetBoard(27)}>
+            <MoodBadIcon />
+            {Difficulty === 27 ? <StarsIcon className={classes.buttonstar} /> : ""}
+        </Button>
+    </ButtonGroup>
+}
+
+export {DifficultyButtons};
+
+export default function ButtonAppBar(props) {
+    const classes = useStyles();
     return (
         <div className={classes.root}>
             <AppBar position="fixed">
@@ -92,26 +111,7 @@ export default function ButtonAppBar(props) {
                         <MenuIcon />
                     </IconButton> */}
                     <Typography variant="h6" className={classes.title}> Sudoku </Typography>
-
-                    <ButtonGroup size="small">
-                        <Button className={classes.button1} onClick={() => ResetBoard(63)}>
-                            <EmojiEmotionsIcon />
-                            {Difficulty === 63 ? <StarsIcon className={classes.buttonstar} /> : ""}
-                        </Button>
-                        <Button className={classes.button2} onClick={() => ResetBoard(45)}>
-                            <InsertEmoticonIcon />
-                            {Difficulty === 45 ? <StarsIcon className={classes.buttonstar} /> : ""}
-                        </Button>
-                        <Button className={classes.button3} onClick={() => ResetBoard(36)}>
-                            <FaceIcon />
-                            {Difficulty === 36 ? <StarsIcon className={classes.buttonstar} /> : ""}
-                        </Button>
-                        <Button className={classes.button4} onClick={() => ResetBoard(27)}>
-                            <MoodBadIcon />
-                            {Difficulty === 27 ? <StarsIcon className={classes.buttonstar} /> : ""}
-                        </Button>
-                    </ButtonGroup>
-
+                    <DifficultyButtons {...props} />
                 </Toolbar>
             </AppBar>
             <Toolbar />
