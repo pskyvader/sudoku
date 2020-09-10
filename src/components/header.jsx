@@ -80,9 +80,9 @@ const DifficultyButtons = (props) => {
 
 
     return <ButtonGroup size="small">
-        <Button className={classes.button1} onClick={() => ResetBoard(80)}>
+        <Button className={classes.button1} onClick={() => ResetBoard(63)}>
             <EmojiEmotionsIcon />
-            {Difficulty === 80 ? <StarsIcon className={classes.buttonstar} /> : ""}
+            {Difficulty === 63 ? <StarsIcon className={classes.buttonstar} /> : ""}
         </Button>
         <Button className={classes.button2} onClick={() => ResetBoard(45)}>
             <InsertEmoticonIcon />
