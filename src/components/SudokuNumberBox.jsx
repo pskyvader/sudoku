@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // import SudokuPopover from './SudokuPopover';
 // import SudokuOptions from './SudokuOptions';
 
+import Popper from '@material-ui/core/Popper';
 
 import React, { lazy, Suspense } from 'react';
 const SudokuPopover = lazy(() => import('./SudokuPopover'));
@@ -93,7 +94,14 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive }) => {
                     </Button>
                 </Suspense>
                 <Suspense fallback={renderLoader()}>
-                    <Popover
+
+                <Popper open={open} anchorEl={anchorEl}>
+                        <SudokuPopover handleClose={handleClose} field={field} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} />
+                    
+      </Popper>
+
+
+                    {/* <Popover
                         id={id}
                         open={open}
                         anchorEl={anchorEl}
@@ -101,7 +109,7 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive }) => {
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'center', }}
                         transformOrigin={{ vertical: 'top', horizontal: 'center', }} >
                         <SudokuPopover handleClose={handleClose} field={field} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} />
-                    </Popover>
+                    </Popover> */}
                 </Suspense>
             </React.Fragment>
         );
