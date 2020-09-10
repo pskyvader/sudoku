@@ -12,15 +12,14 @@ const useStyles = makeStyles((theme) => {
         button: {
             height: "100%",
             width: "100%",
-            fontSize: "1rem",
+            fontSize: "1em",
             fontWeight: "normal",
             minWidth: 0,
             borderRadius: 0,
             padding: theme.spacing(1),
             [theme.breakpoints.up('md')]: {
                 padding: theme.spacing(1.5)
-            },
-            backgroundColor: "white"
+            }
         },
         options: {
             height: "100%",
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => {
             width: 0
         },
         optioncolor: {
-            color: getContrastText(primary.main),
+            color: getContrastText(primary.light),
             "&:hover": {
                 backgroundColor: primary.light,
             }
@@ -58,7 +57,7 @@ const useStyles = makeStyles((theme) => {
 
 
 const SudokuPopover = (props) => {
-    const { handleClose, field, OptionsActive, setOptionsActive } = props;
+    const { handleClose, field, OptionsActive, setOptionsActive,parentOptions } = props;
 
     const [ChangeOption, SetChangeOption] = React.useState(false);
 
@@ -89,6 +88,7 @@ const SudokuPopover = (props) => {
         } else {
             field.options.add(number);
         }
+        parentOptions(!ChangeOption);
         SetChangeOption(!ChangeOption);
     };
 
