@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => {
             }
         },
         optionbackground: {
-            backgroundColor: light ? primary.main : background.default
+            backgroundColor: primary.main
         },
         OptionsActiveoption: {
             backgroundColor: secondary.main,

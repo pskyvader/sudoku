@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,7 +8,9 @@ import Typography from '@material-ui/core/Typography';
 // import IconButton from '@material-ui/core/IconButton';
 // import MenuIcon from '@material-ui/icons/Menu';
 
-import { DifficultyButtons,DarkModeButton } from './Buttons';
+// import { DifficultyButtons, DarkModeButton } from './Buttons';
+const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
+const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 
 
 
@@ -18,25 +20,26 @@ const useStyles = makeStyles((theme) => ({
     title: { flexGrow: 1, }
 }));
 
+const renderLoader = () => null;
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-            <AppBar position="fixed">
+            <AppBar position="static">
                 <Toolbar>
                     {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon />
                     </IconButton> */}
-                    <DarkModeButton {...props}/>
-                    <Typography variant="h6" className={classes.title}> Sudoku 
-                    </Typography>
-                    
-
-                    <DifficultyButtons {...props} />
+                    <Typography variant="h6" className={classes.title}> Sudoku </Typography>
+                    <Suspense fallback={renderLoader()}>
+                        <DarkModeButton {...props} />
+                    </Suspense>
+                    <Suspense fallback={renderLoader()}>
+                        <DifficultyButtons {...props} />
+                    </Suspense>
                 </Toolbar>
             </AppBar>
-            <Toolbar />
             <Container>
                 {props.children}
             </Container>

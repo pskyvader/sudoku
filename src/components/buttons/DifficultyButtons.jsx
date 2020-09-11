@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
@@ -9,12 +8,8 @@ import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import FaceIcon from '@material-ui/icons/Face';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
 import StarsIcon from '@material-ui/icons/Stars';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
 
-
-
-import SudokuResolver from "../logic/SudokuResolver";
+import SudokuResolver from "../../logic/SudokuResolver";
 
 const buttoncolor = (pallete, getContrastText) => {
     return {
@@ -31,9 +26,6 @@ const buttoncolor = (pallete, getContrastText) => {
 const useStyles = makeStyles((theme) => {
     const { info, success, warning, error, getContrastText } = theme.palette;
     return {
-        darkmode:{
-            color:info.contrastText
-        },
         buttonstar: {
             position: "absolute",
             bottom: theme.spacing(0.25),
@@ -83,15 +75,4 @@ const DifficultyButtons = (props) => {
 }
 
 
-
-const DarkModeButton = ({DarkMode,SetDarkMode}) => {
-    const classes = useStyles();
-    const SwitchDarkMode=()=>{
-        SetDarkMode(!DarkMode);
-    }
-    return <IconButton className={classes.darkmode} onClick={() => SwitchDarkMode()}>
-        {DarkMode?<Brightness7Icon />:<Brightness4Icon/>}
-    </IconButton>
-}
-
-export { DifficultyButtons,DarkModeButton };
+export default DifficultyButtons;

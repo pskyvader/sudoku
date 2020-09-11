@@ -8,7 +8,8 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import indigo from '@material-ui/core/colors/indigo';
-import grey from '@material-ui/core/colors/grey';
+import blueGrey from '@material-ui/core/colors/blueGrey';
+import purple from '@material-ui/core/colors/purple';
 
 
 
@@ -28,7 +29,10 @@ function App() {
             createMuiTheme({
                 palette: {
                     primary: {
-                        main: DarkMode?grey[800]:indigo[900],
+                        main: DarkMode?blueGrey[800]:indigo[800],
+                    },
+                    secondary:{
+                        main:purple[500]
                     },
                     type: DarkMode ? 'dark' : 'light',
                 },

@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 
 
 import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
 
-import { DifficultyButtons } from "../components/Buttons";
+
+// import Modal from '@material-ui/core/Modal';
+// import { DifficultyButtons } from "../components/Buttons";
+
+const Modal = lazy(() => import('@material-ui/core/Modal'));
+const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyButtons'));
+
 
 const useStyles = makeStyles((theme) => {
     const light = theme.palette.type === "light";
-    const mainbordercolor=light?theme.palette.info.main:theme.palette.primary.light;
+    const mainbordercolor = light ? theme.palette.info.dark : theme.palette.primary.light;
     const mainborder = theme.spacing(0.25 + 0.125) + "px solid " + mainbordercolor;
     const border = theme.spacing(0.25) + "px solid " + mainbordercolor;
     return {
@@ -58,7 +63,7 @@ function debounce(fn, ms) {
 
 
 const Home = (props) => {
-    const { board }=props;
+    const { board } = props;
     const classes = useStyles();
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
@@ -94,13 +99,23 @@ const Home = (props) => {
     });
 
 
-    const body = (
-        <div className={classes.paper}>
-            <Typography id="modal-title"variant="h4" gutterBottom> Ganaste por la CTM! </Typography>
-            <Typography id="modal-description"  variant="h5" gutterBottom> Nueva partida? </Typography>
-            <DifficultyButtons {...props}/>
-            <p>pd:uwu</p>
-        </div>
+    const renderLoader = () => null;
+    const modal = (
+        <Suspense fallback={renderLoader()}>
+            <Modal
+                open={Success}
+                onClose={handleClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+                <div className={classes.paper}>
+                    <Typography id="modal-title" variant="h4" gutterBottom> Ganaste por la CTM! </Typography>
+                    <Typography id="modal-description" variant="h5" gutterBottom> Nueva partida? </Typography>
+                    <DifficultyButtons {...props} />
+                    <p>pd:uwu</p>
+                </div>
+            </Modal>
+        </Suspense>
     );
 
 
@@ -108,14 +123,7 @@ const Home = (props) => {
 
     return (
         <Box className={classes.box} ref={canvas}>
-            <Modal
-                open={Success}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                {body}
-            </Modal>
+            {modal}
 
 
             <Grid container justify="center" className={classes.root} >
