@@ -4,7 +4,7 @@ import Header from './components/Header';
 
 import SudokuResolver from "./logic/SudokuResolver";
 import LocalStorage from "./logic/LocalStorage";
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import indigo from '@material-ui/core/colors/indigo';
 
@@ -19,18 +19,28 @@ const cacheboard = LocalStorage.get("sudoku_board", null);
 const baseboard = new SudokuResolver(45, cacheboard);
 
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-          main: indigo[900],
-        },
-        type: 'dark',
-    },
-});
+const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+
 
 
 function App() {
     const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
+
+    const [DarkMode,SetDarkMode]=React.useState(prefersDarkMode);
+
+    const theme = React.useMemo(
+        () =>
+            createMuiTheme({
+                palette: {
+                    primary: {
+                        main: indigo[900],
+                    },
+                    type: DarkMode ? 'dark' : 'light',
+                },
+            }),
+        [DarkMode],
+    );
 
     const Save = () => {
         LocalStorage.set("difficulty", Difficulty);

@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => {
             padding: 0,
             color: light ? "" : getContrastText(background.paper),
             '&$disabled': {
-                color: grey[300],
+                color:  light ? grey[500] : grey[300],
                 backgroundColor: light ? grey[200] : grey[800],
             },
         },

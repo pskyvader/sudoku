@@ -12,8 +12,10 @@ import LocalStorage from "../logic/LocalStorage";
 import { DifficultyButtons } from "../components/Header";
 
 const useStyles = makeStyles((theme) => {
-    const mainborder = theme.spacing(0.25 + 0.125) + "px solid " + theme.palette.info.main;
-    const border = theme.spacing(0.25) + "px solid " + theme.palette.info.main;
+    const light = theme.palette.type === "light";
+    const mainbordercolor=light?theme.palette.info.main:theme.palette.primary.dark;
+    const mainborder = theme.spacing(0.25 + 0.125) + "px solid " + mainbordercolor;
+    const border = theme.spacing(0.25) + "px solid " + mainbordercolor;
     return {
         box: {
             maxWidth: "calc(100vh - " + theme.mixins.toolbar.minHeight * 2 + "px)",

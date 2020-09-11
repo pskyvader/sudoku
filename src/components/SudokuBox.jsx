@@ -6,11 +6,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import SudokuNumberBox from "./SudokuNumberBox";
 
 
-const useStyles = makeStyles((theme) => ({
-    subbox: { textAlign: "center", height: "100%" },
-    grid: { borderRight: theme.spacing(0.125) + "px solid " + theme.palette.info.main, },
-    subgrid: { borderBottom: theme.spacing(0.125) + "px solid " + theme.palette.info.main, }
-}));
+const useStyles = makeStyles((theme) => {
+    const light = theme.palette.type === "light";
+    const mainbordercolor = light ? theme.palette.info.main : theme.palette.primary.dark;
+    return {
+        subbox: { textAlign: "center", height: "100%" },
+        grid: { borderRight: theme.spacing(0.125) + "px solid " + mainbordercolor },
+        subgrid: { borderBottom: theme.spacing(0.125) + "px solid " + mainbordercolor }
+    }
+});
 
 
 const SudokuSubBox = ({ matrix, height, OptionsActive, setOptionsActive }) => {
