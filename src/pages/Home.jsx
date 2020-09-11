@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 
 
 import SudokuBox from "../components/SudokuBox";
@@ -10,9 +9,11 @@ import LocalStorage from "../logic/LocalStorage";
 
 
 // import Modal from '@material-ui/core/Modal';
+// import Typography from '@material-ui/core/Typography';
 // import { DifficultyButtons } from "../components/Buttons";
 
 const Modal = lazy(() => import('@material-ui/core/Modal'));
+const Typography = lazy(() => import('@material-ui/core/Typography'));
 const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyButtons'));
 
 
@@ -79,7 +80,11 @@ const Home = (props) => {
     };
 
     const BoxHeight = () => {
-        setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
+        if(canvas.current.clientWidth>0){
+            setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
+        }else{
+            setTimeout(() => BoxHeight, 100);
+        }
     }
     const Save = () => {
         LocalStorage.set("box_height", height);
@@ -88,7 +93,7 @@ const Home = (props) => {
     }
 
     const debouncedHandleResize = debounce(BoxHeight, 100);
-    React.useLayoutEffect(BoxHeight, []);
+    React.useLayoutEffect(debouncedHandleResize, []);
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
         return () => window.removeEventListener("resize", debouncedHandleResize);
@@ -99,23 +104,23 @@ const Home = (props) => {
     });
 
 
-    const renderLoader = () => null;
+    const renderLoader = () => "loading...";
     const modal = (
-        <Suspense fallback={renderLoader()}>
-            <Modal
-                open={Success}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
+        <Modal
+            open={Success}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+        >
+            <Suspense fallback={renderLoader()}>
                 <div className={classes.paper}>
                     <Typography id="modal-title" variant="h4" gutterBottom> Ganaste por la CTM! </Typography>
                     <Typography id="modal-description" variant="h5" gutterBottom> Nueva partida? </Typography>
                     <DifficultyButtons {...props} />
                     <p>pd:uwu</p>
                 </div>
-            </Modal>
-        </Suspense>
+            </Suspense>
+        </Modal>
     );
 
 
@@ -124,8 +129,6 @@ const Home = (props) => {
     return (
         <Box className={classes.box} ref={canvas}>
             {modal}
-
-
             <Grid container justify="center" className={classes.root} >
                 {board.matrix.map((row, x) => (
                     <Grid key={x} item xs={4} className={classes.grid}>
@@ -140,7 +143,5 @@ const Home = (props) => {
         </Box>
     )
 }
-
-
 
 export default Home;

@@ -5,9 +5,14 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
+import Paper from '@material-ui/core/Paper';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+
+
 
 const useStyles = makeStyles((theme) => {
-    const { primary, secondary, getContrastText,background } = theme.palette;
+    const { primary, secondary, getContrastText, background } = theme.palette;
     const light = theme.palette.type === "light";
 
     return {
@@ -23,7 +28,7 @@ const useStyles = makeStyles((theme) => {
                 padding: theme.spacing(1.5)
             },
             "&:hover": {
-                backgroundColor:background.default,
+                backgroundColor: background.default,
             },
             color: light ? "" : getContrastText(background.paper)
         },
@@ -130,4 +135,23 @@ const SudokuPopover = (props) => {
     </Grid>
 }
 
-export default SudokuPopover;
+// export default SudokuPopover;
+
+
+const SudokuPopoverContainer = (props) => {
+    const { TransitionProps,placement, handleClose } = props;
+    return (
+        <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }} >
+            <div>
+                <Paper>
+                    <ClickAwayListener onClickAway={handleClose}>
+                        <div>
+                            <SudokuPopover {...props} />
+                        </div>
+                    </ClickAwayListener>
+                </Paper>
+            </div>
+        </Grow>
+    )
+}
+export default SudokuPopoverContainer;

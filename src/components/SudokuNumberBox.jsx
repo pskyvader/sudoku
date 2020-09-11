@@ -3,12 +3,7 @@ import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-
-
-const Paper = lazy(() => import('@material-ui/core/Paper'));
-const ClickAwayListener = lazy(() => import('@material-ui/core/ClickAwayListener'));
-const Grow = lazy(() => import('@material-ui/core/Grow'));
-const Popper = lazy(() => import('@material-ui/core/Popper'));
+import Popper from '@material-ui/core/Popper';
 
 const SudokuPopover = lazy(() => import('./SudokuPopover'));
 const SudokuOptions = lazy(() => import('./SudokuOptions'));
@@ -17,7 +12,7 @@ const renderLoader = () => null;
 
 
 const useStyles = makeStyles((theme) => {
-    const { primary, getContrastText,background,grey } = theme.palette;
+    const { primary, getContrastText, background, grey } = theme.palette;
     const light = theme.palette.type === "light";
     return {
         button: {
@@ -30,7 +25,7 @@ const useStyles = makeStyles((theme) => {
             padding: 0,
             color: light ? "" : getContrastText(background.paper),
             '&$disabled': {
-                color:  light ? grey[500] : grey[300],
+                color: light ? grey[500] : grey[300],
                 backgroundColor: light ? grey[200] : grey[800],
             },
         },
@@ -49,9 +44,9 @@ const useStyles = makeStyles((theme) => {
             }
         },
         disabled: {},
-        root: {
+        popper: {
             zIndex: 1300
-        }
+        },
     }
 });
 
@@ -109,7 +104,12 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive }) => {
                     </Suspense>
                 </Button>
                 <Suspense fallback={renderLoader()}>
-                    <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition className={classes.root}>
+                    <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition className={classes.popper}>
+                        {({ TransitionProps, placement }) => (
+                            <SudokuPopover TransitionProps={TransitionProps} placement={placement} handleClose={handleClose} field={field} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} parentOptions={SetChangeOption} />
+                        )}
+                    </Popper>
+                    {/* <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition className={classes.root}>
                         {({ TransitionProps, placement }) => (
                             <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }} >
                                 <div>
@@ -123,7 +123,7 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive }) => {
                                 </div>
                             </Grow>
                         )}
-                    </Popper>
+                    </Popper> */}
                 </Suspense>
             </React.Fragment>
         );
