@@ -6,7 +6,9 @@ import SudokuResolver from "./logic/SudokuResolver";
 import LocalStorage from "./logic/LocalStorage";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import indigo from '@material-ui/core/colors/indigo';
+import grey from '@material-ui/core/colors/grey';
 
 
 
@@ -18,23 +20,15 @@ const renderLoader = () => null;
 const cacheboard = LocalStorage.get("sudoku_board", null);
 const baseboard = new SudokuResolver(45, cacheboard);
 
-
-const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
-
-
-
 function App() {
     const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
-
-    const [DarkMode,SetDarkMode]=React.useState(prefersDarkMode);
-
+    const [DarkMode,SetDarkMode]=React.useState(LocalStorage.get("dark_mode", useMediaQuery('(prefers-color-scheme: dark)')));
     const theme = React.useMemo(
         () =>
             createMuiTheme({
                 palette: {
                     primary: {
-                        main: indigo[900],
+                        main: DarkMode?grey[800]:indigo[900],
                     },
                     type: DarkMode ? 'dark' : 'light',
                 },
@@ -44,6 +38,7 @@ function App() {
 
     const Save = () => {
         LocalStorage.set("difficulty", Difficulty);
+        LocalStorage.set("dark_mode", DarkMode);
     }
     React.useEffect(() => {
         window.addEventListener("beforeunload", Save);
@@ -54,7 +49,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Header board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty}>
+            <Header board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} DarkMode={DarkMode} SetDarkMode={SetDarkMode}>
                 <Suspense fallback={renderLoader()}>
                     <Home board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} />
                 </Suspense>

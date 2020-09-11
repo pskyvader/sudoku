@@ -9,11 +9,11 @@ import Typography from '@material-ui/core/Typography';
 import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
 
-import { DifficultyButtons } from "../components/Header";
+import { DifficultyButtons } from "../components/Buttons";
 
 const useStyles = makeStyles((theme) => {
     const light = theme.palette.type === "light";
-    const mainbordercolor=light?theme.palette.info.main:theme.palette.primary.dark;
+    const mainbordercolor=light?theme.palette.info.main:theme.palette.primary.light;
     const mainborder = theme.spacing(0.25 + 0.125) + "px solid " + mainbordercolor;
     const border = theme.spacing(0.25) + "px solid " + mainbordercolor;
     return {
