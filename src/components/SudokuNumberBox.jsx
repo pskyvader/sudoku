@@ -16,39 +16,44 @@ const SudokuOptions = lazy(() => import('./SudokuOptions'));
 const renderLoader = () => null;
 
 
-const useStyles = makeStyles((theme) => ({
-    button: {
-        height: "100%",
-        width: "100%",
-        fontSize: "1em",
-        fontWeight: "normal",
-        minWidth: 0,
-        borderRadius: 0,
-        padding: 0,
-        '&$disabled': {
-            color: theme.palette.grey[500],
-            backgroundColor: theme.palette.grey[200],
+const useStyles = makeStyles((theme) => {
+    const { primary, getContrastText,background,grey } = theme.palette;
+    const light = theme.palette.type === "light";
+    return {
+        button: {
+            height: "100%",
+            width: "100%",
+            fontSize: "1em",
+            fontWeight: "normal",
+            minWidth: 0,
+            borderRadius: 0,
+            padding: 0,
+            color: light ? "" : getContrastText(background.paper),
+            '&$disabled': {
+                color: grey[300],
+                backgroundColor: light ? grey[200] : grey[800],
+            },
         },
-    },
-    error: {
-        color: theme.palette.error.main,
-        '&$disabled': {
-            color: theme.palette.error.contrastText,
-            backgroundColor: theme.palette.error.main
+        error: {
+            color: theme.palette.error.main,
+            '&$disabled': {
+                color: theme.palette.error.contrastText,
+                backgroundColor: theme.palette.error.main
+            },
         },
-    },
-    selected: {
-        backgroundColor: theme.palette.primary.light,
-        color: theme.palette.getContrastText(theme.palette.primary.light),
-        "&:hover":{
-            backgroundColor: theme.palette.primary.main,
+        selected: {
+            backgroundColor: primary.light,
+            color: getContrastText(primary.light),
+            "&:hover": {
+                backgroundColor: primary.main,
+            }
+        },
+        disabled: {},
+        root: {
+            zIndex: 1300
         }
-    },
-    disabled: {},
-    root: {
-        zIndex: 1300
     }
-}));
+});
 
 
 
@@ -85,7 +90,7 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive }) => {
     field.SetOptions = SetOptions;
     field.options = Options;
 
-    const className = clsx(classes.button, FinalError && classes.error, open && classes.selected,ChangeOption);
+    const className = clsx(classes.button, FinalError && classes.error, open && classes.selected, ChangeOption);
 
     if (locked) {
         return (
@@ -111,7 +116,7 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive }) => {
                                     <Paper>
                                         <ClickAwayListener onClickAway={handleClose}>
                                             <div>
-                                                <SudokuPopover handleClose={handleClose} field={field} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} parentOptions={SetChangeOption}/>
+                                                <SudokuPopover handleClose={handleClose} field={field} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} parentOptions={SetChangeOption} />
                                             </div>
                                         </ClickAwayListener>
                                     </Paper>

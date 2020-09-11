@@ -7,7 +7,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles((theme) => {
-    const { primary, secondary, getContrastText } = theme.palette;
+    const { primary, secondary, getContrastText,background } = theme.palette;
+    const light = theme.palette.type === "light";
+
     return {
         button: {
             height: "100%",
@@ -19,7 +21,11 @@ const useStyles = makeStyles((theme) => {
             padding: theme.spacing(1),
             [theme.breakpoints.up('md')]: {
                 padding: theme.spacing(1.5)
-            }
+            },
+            "&:hover": {
+                backgroundColor:background.default,
+            },
+            color: light ? "" : getContrastText(background.paper)
         },
         options: {
             height: "100%",
@@ -27,14 +33,15 @@ const useStyles = makeStyles((theme) => {
             fontWeight: "normal",
             margin: 0,
             borderRadius: 0,
+            color: light ? "" : getContrastText(background.paper)
         },
         checkbox: {
             padding: 0,
             paddingRight: theme.spacing(1),
-            color: primary.main,
+            color: light ? primary.main : getContrastText(background.paper),
         },
         label: {
-            width: 0
+            width: 0,
         },
         optioncolor: {
             color: getContrastText(primary.light),
@@ -57,7 +64,7 @@ const useStyles = makeStyles((theme) => {
 
 
 const SudokuPopover = (props) => {
-    const { handleClose, field, OptionsActive, setOptionsActive,parentOptions } = props;
+    const { handleClose, field, OptionsActive, setOptionsActive, parentOptions } = props;
 
     const [ChangeOption, SetChangeOption] = React.useState(false);
 

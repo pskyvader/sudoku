@@ -6,6 +6,7 @@ import SudokuResolver from "./logic/SudokuResolver";
 import LocalStorage from "./logic/LocalStorage";
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import indigo from '@material-ui/core/colors/indigo';
 
 
 
@@ -20,7 +21,10 @@ const baseboard = new SudokuResolver(45, cacheboard);
 
 const theme = createMuiTheme({
     palette: {
-        type: 'light',
+        primary: {
+          main: indigo[900],
+        },
+        type: 'dark',
     },
 });
 
