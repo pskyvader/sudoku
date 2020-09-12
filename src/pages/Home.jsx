@@ -83,7 +83,7 @@ const Home = (props) => {
         if(canvas.current.clientWidth>0){
             setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
         }else{
-            setTimeout(() => BoxHeight, 100);
+            setTimeout(BoxHeight, 100);
         }
     }
     const Save = () => {
