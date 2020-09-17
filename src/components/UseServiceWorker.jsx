@@ -8,10 +8,10 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import * as serviceWorker from '../serviceWorker';
 
-const UseServiceWorker = () => {
-    const [Message, setMessage] = React.useState("");
-    const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
-    const [installPrompt, setinstallPrompt] = React.useState(null);
+
+
+const Snackbaralert = (props) => {
+    const { Message, setMessage, waitingServiceWorker, installPrompt } = props;
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -42,33 +42,62 @@ const UseServiceWorker = () => {
         setMessage("");
     };
 
+    if (Message === "UPDATE") {
+        return (
+            <Alert elevation={6} variant="filled" severity="info"
+                action={
+                    <React.Fragment>
+                        <Button color="inherit" size="small" onClick={handleUpdate}> UPDATE </Button>
+                        <IconButton color="inherit" size="small" onClick={handleClose}>
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                }
+            >
+                Update Available!
+            </Alert>
+        )
+    }
+    if (Message === "OFFLINE") {
+        return (
+            <Alert elevation={6} variant="filled" severity="success" onClose={handleClose} >
+                Offline Mode Available! Now you can play even if you're offline.
+            </Alert>
+        )
+    }
+    return null;
+}
+
+
+
+
+
+const UseServiceWorker = () => {
+    const [Message, setMessage] = React.useState("");
+    const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
+    const [installPrompt, setinstallPrompt] = React.useState(null);
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setMessage("");
+    };
 
     React.useEffect(() => {
         serviceWorker.register({
             onOpen: () => {
-                setMessage("OFFLINE");
+                if (Message === "") {
+                    setMessage("OFFLINE");
+                }
             },
             onUpdate: registration => {
                 setWaitingServiceWorker(registration.waiting);
                 setMessage("UPDATE");
             },
         });
-    }, []);
+    }, [Message]);
 
-    React.useEffect(() => {
-        // We setup an event listener to automatically reload the page
-        // after the Service Worker has been updated, this will trigger
-        // on all the open tabs of our application, so that we don't leave
-        // any tab in an incosistent state
-        if (waitingServiceWorker) {
-            console.log("exists", waitingServiceWorker);
-            waitingServiceWorker.addEventListener('statechange', event => {
-                if (event.target.state === 'activated') {
-                    window.location.reload();
-                }
-            });
-        }
-    }, [waitingServiceWorker]);
 
     React.useEffect(() => {
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -76,8 +105,25 @@ const UseServiceWorker = () => {
             e.preventDefault();
             // Stash the event so it can be triggered later.
             setinstallPrompt(e);
+            if (Message !== "UPDATE") {
+                setMessage("INSTALL");
+            }
         });
-    }, []);
+    }, [Message]);
+
+    React.useEffect(() => {
+        // We setup an event listener to automatically reload the page
+        // after the Service Worker has been updated, this will trigger
+        // on all the open tabs of our application, so that we don't leave
+        // any tab in an incosistent state
+        if (waitingServiceWorker) {
+            waitingServiceWorker.addEventListener('statechange', event => {
+                if (event.target.state === 'activated') {
+                    window.location.reload();
+                }
+            });
+        }
+    }, [waitingServiceWorker]);
 
 
 
@@ -88,33 +134,7 @@ const UseServiceWorker = () => {
             onClose={handleClose}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             TransitionComponent={transition}>
-            {Message === "OFFLINE" ?
-                <Alert elevation={6} variant="filled" severity="success"
-                    action={
-                        <React.Fragment>
-                            {installPrompt && <Button color="inherit" size="small" onClick={handleInstall}> INSTALL </Button>}
-                            <IconButton color="inherit" size="small" onClick={handleClose}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </React.Fragment>
-                    }
-                >
-                    Offline Mode Available! Now you can play even if you're offline.
-                </Alert>
-                :
-                <Alert elevation={6} variant="filled" severity="info"
-                    action={
-                        <React.Fragment>
-                            <Button color="inherit" size="small" onClick={handleUpdate}> UPDATE </Button>
-                            <IconButton color="inherit" size="small" onClick={handleClose}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </React.Fragment>
-                    }
-                >
-                    Update Available!
-                </Alert>
-            }
+            <Snackbaralert Message={Message} setMessage={setMessage} waitingServiceWorker={waitingServiceWorker} installPrompt={installPrompt} />
         </Snackbar>
     );
 };
