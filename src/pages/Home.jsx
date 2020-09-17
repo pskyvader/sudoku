@@ -114,7 +114,7 @@ const Home = (props) => {
         >
             <Suspense fallback={renderLoader()}>
                 <div className={classes.paper}>
-                    <Typography id="modal-title" variant="h4" gutterBottom> Ganaste por la CTM! </Typography>
+                    <Typography id="modal-title" variant="h4" gutterBottom> Ya era hora, no crees?</Typography>
                     <Typography id="modal-description" variant="h5" gutterBottom> Nueva partida? </Typography>
                     <DifficultyButtons {...props} />
                     <p>pd:uwu</p>
