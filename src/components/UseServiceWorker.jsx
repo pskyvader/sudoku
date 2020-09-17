@@ -9,13 +9,18 @@ import * as serviceWorker from '../serviceWorker';
 
 const UseServiceWorker = () => {
     const [Open, setOpen] = React.useState(false);
-    const [Message, setMessage] = React.useState("asdasdasd");
+    const [Message, setMessage] = React.useState("");
+    const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
     serviceWorker.register({
         onOpen: () => {
-            setMessage("Offline Mode Available!");
+            setMessage("OFFLINE");
             setOpen(true);
         },
-        //onUpdate: reg => store.dispatch({ type: SW_UPDATE, payload: reg }),
+        onUpdate: registration => {
+            setWaitingServiceWorker(registration.waiting);
+            setMessage("UPDATE");
+            setOpen(true);
+        },
     });
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -24,7 +29,31 @@ const UseServiceWorker = () => {
         setOpen(false);
     };
 
-    setTimeout(setOpen, 5000, true);
+    const handleUpdate = () => {
+        if (waitingServiceWorker) {
+            // We send the SKIP_WAITING message to tell the Service Worker
+            // to update its cache and flush the old one
+            waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
+        }
+        setOpen(false);
+    };
+
+
+
+    React.useEffect(() => {
+        // We setup an event listener to automatically reload the page
+        // after the Service Worker has been updated, this will trigger
+        // on all the open tabs of our application, so that we don't leave
+        // any tab in an incosistent state
+        waitingServiceWorker.addEventListener('statechange', event => {
+            if (event.target.state === 'activated') {
+                window.location.reload();
+            }
+        });
+    }, [waitingServiceWorker]);
+
+    React.useEffect(() => setTimeout(setOpen, 5000, true), []);
+
     const transition = (props) => <Slide {...props} direction="up" />;
     return (
         <Snackbar
@@ -32,10 +61,14 @@ const UseServiceWorker = () => {
             onClose={handleClose}
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             TransitionComponent={transition}>
-            <Alert onClose={handleClose} severity="success">
-                {Message}
-                <Button color="secondary" size="small" onClick={handleClose}> UNDO </Button>
-            </Alert>
+            {Message === "OFFLINE" ?
+                <Alert onClose={handleClose} severity="success"> Offline Mode Available! </Alert>
+                :
+                <Alert onClose={handleClose} severity="success">
+                    Update Available!
+                    <Button color="secondary" size="small" onClick={handleUpdate}> UPDATE </Button>
+                </Alert>
+            }
         </Snackbar>
     );
 };
