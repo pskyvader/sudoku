@@ -20,8 +20,8 @@ const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyBut
 const useStyles = makeStyles((theme) => {
     const light = theme.palette.type === "light";
     const mainbordercolor = light ? theme.palette.info.dark : theme.palette.primary.light;
-    const mainborder = theme.spacing(0.25 + 0.125) + "px solid " + mainbordercolor;
-    const border = theme.spacing(0.25) + "px solid " + mainbordercolor;
+    const mainborder = theme.spacing(0.25 + 0.125) + " solid " + mainbordercolor;
+    const border = theme.spacing(0.25) + " solid " + mainbordercolor;
     return {
         box: {
             maxWidth: "calc(100vh - " + theme.mixins.toolbar.minHeight * 2 + "px)",

@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => {
     const mainbordercolor = light ? theme.palette.info.dark : theme.palette.primary.light;
     return {
         subbox: { textAlign: "center", height: "100%" },
-        grid: { borderRight: theme.spacing(0.125) + "px solid " + mainbordercolor },
-        subgrid: { borderBottom: theme.spacing(0.125) + "px solid " + mainbordercolor }
+        grid: { borderRight: theme.spacing(0.125) + " solid " + mainbordercolor },
+        subgrid: { borderBottom: theme.spacing(0.125) + " solid " + mainbordercolor }
     }
 });
 

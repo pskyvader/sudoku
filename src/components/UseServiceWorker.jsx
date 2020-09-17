@@ -7,16 +7,21 @@ import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 
 import * as serviceWorker from '../serviceWorker';
+import LocalStorage from '../logic/LocalStorage';
 
 
 
 const Snackbaralert = (props) => {
-    const { Message, setMessage, waitingServiceWorker, installPrompt } = props;
-    console.log(Message, "asdf");
+    const { Message, setMessage, waitingServiceWorker, installPrompt,setInstalled } = props;
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
+        setMessage("");
+    };
+    const handleInstallClose = () => {
+        setInstalled(true);
+        LocalStorage.set("installed",true);
         setMessage("");
     };
 
@@ -36,6 +41,8 @@ const Snackbaralert = (props) => {
                 if (choiceResult.outcome === 'accepted') {
                     console.log('User accepted the install prompt');
                 } else {
+                    setInstalled(true);
+                    LocalStorage.set("installed",true);
                     console.log('User dismissed the install prompt');
                 }
             });
@@ -48,7 +55,7 @@ const Snackbaralert = (props) => {
             action={
                 <React.Fragment>
                     <Button color="inherit" size="small" onClick={handleInstall}> INSTALL </Button>
-                    <IconButton color="inherit" size="small" onClick={handleClose}>
+                    <IconButton color="inherit" size="small" onClick={handleInstallClose}>
                         <CloseIcon fontSize="small" />
                     </IconButton>
                 </React.Fragment>
@@ -99,9 +106,12 @@ const Snackbaralert = (props) => {
 
 
 const UseServiceWorker = () => {
-    const [Message, setMessage] = React.useState("UPDATE");
+    const [Message, setMessage] = React.useState("");
     const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
     const [installPrompt, setinstallPrompt] = React.useState(null);
+    const [Installed, setInstalled] = React.useState(LocalStorage.get("installed",false));
+
+    
 
     React.useEffect(() => {
         serviceWorker.register({
@@ -124,11 +134,11 @@ const UseServiceWorker = () => {
             e.preventDefault();
             // Stash the event so it can be triggered later.
             setinstallPrompt(e);
-            if (Message !== "UPDATE") {
+            if (Message !== "UPDATE" && !Installed) {
                 setMessage("INSTALL");
             }
         });
-    }, [Message]);
+    }, [Message,Installed]);
 
     React.useEffect(() => {
         // We setup an event listener to automatically reload the page
@@ -146,7 +156,7 @@ const UseServiceWorker = () => {
 
 
 
-    return <Snackbaralert Message={Message} setMessage={setMessage} waitingServiceWorker={waitingServiceWorker} installPrompt={installPrompt} />
+    return <Snackbaralert setInstalled={setInstalled} Message={Message} setMessage={setMessage} waitingServiceWorker={waitingServiceWorker} installPrompt={installPrompt} />
 
 };
 
