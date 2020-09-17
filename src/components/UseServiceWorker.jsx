@@ -12,7 +12,7 @@ import LocalStorage from '../logic/LocalStorage';
 
 
 const Snackbaralert = (props) => {
-    const { Message, setMessage, waitingServiceWorker, installPrompt,setInstalled } = props;
+    const { Message, setMessage, waitingServiceWorker, installPrompt, setInstalled } = props;
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -21,7 +21,7 @@ const Snackbaralert = (props) => {
     };
     const handleInstallClose = () => {
         setInstalled(true);
-        LocalStorage.set("installed",true);
+        LocalStorage.set("installed", true);
         setMessage("");
     };
 
@@ -42,14 +42,14 @@ const Snackbaralert = (props) => {
                     console.log('User accepted the install prompt');
                 } else {
                     setInstalled(true);
-                    LocalStorage.set("installed",true);
+                    LocalStorage.set("installed", true);
                     console.log('User dismissed the install prompt');
                 }
             });
         }
         setMessage("");
     };
-    let alertmessage = <div/>;
+    let alertmessage = <div />;
     if (Message === "INSTALL") {
         alertmessage = <Alert elevation={6} variant="filled" severity="success"
             action={
@@ -96,7 +96,7 @@ const Snackbaralert = (props) => {
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         TransitionComponent={transition}
-        >
+    >
         {alertmessage}
     </Snackbar>
 }
@@ -109,9 +109,9 @@ const UseServiceWorker = () => {
     const [Message, setMessage] = React.useState("");
     const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
     const [installPrompt, setinstallPrompt] = React.useState(null);
-    const [Installed, setInstalled] = React.useState(LocalStorage.get("installed",false));
+    const [Installed, setInstalled] = React.useState(LocalStorage.get("installed", false));
 
-    
+
 
     React.useEffect(() => {
         serviceWorker.register({
@@ -130,15 +130,17 @@ const UseServiceWorker = () => {
 
     React.useEffect(() => {
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the mini-infobar from appearing on mobile
-            e.preventDefault();
-            // Stash the event so it can be triggered later.
-            setinstallPrompt(e);
-            if (Message !== "UPDATE" && !Installed) {
-                setMessage("INSTALL");
+            if (localStorage) {
+                // Prevent the mini-infobar from appearing on mobile
+                e.preventDefault();
+                // Stash the event so it can be triggered later.
+                setinstallPrompt(e);
+                if (Message !== "UPDATE" && !Installed) {
+                    setMessage("INSTALL");
+                }
             }
         });
-    }, [Message,Installed]);
+    }, [Message, Installed]);
 
     React.useEffect(() => {
         // We setup an event listener to automatically reload the page
