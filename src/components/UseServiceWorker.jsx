@@ -12,6 +12,7 @@ import * as serviceWorker from '../serviceWorker';
 
 const Snackbaralert = (props) => {
     const { Message, setMessage, waitingServiceWorker, installPrompt } = props;
+    console.log(Message, "asdf");
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -41,9 +42,25 @@ const Snackbaralert = (props) => {
         }
         setMessage("");
     };
+    let alertmessage = <div/>;
+    if (Message === "INSTALL") {
+        alertmessage = <Alert elevation={6} variant="filled" severity="success"
+            action={
+                <React.Fragment>
+                    <Button color="inherit" size="small" onClick={handleInstall}> INSTALL </Button>
+                    <IconButton color="inherit" size="small" onClick={handleClose}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </React.Fragment>
+            }
+        >
+            App Mode Available. You can install this game as an app.
+            </Alert>
+
+    }
 
     if (Message === "UPDATE") {
-        return (
+        alertmessage = (
             <Alert elevation={6} variant="filled" severity="info"
                 action={
                     <React.Fragment>
@@ -59,13 +76,22 @@ const Snackbaralert = (props) => {
         )
     }
     if (Message === "OFFLINE") {
-        return (
+        alertmessage = (
             <Alert elevation={6} variant="filled" severity="success" onClose={handleClose} >
                 Offline Mode Available! Now you can play even if you're offline.
             </Alert>
         )
     }
-    return null;
+
+    const transition = (props2) => <Slide {...props2} direction="up" />;
+    return <Snackbar
+        open={Message !== ""}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        TransitionComponent={transition}
+        >
+        {alertmessage}
+    </Snackbar>
 }
 
 
@@ -73,16 +99,9 @@ const Snackbaralert = (props) => {
 
 
 const UseServiceWorker = () => {
-    const [Message, setMessage] = React.useState("");
+    const [Message, setMessage] = React.useState("UPDATE");
     const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
     const [installPrompt, setinstallPrompt] = React.useState(null);
-
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setMessage("");
-    };
 
     React.useEffect(() => {
         serviceWorker.register({
@@ -127,16 +146,8 @@ const UseServiceWorker = () => {
 
 
 
-    const transition = (props) => <Slide {...props} direction="up" />;
-    return (
-        <Snackbar
-            open={Message !== ""}
-            onClose={handleClose}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            TransitionComponent={transition}>
-            <Snackbaralert Message={Message} setMessage={setMessage} waitingServiceWorker={waitingServiceWorker} installPrompt={installPrompt} />
-        </Snackbar>
-    );
+    return <Snackbaralert Message={Message} setMessage={setMessage} waitingServiceWorker={waitingServiceWorker} installPrompt={installPrompt} />
+
 };
 
 export default UseServiceWorker;
