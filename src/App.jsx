@@ -12,7 +12,7 @@ import Header from './components/Header';
 import SudokuResolver from './logic/SudokuResolver';
 import LocalStorage from './logic/LocalStorage';
 import UseServiceWorker from './components/UseServiceWorker';
-import {LanguageProvider} from './languages/Language';
+import { LanguageProvider } from './languages/Language';
 
 const Home = lazy(() => import('./pages/Home'));
 const renderLoader = () => null;
@@ -53,7 +53,9 @@ function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <LanguageProvider>
-                <UseServiceWorker />
+                <Suspense fallback={renderLoader()}>
+                    <UseServiceWorker />
+                </Suspense>
                 <Header board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} DarkMode={DarkMode} SetDarkMode={SetDarkMode}>
                     <Suspense fallback={renderLoader()}>
                         <Home board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} />

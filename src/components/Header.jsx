@@ -32,9 +32,9 @@ export default function ButtonAppBar(props) {
                     {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                         <MenuIcon />
                     </IconButton> */}
-                    <Typography variant="h6" className={classes.title}> Sudoku </Typography>
+                    <Typography variant="h6" className={classes.title}>Sudoku </Typography>
                     <Suspense fallback={renderLoader()}>
-                        <LanguageSelector/>
+                        <LanguageSelector />
                     </Suspense>
                     <Suspense fallback={renderLoader()}>
                         <DarkModeButton {...props} />

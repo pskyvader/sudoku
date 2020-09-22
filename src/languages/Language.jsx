@@ -1,16 +1,34 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
 
 import LocalStorage from '../logic/LocalStorage';
 import en from './en.json';
+import es from './es.json';
+
+
+
+const useStyles = makeStyles((theme) => ({
+    select: {
+        color: theme.palette.primary.contrastText,
+        borderColor:"white"
+    },
+}));
+
 
 
 export const dictionaryList = {
-    en
+    en,
+    es
 };
 
 export const languageOptions = {
     en: 'English',
+    es: 'Español',
 };
+
 // create the language context with default selected language
 export const LanguageContext = createContext({
     userLanguage: 'en',
@@ -18,7 +36,7 @@ export const LanguageContext = createContext({
 });
 
 // get text according to id & current language
-export function Text({ tid }) {
+export function Text(tid) {
     const languageContext = useContext(LanguageContext);
     return languageContext.dictionary[tid] || tid;
 };
@@ -46,6 +64,7 @@ export function LanguageProvider({ children }) {
 
 
 export default function LanguageSelector() {
+    const classes = useStyles();
     const { userLanguage, userLanguageChange } = useContext(LanguageContext);
 
     // set selected language by calling context method
@@ -60,13 +79,10 @@ export default function LanguageSelector() {
     }, [userLanguageChange]);
 
     return (
-        <select
-            onChange={handleLanguageChange}
-            value={userLanguage}
-        >
+        <Select variant='standard' value={userLanguage} onChange={handleLanguageChange} className={classes.select} >
             {Object.entries(languageOptions).map(([id, name]) => (
-                <option key={id} value={id}>{name}</option>
+                <MenuItem key={id} value={id}>{name}</MenuItem>
             ))}
-        </select>
+        </Select>
     );
 };
