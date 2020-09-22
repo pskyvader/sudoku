@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
@@ -10,6 +11,7 @@ import MoodBadIcon from '@material-ui/icons/MoodBad';
 import StarsIcon from '@material-ui/icons/Stars';
 
 import SudokuResolver from "../../logic/SudokuResolver";
+import Text from '../../languages/Language';
 
 const buttoncolor = (pallete, getContrastText) => {
     return {
@@ -55,22 +57,30 @@ const DifficultyButtons = (props) => {
 
 
     return <ButtonGroup size="small">
-        <Button className={classes.button1} onClick={() => ResetBoard(63)}>
-            <EmojiEmotionsIcon />
-            {Difficulty === 63 ? <StarsIcon className={classes.buttonstar} /> : ""}
-        </Button>
-        <Button className={classes.button2} onClick={() => ResetBoard(45)}>
-            <InsertEmoticonIcon />
-            {Difficulty === 45 ? <StarsIcon className={classes.buttonstar} /> : ""}
-        </Button>
-        <Button className={classes.button3} onClick={() => ResetBoard(36)}>
-            <FaceIcon />
-            {Difficulty === 36 ? <StarsIcon className={classes.buttonstar} /> : ""}
-        </Button>
-        <Button className={classes.button4} onClick={() => ResetBoard(27)}>
-            <MoodBadIcon />
-            {Difficulty === 27 ? <StarsIcon className={classes.buttonstar} /> : ""}
-        </Button>
+        <Tooltip title={Text('veryeasymode')}>
+            <Button className={classes.button1} onClick={() => ResetBoard(63)}>
+                <EmojiEmotionsIcon />
+                {Difficulty === 63 ? <StarsIcon className={classes.buttonstar} /> : ""}
+            </Button>
+        </Tooltip>
+        <Tooltip title={Text('easymode')}>
+            <Button className={classes.button2} onClick={() => ResetBoard(45)}>
+                <InsertEmoticonIcon />
+                {Difficulty === 45 ? <StarsIcon className={classes.buttonstar} /> : ""}
+            </Button>
+        </Tooltip>
+        <Tooltip title={Text('mediummode')}>
+            <Button className={classes.button3} onClick={() => ResetBoard(36)}>
+                <FaceIcon />
+                {Difficulty === 36 ? <StarsIcon className={classes.buttonstar} /> : ""}
+            </Button>
+        </Tooltip>
+        <Tooltip title={Text('hardmode')}>
+            <Button className={classes.button4} onClick={() => ResetBoard(27)}>
+                <MoodBadIcon />
+                {Difficulty === 27 ? <StarsIcon className={classes.buttonstar} /> : ""}
+            </Button>
+        </Tooltip>
     </ButtonGroup>
 }
 

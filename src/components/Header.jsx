@@ -18,10 +18,9 @@ const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
 
 const useStyles = makeStyles((theme) => ({
     root: { flexGrow: 1, },
-    title: { flexGrow: 1, },
     margin: {
         marginRight: theme.spacing(2),
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('xs')]: {
             marginRight: theme.spacing(0.5),
         },
     }
@@ -35,11 +34,14 @@ export default function ButtonAppBar(props) {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                    <IconButton edge="start" color="inherit" aria-label="menu">
                         <MenuIcon />
                     </IconButton>
+                    <Hidden smUp>
+                        <div className={classes.root}></div>
+                    </Hidden>
                     <Hidden xsDown>
-                        <Typography variant="h6" className={classes.title}>Sudoku </Typography>
+                        <Typography variant="h6" className={classes.root}> Sudoku </Typography>
                     </Hidden>
                     <Suspense fallback={renderLoader()}>
                         <div className={classes.margin}>
