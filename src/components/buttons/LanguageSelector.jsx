@@ -5,9 +5,10 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Hidden from '@material-ui/core/Hidden';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import LocalStorage from '../../logic/LocalStorage';
-import { LanguageContext, languageOptions } from '../../languages/Language';
+import Text,{ LanguageContext, languageOptions} from '../../languages/Language';
 
 
 
@@ -51,6 +52,7 @@ export default function LanguageSelector() {
 
     return (
         <div>
+            <Tooltip title={Text('language')}>
             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} className={classes.select}>
                 <LanguageIcon className={classes.icon} />
                 <Hidden xsDown>
@@ -60,6 +62,7 @@ export default function LanguageSelector() {
                     {userLanguage}
                 </Hidden>
             </Button>
+            </Tooltip>
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}

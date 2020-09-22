@@ -1,4 +1,11 @@
 {
-    "sudoku": "Sudoku",
-    "darkmode": "Modo Oscuro"
-  }
+  "sudoku": "Sudoku",
+  "language": "Selecciona un idioma",
+  "darkmode": "Modo oscuro",
+  "veryeasymode": "Very Easy",
+  "easymode": "Easy",
+  "mediummode": "Medium",
+  "hardmode": "Hard",
+  "options": "Options",
+  "clear": "Clear"
+}

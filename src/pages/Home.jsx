@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 
 import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
+import Text from '../languages/Language';
 
 
 // import Modal from '@material-ui/core/Modal';
@@ -104,7 +105,7 @@ const Home = (props) => {
     });
 
 
-    const renderLoader = () => "loading...";
+    const renderLoader = () => Text("loading");
     const modal = (
         <Modal
             open={Success}
@@ -114,10 +115,10 @@ const Home = (props) => {
         >
             <Suspense fallback={renderLoader()}>
                 <div className={classes.paper}>
-                    <Typography id="modal-title" variant="h4" gutterBottom> Ya era hora, no crees?</Typography>
-                    <Typography id="modal-description" variant="h5" gutterBottom> Nueva partida? </Typography>
+                    <Typography id="modal-title" variant="h4" gutterBottom> {Text("victory"+(Math.round(Math.random()*10)+1))}</Typography>
+                    <Typography id="modal-description" variant="h5" gutterBottom> {Text("newgame")} </Typography>
                     <DifficultyButtons {...props} />
-                    <p>pd:uwu</p>
+                    <p> ... {Text("victorycomment"+(Math.round(Math.random()*10)+1))}</p>
                 </div>
             </Suspense>
         </Modal>

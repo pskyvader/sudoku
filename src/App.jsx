@@ -12,10 +12,11 @@ import Header from './components/Header';
 import SudokuResolver from './logic/SudokuResolver';
 import LocalStorage from './logic/LocalStorage';
 import UseServiceWorker from './components/UseServiceWorker';
-import { LanguageProvider } from './languages/Language';
+import Text, { LanguageProvider } from './languages/Language';
 
 const Home = lazy(() => import('./pages/Home'));
-const renderLoader = () => null;
+
+const renderLoader = () => Text("loading");
 
 
 const cacheboard = LocalStorage.get("sudoku_board", null);

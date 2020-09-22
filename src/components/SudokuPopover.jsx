@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 
+import Text from '../languages/Language';
 
 
 const useStyles = makeStyles((theme) => {
@@ -123,12 +124,19 @@ const SudokuPopover = (props) => {
         <Grid item xs={12}>
             <Grid item xs={12}>
                 <Button classes={{ label: classes.label }} className={clsx(classes.options, optioncolor)} onClick={handleChange}>
-                    <Checkbox color="default" className={clsx(classes.checkbox, optioncolor)} checked={OptionsActive} onChange={handleChange} inputProps={{ 'aria-label': 'Option checkbox' }} disableRipple />
-                    Options
+                    <Checkbox 
+                    color="default" 
+                    className={clsx(classes.checkbox, optioncolor)} 
+                    checked={OptionsActive} 
+                    onChange={handleChange} 
+                    inputProps={{ 'aria-label': 'Option checkbox' }} 
+                    disableRipple
+                     />
+                    {Text('options')}
                 </Button>
             </Grid>
             <Grid item xs={12}>
-                <Button className={clsx(classes.options, optioncolor)} onClick={() => Clear()}>Clear</Button>
+                <Button className={clsx(classes.options, optioncolor)} onClick={() => Clear()}>{Text('clear')}</Button>
             </Grid>
         </Grid>
 

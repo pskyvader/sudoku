@@ -106,24 +106,18 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive }) => {
                 <Suspense fallback={renderLoader()}>
                     <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition className={classes.popper}>
                         {({ TransitionProps, placement }) => (
-                            <SudokuPopover TransitionProps={TransitionProps} placement={placement} handleClose={handleClose} field={field} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} parentOptions={SetChangeOption} />
+                            <SudokuPopover
+                                TransitionProps={TransitionProps}
+                                placement={placement}
+                                handleClose={handleClose}
+                                field={field}
+                                OptionsActive={OptionsActive}
+                                setOptionsActive={setOptionsActive}
+                                parentOptions={SetChangeOption}
+                            />
                         )}
                     </Popper>
-                    {/* <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition className={classes.root}>
-                        {({ TransitionProps, placement }) => (
-                            <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }} >
-                                <div>
-                                    <Paper>
-                                        <ClickAwayListener onClickAway={handleClose}>
-                                            <div>
-                                                <SudokuPopover handleClose={handleClose} field={field} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} parentOptions={SetChangeOption} />
-                                            </div>
-                                        </ClickAwayListener>
-                                    </Paper>
-                                </div>
-                            </Grow>
-                        )}
-                    </Popper> */}
+
                 </Suspense>
             </React.Fragment>
         );

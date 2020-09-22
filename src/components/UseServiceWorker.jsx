@@ -8,6 +8,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import * as serviceWorker from '../serviceWorker';
 import LocalStorage from '../logic/LocalStorage';
+import Text from '../languages/Language';
 
 
 
@@ -54,15 +55,14 @@ const Snackbaralert = (props) => {
         alertmessage = <Alert elevation={6} variant="filled" severity="success"
             action={
                 <React.Fragment>
-                    <Button color="inherit" size="small" onClick={handleInstall}> INSTALL </Button>
+                    <Button color="inherit" size="small" onClick={handleInstall}> {Text("install")} </Button>
                     <IconButton color="inherit" size="small" onClick={handleInstallClose}>
                         <CloseIcon fontSize="small" />
                     </IconButton>
                 </React.Fragment>
-            }
-        >
-            App Mode Available. You can install this game as an app.
-            </Alert>
+            } >
+            {Text("app-available")}
+        </Alert>
 
     }
 
@@ -71,21 +71,20 @@ const Snackbaralert = (props) => {
             <Alert elevation={6} variant="filled" severity="info"
                 action={
                     <React.Fragment>
-                        <Button color="inherit" size="small" onClick={handleUpdate}> UPDATE </Button>
+                        <Button color="inherit" size="small" onClick={handleUpdate}>  {Text("update")} </Button>
                         <IconButton color="inherit" size="small" onClick={handleClose}>
                             <CloseIcon fontSize="small" />
                         </IconButton>
                     </React.Fragment>
-                }
-            >
-                Update Available!
+                } >
+                {Text("update-available")}
             </Alert>
         )
     }
     if (Message === "OFFLINE") {
         alertmessage = (
             <Alert elevation={6} variant="filled" severity="success" onClose={handleClose} >
-                Offline Mode Available! Now you can play even if you're offline.
+                {Text("offline-available")}
             </Alert>
         )
     }
