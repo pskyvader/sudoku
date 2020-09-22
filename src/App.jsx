@@ -41,7 +41,6 @@ function App() {
 
     const Save = () => {
         LocalStorage.set("difficulty", Difficulty);
-        LocalStorage.set("dark_mode", DarkMode);
     }
     React.useEffect(() => {
         window.addEventListener("beforeunload", Save);
