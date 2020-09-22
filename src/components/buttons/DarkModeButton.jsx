@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => {
     return {
         darkmode: {
             color: theme.palette.info.contrastText,
-            margin: theme.spacing(1)
+            padding:theme.spacing(1,0)
         }
     }
 });
