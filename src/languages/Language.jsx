@@ -1,8 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
+import LanguageIcon from '@material-ui/icons/Language';
+
+
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import LocalStorage from '../logic/LocalStorage';
 import en from './en.json';
@@ -13,8 +16,10 @@ import es from './es.json';
 const useStyles = makeStyles((theme) => ({
     select: {
         color: theme.palette.primary.contrastText,
-        borderColor:"white"
     },
+    icon: {
+        margin: theme.spacing(1),
+      },
 }));
 
 
@@ -66,9 +71,20 @@ export function LanguageProvider({ children }) {
 export default function LanguageSelector() {
     const classes = useStyles();
     const { userLanguage, userLanguageChange } = useContext(LanguageContext);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
 
     // set selected language by calling context method
-    const handleLanguageChange = e => userLanguageChange(e.target.value);
+    const handleMenuItemClick = (e,id) => {
+        userLanguageChange(id);
+        setAnchorEl(null);
+    }
 
     useEffect(() => {
         let defaultLanguage = LocalStorage.get("rcml-lang", null);
@@ -79,10 +95,21 @@ export default function LanguageSelector() {
     }, [userLanguageChange]);
 
     return (
-        <Select variant='standard' value={userLanguage} onChange={handleLanguageChange} className={classes.select} >
-            {Object.entries(languageOptions).map(([id, name]) => (
-                <MenuItem key={id} value={id}>{name}</MenuItem>
-            ))}
-        </Select>
+        <div>
+            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} className={classes.select}>
+                <LanguageIcon className={classes.icon}/>
+                {/* {languageOptions[userLanguage]} */}
+                {userLanguage}
+            </Button>
+            <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}>
+                {Object.entries(languageOptions).map(([id, name]) => (
+                    <MenuItem key={id} selected={id === userLanguage} onClick={(event) => handleMenuItemClick(event,id)}>{name}</MenuItem>
+                ))}
+            </Menu>
+        </div>
     );
 };
