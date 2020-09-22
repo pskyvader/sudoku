@@ -115,10 +115,10 @@ const Home = (props) => {
         >
             <Suspense fallback={renderLoader()}>
                 <div className={classes.paper}>
-                    <Typography id="modal-title" variant="h4" gutterBottom> {Text("victory"+(Math.round(Math.random()*10)+1))}</Typography>
+                    <Typography id="modal-title" variant="h4" gutterBottom> {Text("victory"+(Math.round(Math.random()*9)+1))}</Typography>
                     <Typography id="modal-description" variant="h5" gutterBottom> {Text("newgame")} </Typography>
                     <DifficultyButtons {...props} />
-                    <p> ... {Text("victorycomment"+(Math.round(Math.random()*10)+1))}</p>
+                    <p> ... {Text("victorycomment"+(Math.round(Math.random()*9)+1))}</p>
                 </div>
             </Suspense>
         </Modal>

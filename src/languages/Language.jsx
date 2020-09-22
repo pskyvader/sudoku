@@ -17,20 +17,24 @@ export const languageOptions = {
 };
 
 // create the language context with default selected language
+
+const userLang = navigator.language.substring(0,2) || navigator.userLanguage.substring(0,2);
+const defaultlanguage=languageOptions[userLang] ? userLang : 'en';
+
 export const LanguageContext = createContext({
-    userLanguage: 'en',
-    dictionary: dictionaryList.en
+    userLanguage: defaultlanguage,
+    dictionary: dictionaryList[defaultlanguage]
 });
 
 
 export function LanguageProvider({ children }) {
-    const [userLanguage, setUserLanguage] = useState('en');
+    const [userLanguage, setUserLanguage] = useState(defaultlanguage);
 
     const provider = {
         userLanguage,
         dictionary: dictionaryList[userLanguage],
         userLanguageChange: selected => {
-            const newLanguage = languageOptions[selected] ? selected : 'en'
+            const newLanguage = languageOptions[selected] ? selected : defaultlanguage
             setUserLanguage(newLanguage);
             LocalStorage.set("rcml-lang", newLanguage);
         }
