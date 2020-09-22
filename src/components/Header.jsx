@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 // import { DifficultyButtons, DarkModeButton } from './Buttons';
 const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
+const LanguageSelector = lazy(() => import('../languages/Language'));
 
 
 
@@ -32,6 +33,9 @@ export default function ButtonAppBar(props) {
                         <MenuIcon />
                     </IconButton> */}
                     <Typography variant="h6" className={classes.title}> Sudoku </Typography>
+                    <Suspense fallback={renderLoader()}>
+                        <LanguageSelector/>
+                    </Suspense>
                     <Suspense fallback={renderLoader()}>
                         <DarkModeButton {...props} />
                     </Suspense>
