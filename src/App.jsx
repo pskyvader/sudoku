@@ -41,13 +41,13 @@ function App() {
         [DarkMode],
     );
 
-    const Save = () => {
-        LocalStorage.set("difficulty", Difficulty);
-    }
-    React.useEffect(() => {
-        window.addEventListener("beforeunload", Save);
-        return () => window.removeEventListener("beforeunload", Save);
-    });
+    // const Save = () => {
+    //     LocalStorage.set("difficulty", Difficulty);
+    // }
+    // React.useEffect(() => {
+    //     window.addEventListener("beforeunload", Save);
+    //     return () => window.removeEventListener("beforeunload", Save);
+    // });
 
 
     return (

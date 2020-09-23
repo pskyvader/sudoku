@@ -11,6 +11,7 @@ import MoodBadIcon from '@material-ui/icons/MoodBad';
 import StarsIcon from '@material-ui/icons/Stars';
 
 import SudokuResolver from "../../logic/SudokuResolver";
+import LocalStorage from "../../logic/LocalStorage";
 import Text from '../../languages/Language';
 
 const buttoncolor = (pallete, getContrastText) => {
@@ -52,7 +53,10 @@ const DifficultyButtons = (props) => {
     function ResetBoard(n) {
         const newboard = new SudokuResolver(n);
         setDifficulty(n);
-        board.RestoreBoard(newboard.CloneBoard());
+        LocalStorage.set("difficulty", n);
+        const newmatrix=newboard.CloneBoard();
+        board.RestoreBoard(newmatrix);
+        LocalStorage.set("sudoku_board", newmatrix);
     }
 
 

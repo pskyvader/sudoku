@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 
-const SudokuSubBox = ({ matrix, height, OptionsActive, setOptionsActive }) => {
+const SudokuSubBox = ({ matrix, height, OptionsActive, setOptionsActive ,SaveBoard}) => {
     const classes = useStyles();
     const box = matrix.submatrix;
     const key = matrix.x + "," + matrix.y;
@@ -29,7 +29,7 @@ const SudokuSubBox = ({ matrix, height, OptionsActive, setOptionsActive }) => {
                 {row.map((column, y) => {
                     const keyy = keyx + "," + y;
                     return <Grid key={keyy} item xs={12} className={classes.subgrid}>
-                        <SudokuNumberBox field={column} height={height} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} />
+                        <SudokuNumberBox field={column} height={height} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} SaveBoard={SaveBoard}/>
                     </Grid>
                 })}
             </Grid>

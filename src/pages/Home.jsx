@@ -82,16 +82,21 @@ const Home = (props) => {
 
     const BoxHeight = () => {
         if(canvas.current.clientWidth>0){
-            setHeight(canvas.current.clientWidth / 3 - 3);// x / 3 (3 squares) -3 (3px borders ) 
+            const finalheight=canvas.current.clientWidth / 3 - 3;// x / 3 (3 squares) -3 (3px borders ) 
+            setHeight(finalheight);
+            LocalStorage.set("box_height", finalheight);
         }else{
             setTimeout(BoxHeight, 100);
         }
     }
-    const Save = () => {
-        LocalStorage.set("box_height", height);
+    const SaveBoard1 = () => {
+        // LocalStorage.set("box_height", height);
         LocalStorage.set("sudoku_board", board.CloneBoard());
-        LocalStorage.set("options_active", OptionsActive);
+        // LocalStorage.set("options_active", OptionsActive);
+        console.log("board saved",board.CloneBoard());
     }
+
+    const SaveBoard = debounce(SaveBoard1, 5000);
 
     const debouncedHandleResize = debounce(BoxHeight, 100);
     React.useLayoutEffect(debouncedHandleResize, []);
@@ -99,10 +104,10 @@ const Home = (props) => {
         window.addEventListener("resize", debouncedHandleResize);
         return () => window.removeEventListener("resize", debouncedHandleResize);
     });
-    React.useEffect(() => {
-        window.addEventListener("beforeunload", Save);
-        return () => window.removeEventListener("beforeunload", Save);
-    });
+    // React.useEffect(() => {
+    //     window.addEventListener("beforeunload", Save);
+    //     return () => window.removeEventListener("beforeunload", Save);
+    // });
 
 
     const renderLoader = () => Text("loading");
@@ -135,7 +140,7 @@ const Home = (props) => {
                     <Grid key={x} item xs={4} className={classes.grid}>
                         {row.map((column, y) => (
                             <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                <SudokuBox matrix={column} height={height} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} />
+                                <SudokuBox matrix={column} height={height} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} SaveBoard={SaveBoard} />
                             </Grid>
                         ))}
                     </Grid>

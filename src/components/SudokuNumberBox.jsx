@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => {
 
 
 
-const SudokuNumber = ({ field, OptionsActive, setOptionsActive }) => {
+const SudokuNumber = ({ field, OptionsActive, setOptionsActive,SaveBoard }) => {
     const classes = useStyles();
     const anchorRef = React.useRef(null);
 
@@ -68,6 +68,7 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive }) => {
 
     const handleClose = () => {
         setOpen(false);
+        SaveBoard();
     };
 
 
