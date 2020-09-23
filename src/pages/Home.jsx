@@ -54,9 +54,9 @@ const useStyles = makeStyles((theme) => {
 
 function debounce(fn, ms) {
     let timer;
-    return _ => {
+    return () => {
         clearTimeout(timer);
-        timer = setTimeout(_ => {
+        timer = setTimeout(() => {
             timer = null
             fn.apply(this, arguments)
         }, ms)
@@ -89,16 +89,13 @@ const Home = (props) => {
             setTimeout(BoxHeight, 100);
         }
     }
-    const SaveBoard1 = () => {
-        // LocalStorage.set("box_height", height);
-        LocalStorage.set("sudoku_board", board.CloneBoard());
-        // LocalStorage.set("options_active", OptionsActive);
-        console.log("board saved",board.CloneBoard());
-    }
-
-    const SaveBoard = debounce(SaveBoard1, 5000);
-
     const debouncedHandleResize = debounce(BoxHeight, 100);
+
+    const Save = () => {
+        LocalStorage.set("sudoku_board", board.CloneBoard());
+    }
+    const SaveBoard = debounce(Save, 3000);
+
     React.useLayoutEffect(debouncedHandleResize, []);
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
