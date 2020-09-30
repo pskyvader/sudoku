@@ -103,7 +103,7 @@ function ResponsiveDrawer(props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-      <React.Fragment>
+    <div className={classes.root}>
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
@@ -134,7 +134,7 @@ function ResponsiveDrawer(props) {
       <main className={clsx(classes.content, { [classes.contentShift]: desktopOpen, })}>
         {children}
       </main>
-    </React.Fragment>
+    </div>
   );
 }
 

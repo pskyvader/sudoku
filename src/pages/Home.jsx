@@ -101,11 +101,6 @@ const Home = (props) => {
         window.addEventListener("resize", debouncedHandleResize);
         return () => window.removeEventListener("resize", debouncedHandleResize);
     });
-    // React.useEffect(() => {
-    //     window.addEventListener("beforeunload", Save);
-    //     return () => window.removeEventListener("beforeunload", Save);
-    // });
-
 
     const renderLoader = () => Text("loading");
     const modal = (
