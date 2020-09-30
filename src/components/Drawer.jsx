@@ -103,7 +103,7 @@ function ResponsiveDrawer(props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <div >
+      <React.Fragment>
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
@@ -124,17 +124,17 @@ function ResponsiveDrawer(props) {
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
-          <Drawer classes={{ paper: classes.drawerPaper, }} variant="persistent" open={desktopOpen} 
+          <Drawer 
+        anchor="left" className={classes.drawer} classes={{ paper: classes.drawerPaper, }} variant="persistent" open={desktopOpen} 
             onClose={handleDesktopDrawerToggle} >
             {drawer}
           </Drawer>
         </Hidden>
       </nav>
       <main className={clsx(classes.content, { [classes.contentShift]: desktopOpen, })}>
-        <div className={classes.drawerHeader} />
         {children}
       </main>
-    </div>
+    </React.Fragment>
   );
 }
 
