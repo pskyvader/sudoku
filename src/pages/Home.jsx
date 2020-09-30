@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 
-
 import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
 import Text from '../languages/Language';
@@ -69,7 +68,6 @@ const Home = (props) => {
     const [Success, setSuccess] = React.useState(board.success);
     board.setSuccess = setSuccess;
     board.success = Success;
-
 
     const handleClose = () => {
         setSuccess(false);

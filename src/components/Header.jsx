@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
@@ -34,33 +34,34 @@ const useStyles = makeStyles((theme) => ({
         }),
     },
     appBarShift: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
+        [theme.breakpoints.up('sm')]: {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: drawerWidth,
+            transition: theme.transitions.create(['margin', 'width'], {
+                easing: theme.transitions.easing.easeOut,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+        },
     },
-
-
-
 }));
 
 const renderLoader = () => null;
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
+    const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
-        setTimeout(function(){window.dispatchEvent(new Event('resize'))},100);
+        if (desktopOpen) {
+            setdesktopOpen(!desktopOpen);
+        }
     };
     const [desktopOpen, setdesktopOpen] = React.useState(false);
     const handleDesktopDrawerToggle = () => {
         setdesktopOpen(!desktopOpen);
-        setTimeout(function(){window.dispatchEvent(new Event('resize'))},100);
+        setTimeout(function () { window.dispatchEvent(new Event('resize')) }, theme.transitions.duration.enteringScreen);
     };
-
 
     return (
         <div className={classes.root}>
