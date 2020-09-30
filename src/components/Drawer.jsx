@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const renderLoader = () => "LOADING...";
+const renderLoader = () => null;
 
 function ResponsiveDrawer(props) {
     const { window, children, handleDrawerToggle, mobileOpen, handleDesktopDrawerToggle, desktopOpen } = props;
@@ -72,14 +72,6 @@ function ResponsiveDrawer(props) {
                 <Suspense fallback={renderLoader()}>
                     <LanguageSelector mode="list" />
                 </Suspense>
-
-
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
             </List>
             <Divider />
             <List>

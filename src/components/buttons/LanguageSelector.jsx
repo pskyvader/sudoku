@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import LanguageIcon from '@material-ui/icons/Language';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
@@ -8,9 +7,15 @@ import Hidden from '@material-ui/core/Hidden';
 import Tooltip from '@material-ui/core/Tooltip';
 
 
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import LanguageIcon from '@material-ui/icons/Language';
 
 
 import LocalStorage from '../../logic/LocalStorage';
@@ -25,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     },
     icon: {
         margin: theme.spacing(1),
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
     },
 }));
 
@@ -41,12 +49,19 @@ export default function LanguageSelector({ mode = "button" }) {
         setAnchorEl(null);
     };
 
-
     // set selected language by calling context method
     const handleMenuItemClick = (e, id) => {
         userLanguageChange(id);
         setAnchorEl(null);
+        setOpen(false);
     }
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickList = () => {
+        setOpen(!open);
+    };
+
 
     useEffect(() => {
         let defaultLanguage = LocalStorage.get("rcml-lang", null);
@@ -82,22 +97,30 @@ export default function LanguageSelector({ mode = "button" }) {
             </div>
         );
     } else {
-        return <ListItem button key={languageOptions[userLanguage]} onClick={handleClick} >
-            <ListItemIcon>
-                <LanguageIcon className={classes.icon} />
-            </ListItemIcon>
-            <ListItemText primary={languageOptions[userLanguage]} />
-            <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}>
-                {Object.entries(languageOptions).map(([id, name]) => (
-                    <MenuItem key={id} selected={id === userLanguage} onClick={(event) => handleMenuItemClick(event, id)}>{name}</MenuItem>
-                ))}
-            </Menu>
+        return (
+            <React.Fragment>
+                <ListItem button onClick={handleClickList}>
+                    <ListItemIcon>
+                        <LanguageIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={Text("language")} />
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        {Object.entries(languageOptions).map(([id, name]) => (
+                            <ListItem key={id} selected={id === userLanguage} button className={classes.nested} onClick={(event) => handleMenuItemClick(event, id)}>
+                                <ListItemIcon>
+                                    {id}
+                                </ListItemIcon>
+                                <ListItemText primary={name} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Collapse>
+            </React.Fragment>
 
-        </ListItem>
+        )
     }
 
 }

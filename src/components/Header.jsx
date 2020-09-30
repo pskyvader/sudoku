@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const renderLoader = () => "LOADING...";
+const renderLoader = () => null;
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
@@ -56,7 +56,7 @@ export default function ButtonAppBar(props) {
             setdesktopOpen(!desktopOpen);
         }
     };
-    const [desktopOpen, setdesktopOpen] = React.useState(true);
+    const [desktopOpen, setdesktopOpen] = React.useState(false);
     const handleDesktopDrawerToggle = () => {
         setdesktopOpen(!desktopOpen);
         setTimeout(function () { window.dispatchEvent(new Event('resize')) }, theme.transitions.duration.enteringScreen);
