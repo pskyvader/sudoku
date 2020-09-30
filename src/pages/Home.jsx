@@ -8,11 +8,6 @@ import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
 import Text from '../languages/Language';
 
-
-// import Modal from '@material-ui/core/Modal';
-// import Typography from '@material-ui/core/Typography';
-// import { DifficultyButtons } from "../components/Buttons";
-
 const Modal = lazy(() => import('@material-ui/core/Modal'));
 const Typography = lazy(() => import('@material-ui/core/Typography'));
 const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyButtons'));
@@ -81,11 +76,11 @@ const Home = (props) => {
     };
 
     const BoxHeight = () => {
-        if(canvas.current.clientWidth>0){
-            const finalheight=canvas.current.clientWidth / 3 - 3;// x / 3 (3 squares) -3 (3px borders ) 
+        if (canvas.current.clientWidth > 0) {
+            const finalheight = canvas.current.clientWidth / 3 - 3;// x / 3 (3 squares) -3 (3px borders ) 
             setHeight(finalheight);
             LocalStorage.set("box_height", finalheight);
-        }else{
+        } else {
             setTimeout(BoxHeight, 100);
         }
     }
@@ -108,14 +103,17 @@ const Home = (props) => {
             open={Success}
             onClose={handleClose}
             aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-        >
+            aria-describedby="simple-modal-description" >
             <Suspense fallback={renderLoader()}>
                 <div className={classes.paper}>
-                    <Typography id="modal-title" variant="h4" gutterBottom> {Text("victory"+(Math.round(Math.random()*9)+1))}</Typography>
-                    <Typography id="modal-description" variant="h5" gutterBottom> {Text("newgame")} </Typography>
+                    <Typography id="modal-title" variant="h4" gutterBottom>
+                        {Text("victory" + (Math.round(Math.random() * 9) + 1))}
+                    </Typography>
+                    <Typography id="modal-description" variant="h5" gutterBottom>
+                        {Text("newgame")}
+                    </Typography>
                     <DifficultyButtons {...props} />
-                    <p> ... {Text("victorycomment"+(Math.round(Math.random()*9)+1))}</p>
+                    <p> ... {Text("victorycomment" + (Math.round(Math.random() * 9) + 1))}</p>
                 </div>
             </Suspense>
         </Modal>
@@ -127,7 +125,7 @@ const Home = (props) => {
     return (
         <Box className={classes.box} ref={canvas}>
             {modal}
-            <Grid container justify="center" className={classes.root} >
+            <Grid container justify="center" className={classes.root}>
                 {board.matrix.map((row, x) => (
                     <Grid key={x} item xs={4} className={classes.grid}>
                         {row.map((column, y) => (

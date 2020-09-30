@@ -53,10 +53,12 @@ export default function ButtonAppBar(props) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
+        setTimeout(function(){window.dispatchEvent(new Event('resize'))},100);
     };
     const [desktopOpen, setdesktopOpen] = React.useState(false);
     const handleDesktopDrawerToggle = () => {
         setdesktopOpen(!desktopOpen);
+        setTimeout(function(){window.dispatchEvent(new Event('resize'))},100);
     };
 
 
@@ -75,12 +77,11 @@ export default function ButtonAppBar(props) {
                         <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDesktopDrawerToggle}>
                             <MenuIcon />
                         </IconButton>
-
                     </Hidden>
-                    <Hidden smUp>
+                    <Hidden mdUp>
                         <div className={classes.root}></div>
                     </Hidden>
-                    <Hidden xsDown>
+                    <Hidden smDown>
                         <Typography variant="h6" className={classes.root}> Sudoku </Typography>
                     </Hidden>
                     <Suspense fallback={renderLoader()}>
@@ -107,7 +108,6 @@ export default function ButtonAppBar(props) {
                     </Container>
                 </Drawer>
             </Suspense>
-
         </div>
     );
 }

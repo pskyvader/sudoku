@@ -55,10 +55,10 @@ export default function LanguageSelector() {
             <Tooltip title={Text('language')}>
             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} className={classes.select}>
                 <LanguageIcon className={classes.icon} />
-                <Hidden xsDown>
+                <Hidden smDown>
                     {languageOptions[userLanguage]}
                 </Hidden>
-                <Hidden smUp>
+                <Hidden mdUp>
                     {userLanguage}
                 </Hidden>
             </Button>
