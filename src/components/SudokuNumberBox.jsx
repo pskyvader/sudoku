@@ -5,8 +5,9 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Popper from '@material-ui/core/Popper';
 
+import SudokuOptions from './SudokuOptions';
+
 const SudokuPopover = lazy(() => import('./SudokuPopover'));
-const SudokuOptions = lazy(() => import('./SudokuOptions'));
 
 const renderLoader = () => null;
 
@@ -91,9 +92,7 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive,SaveBoard }) => {
     if (locked) {
         return (
             <Button disabled classes={{ root: className, disabled: classes.disabled, }}  >
-                <Suspense fallback={renderLoader()}>
-                    <SudokuOptions options={Options}> {FinalNumber}</SudokuOptions>
-                </Suspense>
+                <SudokuOptions options={Options}> {FinalNumber}</SudokuOptions>
             </Button>
         )
     } else {
@@ -118,7 +117,6 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive,SaveBoard }) => {
                             />
                         )}
                     </Popper>
-
                 </Suspense>
             </React.Fragment>
         );

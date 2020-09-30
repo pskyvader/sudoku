@@ -2,13 +2,13 @@ import React, { lazy, Suspense } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
+import Modal from '@material-ui/core/Modal';
+import Typography from '@material-ui/core/Typography';
 
 import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
 import Text from '../languages/Language';
 
-const Modal = lazy(() => import('@material-ui/core/Modal'));
-const Typography = lazy(() => import('@material-ui/core/Typography'));
 const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyButtons'));
 
 
@@ -122,7 +122,8 @@ const Home = (props) => {
 
     return (
         <Box className={classes.box} ref={canvas}>
-            {modal}
+        {modal}
+            
             <Grid container justify="center" className={classes.root}>
                 {board.matrix.map((row, x) => (
                     <Grid key={x} item xs={4} className={classes.grid}>

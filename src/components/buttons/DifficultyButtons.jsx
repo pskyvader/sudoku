@@ -61,6 +61,12 @@ const DifficultyButtons = (props) => {
 
 
     return <ButtonGroup size="small">
+    <Tooltip title={Text('veryeasymode')}>
+        <Button className={classes.button1} onClick={() => ResetBoard(80)}>
+            <EmojiEmotionsIcon />
+            {Difficulty === 80 ? <StarsIcon className={classes.buttonstar} /> : ""}
+        </Button>
+    </Tooltip>
         <Tooltip title={Text('veryeasymode')}>
             <Button className={classes.button1} onClick={() => ResetBoard(63)}>
                 <EmojiEmotionsIcon />

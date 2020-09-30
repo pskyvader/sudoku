@@ -10,7 +10,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Hidden from '@material-ui/core/Hidden';
 
-// import { DifficultyButtons, DarkModeButton } from './Buttons';
 const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
@@ -45,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const renderLoader = () => null;
+const renderLoader = () => "LOADING...";
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
@@ -95,11 +94,11 @@ export default function ButtonAppBar(props) {
                             <DarkModeButton {...props} />
                         </div>
                     </Suspense>
-                    <Suspense fallback={renderLoader()}>
-                        <div className={classes.margin}>
+                    <div className={classes.margin}>
+                        <Suspense fallback={renderLoader()}>
                             <DifficultyButtons {...props} />
-                        </div>
-                    </Suspense>
+                        </Suspense>
+                    </div>
                 </Toolbar>
             </AppBar>
             <Suspense fallback={renderLoader()}>

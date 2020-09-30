@@ -9,11 +9,8 @@ import purple from '@material-ui/core/colors/purple';
 import Header from './components/Header';
 import SudokuResolver from './logic/SudokuResolver';
 import LocalStorage from './logic/LocalStorage';
-// import UseServiceWorker from './components/UseServiceWorker';
+import UseServiceWorker from './components/UseServiceWorker';
 import Text, { LanguageProvider } from './languages/Language';
-
-
-const UseServiceWorker = lazy(() => import('./components/UseServiceWorker'));
 
 const Home = lazy(() => import('./pages/Home'));
 
@@ -45,9 +42,7 @@ function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <LanguageProvider>
-                <Suspense fallback={renderLoader()}>
                     <UseServiceWorker />
-                </Suspense>
                 <Header board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} DarkMode={DarkMode} SetDarkMode={SetDarkMode}>
                     <Suspense fallback={renderLoader()}>
                         <Home board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} />
