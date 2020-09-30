@@ -13,6 +13,7 @@ import Hidden from '@material-ui/core/Hidden';
 const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
+const Drawer = lazy(() => import('./Drawer'));
 
 
 
@@ -60,9 +61,14 @@ export default function ButtonAppBar(props) {
                     </Suspense>
                 </Toolbar>
             </AppBar>
-            <Container>
-                {props.children}
-            </Container>
+            <Suspense fallback={renderLoader()}>
+                <Drawer>
+                    <Container>
+                        {props.children}
+                    </Container>
+                </Drawer>
+            </Suspense>
+
         </div>
     );
 }
