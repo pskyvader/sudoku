@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => {
 
 
 
-const SudokuNumber = ({ field, OptionsActive, setOptionsActive,SaveBoard }) => {
+const SudokuNumber = ({ field, OptionsActive, setOptionsActive, SaveBoard }) => {
     const classes = useStyles();
     const anchorRef = React.useRef(null);
 
@@ -99,9 +99,7 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive,SaveBoard }) => {
         return (
             <React.Fragment>
                 <Button ref={anchorRef} className={className} onClick={handleClick}>
-                    <Suspense fallback={renderLoader()}>
-                        <SudokuOptions options={Options}> {FinalNumber}</SudokuOptions>
-                    </Suspense>
+                    <SudokuOptions options={Options}> {FinalNumber}</SudokuOptions>
                 </Button>
                 <Suspense fallback={renderLoader()}>
                     <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition className={classes.popper}>

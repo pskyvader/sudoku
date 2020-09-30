@@ -5,6 +5,10 @@ import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+
 import LocalStorage from '../../logic/LocalStorage';
 import Text from '../../languages/Language';
 
@@ -18,17 +22,28 @@ const useStyles = makeStyles((theme) => {
 });
 
 
-const DarkModeButton = ({ DarkMode, SetDarkMode }) => {
+const DarkModeButton = ({ DarkMode, SetDarkMode, mode = "button" }) => {
     const classes = useStyles();
     const SwitchDarkMode = () => {
         LocalStorage.set("dark_mode", !DarkMode);
         SetDarkMode(!DarkMode);
     }
-    return <Tooltip title={Text('darkmode')}>
-        <IconButton className={classes.darkmode} onClick={() => SwitchDarkMode()}>
-            {DarkMode ? <Brightness4Icon /> : <Brightness7Icon />}
-        </IconButton>
-    </Tooltip>
+
+    if (mode === "button") {
+        return <Tooltip title={Text('darkmode')}>
+            <IconButton className={classes.darkmode} onClick={() => SwitchDarkMode()}>
+                {DarkMode ? <Brightness4Icon /> : <Brightness7Icon />}
+            </IconButton>
+        </Tooltip>
+    } else {
+        return <ListItem button key={Text('darkmode')} onClick={() => SwitchDarkMode()}>
+            <ListItemIcon>
+                {DarkMode ? <Brightness4Icon /> : <Brightness7Icon />}
+            </ListItemIcon>
+            <ListItemText primary={Text('darkmode')} />
+        </ListItem>
+    }
+
 }
 
 export default DarkModeButton;

@@ -56,7 +56,7 @@ export default function ButtonAppBar(props) {
             setdesktopOpen(!desktopOpen);
         }
     };
-    const [desktopOpen, setdesktopOpen] = React.useState(false);
+    const [desktopOpen, setdesktopOpen] = React.useState(true);
     const handleDesktopDrawerToggle = () => {
         setdesktopOpen(!desktopOpen);
         setTimeout(function () { window.dispatchEvent(new Event('resize')) }, theme.transitions.duration.enteringScreen);
@@ -102,7 +102,7 @@ export default function ButtonAppBar(props) {
                 </Toolbar>
             </AppBar>
             <Suspense fallback={renderLoader()}>
-                <Drawer handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} handleDesktopDrawerToggle={handleDesktopDrawerToggle} desktopOpen={desktopOpen}>
+                <Drawer handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} handleDesktopDrawerToggle={handleDesktopDrawerToggle} desktopOpen={desktopOpen}  {...props}>
                     <Container>
                         {props.children}
                     </Container>

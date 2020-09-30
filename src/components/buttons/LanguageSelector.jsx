@@ -7,8 +7,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Hidden from '@material-ui/core/Hidden';
 import Tooltip from '@material-ui/core/Tooltip';
 
+
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+
+
 import LocalStorage from '../../logic/LocalStorage';
-import Text,{ LanguageContext, languageOptions} from '../../languages/Language';
+import Text, { LanguageContext, languageOptions } from '../../languages/Language';
 
 
 
@@ -24,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function LanguageSelector() {
+export default function LanguageSelector({ mode = "button" }) {
     const classes = useStyles();
     const { userLanguage, userLanguageChange } = useContext(LanguageContext);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -50,19 +56,37 @@ export default function LanguageSelector() {
         userLanguageChange(defaultLanguage);
     }, [userLanguageChange]);
 
-    return (
-        <div>
-            <Tooltip title={Text('language')}>
-            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} className={classes.select}>
+    if (mode === "button") {
+        return (
+            <div>
+                <Tooltip title={Text('language')}>
+                    <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} className={classes.select}>
+                        <LanguageIcon className={classes.icon} />
+                        <Hidden smDown>
+                            {languageOptions[userLanguage]}
+                        </Hidden>
+                        <Hidden mdUp>
+                            {userLanguage}
+                        </Hidden>
+                    </Button>
+                </Tooltip>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}>
+                    {Object.entries(languageOptions).map(([id, name]) => (
+                        <MenuItem key={id} selected={id === userLanguage} onClick={(event) => handleMenuItemClick(event, id)}>{name}</MenuItem>
+                    ))}
+                </Menu>
+            </div>
+        );
+    } else {
+        return <ListItem button key={languageOptions[userLanguage]} onClick={handleClick} >
+            <ListItemIcon>
                 <LanguageIcon className={classes.icon} />
-                <Hidden smDown>
-                    {languageOptions[userLanguage]}
-                </Hidden>
-                <Hidden mdUp>
-                    {userLanguage}
-                </Hidden>
-            </Button>
-            </Tooltip>
+            </ListItemIcon>
+            <ListItemText primary={languageOptions[userLanguage]} />
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -72,6 +96,8 @@ export default function LanguageSelector() {
                     <MenuItem key={id} selected={id === userLanguage} onClick={(event) => handleMenuItemClick(event, id)}>{name}</MenuItem>
                 ))}
             </Menu>
-        </div>
-    );
+
+        </ListItem>
+    }
+
 }

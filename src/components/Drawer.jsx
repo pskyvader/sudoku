@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import clsx from 'clsx';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
@@ -10,6 +10,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+
+const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
+const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
 
 const drawerWidth = 240;
 
@@ -49,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
+const renderLoader = () => "LOADING...";
+
 function ResponsiveDrawer(props) {
     const { window, children, handleDrawerToggle, mobileOpen, handleDesktopDrawerToggle, desktopOpen } = props;
     const classes = useStyles();
@@ -58,7 +64,16 @@ function ResponsiveDrawer(props) {
         <div>
             <div className={classes.toolbar} />
             <Divider />
+
             <List>
+                <Suspense fallback={renderLoader()}>
+                    <DarkModeButton {...props} mode="list" />
+                </Suspense>
+                <Suspense fallback={renderLoader()}>
+                    <LanguageSelector mode="list" />
+                </Suspense>
+
+
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem button key={text}>
                         <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
@@ -99,9 +114,9 @@ function ResponsiveDrawer(props) {
                 <Hidden xsDown implementation="css">
                     <Drawer
                         anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                        className={classes.drawer} 
-                        classes={{ paper: classes.drawerPaper, }} 
-                        variant="persistent" 
+                        className={classes.drawer}
+                        classes={{ paper: classes.drawerPaper, }}
+                        variant="persistent"
                         open={desktopOpen}
                         onClose={handleDesktopDrawerToggle} >
                         {drawer}
