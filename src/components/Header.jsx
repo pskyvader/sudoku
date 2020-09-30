@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from 'react';
+import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,6 +18,7 @@ const Drawer = lazy(() => import('./Drawer'));
 
 
 
+const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
     root: { flexGrow: 1, },
     margin: {
@@ -24,20 +26,57 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('xs')]: {
             marginRight: theme.spacing(0.5),
         },
-    }
+    },
+    appBar: {
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+    },
+    appBarShift: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+
+
+
 }));
 
 const renderLoader = () => null;
 
 export default function ButtonAppBar(props) {
     const classes = useStyles();
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+    const [desktopOpen, setdesktopOpen] = React.useState(false);
+    const handleDesktopDrawerToggle = () => {
+        setdesktopOpen(!desktopOpen);
+    };
+
+
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static" className={clsx(classes.appBar, {
+                [classes.appBarShift]: desktopOpen,
+            })}>
                 <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <MenuIcon />
-                    </IconButton>
+                    <Hidden smUp >
+                        <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerToggle}>
+                            <MenuIcon />
+                        </IconButton>
+                    </Hidden>
+                    <Hidden xsDown>
+                        <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDesktopDrawerToggle}>
+                            <MenuIcon />
+                        </IconButton>
+
+                    </Hidden>
                     <Hidden smUp>
                         <div className={classes.root}></div>
                     </Hidden>
@@ -62,7 +101,7 @@ export default function ButtonAppBar(props) {
                 </Toolbar>
             </AppBar>
             <Suspense fallback={renderLoader()}>
-                <Drawer>
+                <Drawer handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} handleDesktopDrawerToggle={handleDesktopDrawerToggle} desktopOpen={desktopOpen}>
                     <Container>
                         {props.children}
                     </Container>
