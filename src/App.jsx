@@ -33,6 +33,9 @@ function App() {
                         main: purple[500]
                     },
                     type: DarkMode ? 'dark' : 'light',
+                    selected:{
+                        color:"red"
+                    }
                 },
             }),
         [DarkMode],

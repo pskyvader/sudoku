@@ -15,6 +15,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Switch from '@material-ui/core/Switch';
 
 
 
@@ -94,7 +95,12 @@ const DifficultyButtons = (props) => {
                 <ListItem button key={e.text} onClick={() => ResetBoard(e.number)} selected={Difficulty === e.number}>
                     <ListItemIcon> <e.icon /></ListItemIcon>
                     <ListItemText primary={e.text} />
-                    {Difficulty === e.number ? <StarsIcon className={classes.buttonstar} /> : ""}
+                    <Switch
+                        edge="end"
+                        disableRipple
+                        checked={Difficulty === e.number }
+                        inputProps={{ 'aria-labelledby': 'switch-list-label-wifi' }}
+                    />
                 </ListItem>
             ))}
         </List>

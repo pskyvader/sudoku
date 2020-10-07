@@ -18,8 +18,8 @@ export const languageOptions = {
 
 // create the language context with default selected language
 
-const userLang = navigator.language.substring(0,2) || navigator.userLanguage.substring(0,2);
-const defaultlanguage=languageOptions[userLang] ? userLang : 'en';
+const userLang = navigator.language.substring(0, 2) || navigator.userLanguage.substring(0, 2);
+const defaultlanguage = languageOptions[userLang] ? userLang : 'en';
 
 export const LanguageContext = createContext({
     userLanguage: defaultlanguage,
@@ -51,5 +51,5 @@ export function LanguageProvider({ children }) {
 // get text according to id & current language
 export default function Text(tid) {
     const languageContext = useContext(LanguageContext);
-    return languageContext.dictionary[tid] || tid;
+    return languageContext.dictionary[tid] || tid + "-TEXT";
 }

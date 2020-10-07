@@ -32,13 +32,13 @@ const DarkModeButton = ({ DarkMode, SetDarkMode, mode = "button" }) => {
     if (mode === "button") {
         return <Tooltip title={Text('darkmode')}>
             <IconButton className={classes.darkmode} onClick={() => SwitchDarkMode()}>
-                {DarkMode ? <Brightness4Icon /> : <Brightness7Icon />}
+                {DarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
         </Tooltip>
     } else {
         return <ListItem button key={Text('darkmode')} onClick={() => SwitchDarkMode()}>
             <ListItemIcon>
-                {DarkMode ? <Brightness4Icon /> : <Brightness7Icon />}
+                {DarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
             </ListItemIcon>
             <ListItemText primary={Text('darkmode')} />
         </ListItem>
