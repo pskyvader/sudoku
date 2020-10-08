@@ -16,15 +16,15 @@ const userLang = navigator.language.substring(0, 2) || navigator.userLanguage.su
 const defaultlanguage = languageOptions[userLang] ? userLang : 'en';
 
 
-async function loadlanguage(lang,dictionaryList={}){
-    console.log("finding",lang);
-    if(!dictionaryList[lang]){
-        console.log(lang, "not found",dictionaryList);
-        import('./'+lang+'.json').then(({default:l})=>{
-            dictionaryList[lang]=l;
+async function loadlanguage(lang, dictionaryList = {}) {
+    if (!dictionaryList[lang]) {
+        console.log(lang, "not found", dictionaryList);
+        return import('./' + lang + '.json').then(({ default: l }) => {
+            dictionaryList[lang] = l;
             return dictionaryList;
         });
-    }else{
+    } else {
+        console.log(lang, "found", dictionaryList);
         return dictionaryList;
     }
 }
@@ -36,27 +36,38 @@ export const LanguageContext = createContext({
 
 
 export function LanguageProvider({ children }) {
-    const [userLanguage, setUserLanguage] = useState(defaultlanguage);
-    const emptyarray={}
+    const [userLanguage, setUserLanguage] = useState("null");
+    const emptyarray = {}
     const [dictionaryList, setDictionaryList] = useState(emptyarray);
-
-    console.log(dictionaryList);
-
-    const selectedLanguage=dictionaryList && dictionaryList[userLanguage]?dictionaryList[userLanguage]:{};
-    console.log("current",dictionaryList,userLanguage);
+    const selectedLanguage = dictionaryList[userLanguage] ? dictionaryList[userLanguage] : {};
+    console.log("current", dictionaryList, userLanguage);
+    React.useEffect(() => {
+        if(dictionaryList==={}){
+            console.log("EMPTY");
+            loadlanguage(defaultlanguage, dictionaryList).then((dl) => {
+                setDictionaryList(dl);
+                setUserLanguage(defaultlanguage);
+                LocalStorage.set("rcml-lang", defaultlanguage);
+            });
+        }
+    })
 
     const provider = {
         userLanguage,
         dictionary: selectedLanguage,
         userLanguageChange: async (selected) => {
             const newLanguage = languageOptions[selected] ? selected : defaultlanguage;
-            await loadlanguage(newLanguage,dictionaryList).then((dl)=>{
-                console.log("list",dl);
-                setDictionaryList(dl);
+            if (!dictionaryList[newLanguage]) {
+                await loadlanguage(newLanguage, dictionaryList).then((dl) => {
+                    setDictionaryList(dl);
+                    setUserLanguage(newLanguage);
+                    LocalStorage.set("rcml-lang", newLanguage);
+                }
+                );
+            }else{
                 setUserLanguage(newLanguage);
                 LocalStorage.set("rcml-lang", newLanguage);
             }
-            );
         }
     };
 

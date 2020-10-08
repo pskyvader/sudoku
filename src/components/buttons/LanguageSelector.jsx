@@ -64,10 +64,7 @@ export default function LanguageSelector({ mode = "button" }) {
 
 
     useEffect(() => {
-        let defaultLanguage = LocalStorage.get("rcml-lang", null);
-        if (!defaultLanguage) {
-            defaultLanguage = window.navigator.language.substring(0, 2);
-        }
+        let defaultLanguage = LocalStorage.get("rcml-lang", window.navigator.language.substring(0, 2));
         userLanguageChange(defaultLanguage);
     }, [userLanguageChange]);
 
