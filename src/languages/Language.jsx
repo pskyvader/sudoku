@@ -15,16 +15,14 @@ const browserlanguage = (navigator.language || navigator.userLanguage).substring
 const userLang = LocalStorage.get("rcml-lang", browserlanguage);
 const defaultlanguage = languageOptions[userLang] ? userLang : 'en';
 
-//let dictionaryList={};
 
-async function loadlanguage(lang, dictlist = {}) {
-    if (!dictlist[lang]) {
+let dictionaryList = {};
+
+async function loadlanguage(lang) {
+    if (!dictionaryList[lang]) {
         return import('./' + lang + '.json').then(({ default: l }) => {
-            dictlist[lang] = l;
-            return dictlist;
+            dictionaryList[lang] = l;
         });
-    } else {
-        return dictlist;
     }
 }
 
@@ -34,20 +32,14 @@ export const LanguageContext = createContext({
 });
 
 
-let dictionaryList = {};
 export function LanguageProvider({ children }) {
     const [userLanguage, setUserLanguage] = useState(defaultlanguage);
     const [dictionaryloaded, setdictionaryloaded] = useState(false);
     const selectedLanguage = dictionaryList[userLanguage] ? dictionaryList[userLanguage] : {};
-    console.log("current", userLanguage, selectedLanguage);
     React.useEffect(() => {
         if (!dictionaryList[userLanguage]) {
-            console.log("empty", userLanguage);
-            loadlanguage(userLanguage, dictionaryList).then((dictlist) => {
-                console.log("loaded");
-                dictionaryList = dictlist;
-                //setdictionaryloaded(!dictionaryloaded);
-                setUserLanguage(userLanguage);
+            loadlanguage(userLanguage).then(() => {
+                setdictionaryloaded(!dictionaryloaded);
             });
         }
     });
@@ -58,11 +50,8 @@ export function LanguageProvider({ children }) {
             const newLanguage = languageOptions[selected] ? selected : defaultlanguage;
             LocalStorage.set("rcml-lang", newLanguage);
             if (!dictionaryList[newLanguage]) {
-                console.log("await");
-                await loadlanguage(newLanguage, dictionaryList).then((dictlist) => {
-                    dictionaryList = dictlist;
+                await loadlanguage(newLanguage).then(() => {
                     setUserLanguage(newLanguage);
-                    //setdictionaryloaded(!dictionaryloaded);
                 });
             } else {
                 setUserLanguage(newLanguage);
