@@ -11,8 +11,8 @@ export const languageOptions = {
 };
 
 // create the language context with default selected language
-
-const userLang = navigator.language.substring(0, 2) || navigator.userLanguage.substring(0, 2);
+const browserlanguage = (navigator.language || navigator.userLanguage).substring(0, 2);
+const userLang = LocalStorage.get("rcml-lang", browserlanguage);
 const defaultlanguage = languageOptions[userLang] ? userLang : 'en';
 
 //let dictionaryList={};
@@ -34,26 +34,38 @@ export const LanguageContext = createContext({
 });
 
 
+let dictionaryList = {};
 export function LanguageProvider({ children }) {
     const [userLanguage, setUserLanguage] = useState(defaultlanguage);
-    let dictionaryList={};
-    //const emptyarray = {}
-    //const [dictionaryList, setDictionaryList] = useState(emptyarray);
     const [dictionaryloaded, setdictionaryloaded] = useState(false);
     const selectedLanguage = dictionaryList[userLanguage] ? dictionaryList[userLanguage] : {};
+    console.log("current", userLanguage, selectedLanguage);
+    React.useEffect(() => {
+        if (!dictionaryList[userLanguage]) {
+            console.log("empty", userLanguage);
+            loadlanguage(userLanguage, dictionaryList).then((dictlist) => {
+                console.log("loaded");
+                dictionaryList = dictlist;
+                //setdictionaryloaded(!dictionaryloaded);
+                setUserLanguage(userLanguage);
+            });
+        }
+    });
     const provider = {
         userLanguage,
         dictionary: selectedLanguage,
         userLanguageChange: async (selected) => {
             const newLanguage = languageOptions[selected] ? selected : defaultlanguage;
-            setUserLanguage(newLanguage);
             LocalStorage.set("rcml-lang", newLanguage);
             if (!dictionaryList[newLanguage]) {
+                console.log("await");
                 await loadlanguage(newLanguage, dictionaryList).then((dictlist) => {
-                    //setDictionaryList(dl);
-                    dictionaryList=dictlist;
-                    setdictionaryloaded(!dictionaryloaded);
+                    dictionaryList = dictlist;
+                    setUserLanguage(newLanguage);
+                    //setdictionaryloaded(!dictionaryloaded);
                 });
+            } else {
+                setUserLanguage(newLanguage);
             }
         }
     };

@@ -33,8 +33,8 @@ function App() {
                         main: purple[500]
                     },
                     type: DarkMode ? 'dark' : 'light',
-                    selected:{
-                        color:"red"
+                    selected: {
+                        color: "red"
                     }
                 },
             }),
@@ -45,7 +45,7 @@ function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <LanguageProvider>
-                    <UseServiceWorker />
+                <UseServiceWorker />
                 <Header board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} DarkMode={DarkMode} SetDarkMode={SetDarkMode}>
                     <Suspense fallback={renderLoader()}>
                         <Home board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} />

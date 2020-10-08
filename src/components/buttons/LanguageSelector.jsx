@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
@@ -18,7 +18,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import LanguageIcon from '@material-ui/icons/Language';
 
 
-import LocalStorage from '../../logic/LocalStorage';
+// import LocalStorage from '../../logic/LocalStorage';
 import Text, { LanguageContext, languageOptions } from '../../languages/Language';
 
 
@@ -63,10 +63,12 @@ export default function LanguageSelector({ mode = "button" }) {
     };
 
 
-    useEffect(() => {
-        let defaultLanguage = LocalStorage.get("rcml-lang", window.navigator.language.substring(0, 2));
-        userLanguageChange(defaultLanguage);
-    }, [userLanguageChange]);
+    // useEffect(() => {
+    //     let defaultLanguage = LocalStorage.get("rcml-lang", navigator.language.substring(0, 2) || navigator.userLanguage.substring(0, 2));
+    //     if(userLanguage!==defaultLanguage){
+    //         userLanguageChange(defaultLanguage);
+    //     }
+    // }, [userLanguage,userLanguageChange]);
 
     if (mode === "button") {
         return (
