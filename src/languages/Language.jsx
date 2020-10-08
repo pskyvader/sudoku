@@ -15,33 +15,44 @@ export const languageOptions = {
 const userLang = navigator.language.substring(0, 2) || navigator.userLanguage.substring(0, 2);
 const defaultlanguage = languageOptions[userLang] ? userLang : 'en';
 
-let dictionaryList = {};
-async function loadlanguage(lang){
+
+async function loadlanguage(lang,dictionaryList={}){
     console.log("finding",lang);
     if(!dictionaryList[lang]){
+        console.log(lang, "not found",dictionaryList);
         import('./'+lang+'.json').then(({default:l})=>{
             dictionaryList[lang]=l;
+            return dictionaryList;
         });
+    }else{
+        return dictionaryList;
     }
 }
-loadlanguage(defaultlanguage);
+
 export const LanguageContext = createContext({
     userLanguage: defaultlanguage,
-    dictionary: dictionaryList[defaultlanguage]?dictionaryList[defaultlanguage]:{}
+    dictionary: {}
 });
 
 
 export function LanguageProvider({ children }) {
     const [userLanguage, setUserLanguage] = useState(defaultlanguage);
-    const selectedLanguage=dictionaryList[userLanguage]?dictionaryList[userLanguage]:{};
+    const emptyarray={}
+    const [dictionaryList, setDictionaryList] = useState(emptyarray);
+
     console.log(dictionaryList);
+
+    const selectedLanguage=dictionaryList && dictionaryList[userLanguage]?dictionaryList[userLanguage]:{};
+    console.log("current",dictionaryList,userLanguage);
 
     const provider = {
         userLanguage,
         dictionary: selectedLanguage,
         userLanguageChange: async (selected) => {
             const newLanguage = languageOptions[selected] ? selected : defaultlanguage;
-            await loadlanguage(newLanguage).then(()=>{
+            await loadlanguage(newLanguage,dictionaryList).then((dl)=>{
+                console.log("list",dl);
+                setDictionaryList(dl);
                 setUserLanguage(newLanguage);
                 LocalStorage.set("rcml-lang", newLanguage);
             }
