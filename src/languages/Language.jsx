@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
 
 import LocalStorage from '../logic/LocalStorage';
-import en from './en.json';
-import es from './es.json';
+// import en from './en.json';
+// import es from './es.json';
 
 
 export const languageOptions = {
@@ -15,17 +15,16 @@ export const languageOptions = {
 const userLang = navigator.language.substring(0, 2) || navigator.userLanguage.substring(0, 2);
 const defaultlanguage = languageOptions[userLang] ? userLang : 'en';
 
+//let dictionaryList={};
 
-async function loadlanguage(lang, dictionaryList = {}) {
-    if (!dictionaryList[lang]) {
-        console.log(lang, "not found", dictionaryList);
+async function loadlanguage(lang, dictlist = {}) {
+    if (!dictlist[lang]) {
         return import('./' + lang + '.json').then(({ default: l }) => {
-            dictionaryList[lang] = l;
-            return dictionaryList;
+            dictlist[lang] = l;
+            return dictlist;
         });
     } else {
-        console.log(lang, "found", dictionaryList);
-        return dictionaryList;
+        return dictlist;
     }
 }
 
@@ -36,37 +35,25 @@ export const LanguageContext = createContext({
 
 
 export function LanguageProvider({ children }) {
-    const [userLanguage, setUserLanguage] = useState("null");
-    const emptyarray = {}
-    const [dictionaryList, setDictionaryList] = useState(emptyarray);
+    const [userLanguage, setUserLanguage] = useState(defaultlanguage);
+    let dictionaryList={};
+    //const emptyarray = {}
+    //const [dictionaryList, setDictionaryList] = useState(emptyarray);
+    const [dictionaryloaded, setdictionaryloaded] = useState(false);
     const selectedLanguage = dictionaryList[userLanguage] ? dictionaryList[userLanguage] : {};
-    console.log("current", dictionaryList, userLanguage);
-    React.useEffect(() => {
-        if(dictionaryList==={}){
-            console.log("EMPTY");
-            loadlanguage(defaultlanguage, dictionaryList).then((dl) => {
-                setDictionaryList(dl);
-                setUserLanguage(defaultlanguage);
-                LocalStorage.set("rcml-lang", defaultlanguage);
-            });
-        }
-    })
-
     const provider = {
         userLanguage,
         dictionary: selectedLanguage,
         userLanguageChange: async (selected) => {
             const newLanguage = languageOptions[selected] ? selected : defaultlanguage;
+            setUserLanguage(newLanguage);
+            LocalStorage.set("rcml-lang", newLanguage);
             if (!dictionaryList[newLanguage]) {
-                await loadlanguage(newLanguage, dictionaryList).then((dl) => {
-                    setDictionaryList(dl);
-                    setUserLanguage(newLanguage);
-                    LocalStorage.set("rcml-lang", newLanguage);
-                }
-                );
-            }else{
-                setUserLanguage(newLanguage);
-                LocalStorage.set("rcml-lang", newLanguage);
+                await loadlanguage(newLanguage, dictionaryList).then((dictlist) => {
+                    //setDictionaryList(dl);
+                    dictionaryList=dictlist;
+                    setdictionaryloaded(!dictionaryloaded);
+                });
             }
         }
     };
