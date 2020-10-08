@@ -5,12 +5,6 @@ import en from './en.json';
 import es from './es.json';
 
 
-
-export const dictionaryList = {
-    en,
-    es
-};
-
 export const languageOptions = {
     en: 'English',
     es: 'Español',
@@ -21,22 +15,37 @@ export const languageOptions = {
 const userLang = navigator.language.substring(0, 2) || navigator.userLanguage.substring(0, 2);
 const defaultlanguage = languageOptions[userLang] ? userLang : 'en';
 
+let dictionaryList = {};
+async function loadlanguage(lang){
+    console.log("finding",lang);
+    if(!dictionaryList[lang]){
+        import('./'+lang+'.json').then(({default:l})=>{
+            dictionaryList[lang]=l;
+        });
+    }
+}
+loadlanguage(defaultlanguage);
 export const LanguageContext = createContext({
     userLanguage: defaultlanguage,
-    dictionary: dictionaryList[defaultlanguage]
+    dictionary: dictionaryList[defaultlanguage]?dictionaryList[defaultlanguage]:{}
 });
 
 
 export function LanguageProvider({ children }) {
     const [userLanguage, setUserLanguage] = useState(defaultlanguage);
+    const selectedLanguage=dictionaryList[userLanguage]?dictionaryList[userLanguage]:{};
+    console.log(dictionaryList);
 
     const provider = {
         userLanguage,
-        dictionary: dictionaryList[userLanguage],
-        userLanguageChange: selected => {
-            const newLanguage = languageOptions[selected] ? selected : defaultlanguage
-            setUserLanguage(newLanguage);
-            LocalStorage.set("rcml-lang", newLanguage);
+        dictionary: selectedLanguage,
+        userLanguageChange: async (selected) => {
+            const newLanguage = languageOptions[selected] ? selected : defaultlanguage;
+            await loadlanguage(newLanguage).then(()=>{
+                setUserLanguage(newLanguage);
+                LocalStorage.set("rcml-lang", newLanguage);
+            }
+            );
         }
     };
 
