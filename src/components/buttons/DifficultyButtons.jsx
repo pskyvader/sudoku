@@ -81,7 +81,7 @@ const DifficultyButtons = (props) => {
     if (mode === "button") {
         return <ButtonGroup size="small">
             {difficultylist.map((e) => (
-                <Tooltip title={e.text}>
+                <Tooltip key={e.text} title={e.text}>
                     <Button className={e.class} onClick={() => ResetBoard(e.number)}>
                         <e.icon />
                         {Difficulty === e.number ? <StarsIcon className={classes.buttonstar} /> : ""}
@@ -98,7 +98,7 @@ const DifficultyButtons = (props) => {
                     <Switch
                         edge="end"
                         disableRipple
-                        checked={Difficulty === e.number }
+                        checked={Difficulty === e.number}
                         inputProps={{ 'aria-labelledby': 'switch-list-label-wifi' }}
                     />
                 </ListItem>

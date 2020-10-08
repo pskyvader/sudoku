@@ -4,6 +4,8 @@ import LocalStorage from '../logic/LocalStorage';
 import en from './en.json';
 import es from './es.json';
 
+
+
 export const dictionaryList = {
     en,
     es
@@ -14,23 +16,15 @@ export const languageOptions = {
     es: 'Español',
 };
 
-
 // create the language context with default selected language
 
 const userLang = navigator.language.substring(0, 2) || navigator.userLanguage.substring(0, 2);
 const defaultlanguage = languageOptions[userLang] ? userLang : 'en';
 
-
-
-
-export const LanguageContext = import('./'+defaultlanguage+'.json').then(dl => {
-    return createContext({
-        userLanguage: defaultlanguage,
-        //dictionary: dictionaryList[defaultlanguage],
-        dictionary:dl
-    });
+export const LanguageContext = createContext({
+    userLanguage: defaultlanguage,
+    dictionary: dictionaryList[defaultlanguage]
 });
-
 
 
 export function LanguageProvider({ children }) {
