@@ -71,9 +71,7 @@ const useStyles = makeStyles((theme) => {
 
 const SudokuPopover = (props) => {
     const { handleClose, field, OptionsActive, setOptionsActive, parentOptions } = props;
-
     const [ChangeOption, SetChangeOption] = React.useState(false);
-
     const handleChange = () => {
         setOptionsActive(!OptionsActive);
     };
@@ -105,6 +103,30 @@ const SudokuPopover = (props) => {
         SetChangeOption(!ChangeOption);
     };
 
+    const pressNumber = (event) => {
+        if (event.key === "Backspace" || event.key === "Delete") {
+            Clear();
+        } else {
+            const pressednumber = parseInt(event.key);
+            if (!isNaN(pressednumber)) {
+
+                if (OptionsActive) {
+                    changeOptions(pressednumber);
+                } else {
+                    setNumber(pressednumber);
+                }
+            }
+        }
+    }
+
+    React.useEffect(() => {
+        document.addEventListener("keydown", pressNumber, false);
+        return () => {
+            document.removeEventListener("keydown", pressNumber, false);
+        };
+    });
+
+
     return <Grid container justify="center" className={clsx(OptionsActive ? classes.optionbackground : "", ChangeOption)} >
         {box.map((row, valuex) => {
             const keyx = key + "-" + valuex;
@@ -124,14 +146,14 @@ const SudokuPopover = (props) => {
         <Grid item xs={12}>
             <Grid item xs={12}>
                 <Button classes={{ label: classes.label }} className={clsx(classes.options, optioncolor)} onClick={handleChange}>
-                    <Checkbox 
-                    color="default" 
-                    className={clsx(classes.checkbox, optioncolor)} 
-                    checked={OptionsActive} 
-                    onChange={handleChange} 
-                    inputProps={{ 'aria-label': 'Option checkbox' }} 
-                    disableRipple
-                     />
+                    <Checkbox
+                        color="default"
+                        className={clsx(classes.checkbox, optioncolor)}
+                        checked={OptionsActive}
+                        onChange={handleChange}
+                        inputProps={{ 'aria-label': 'Option checkbox' }}
+                        disableRipple
+                    />
                     {Text('options')}
                 </Button>
             </Grid>
@@ -147,7 +169,7 @@ const SudokuPopover = (props) => {
 
 
 const SudokuPopoverContainer = (props) => {
-    const { TransitionProps,placement, handleClose } = props;
+    const { TransitionProps, placement, handleClose } = props;
     return (
         <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }} >
             <div>
