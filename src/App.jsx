@@ -33,13 +33,52 @@ function App() {
                         main: purple[500]
                     },
                     type: DarkMode ? 'dark' : 'light',
-                    selected: {
-                        color: "red"
-                    }
+                    
+                    MuiListItem: { // For ListItem, change this to MuiListItem
+                        root: {
+                            selected:{
+                                backgroundColor: "red", // updated backgroundColor
+                            },
+                            "&$selected": {       // this is to refer to the prop provided by M-UI
+                                backgroundColor: "black", // updated backgroundColor
+                            },
+                            backgroundColor: "pink", // updated backgroundColor
+                        },
+                        selected:{
+                            backgroundColor: "blue", // updated backgroundColor
+
+                        }
+                    },
+                },
+                overrides: {
+                    root:{
+                        
+  selected: {
+    backgroundColor: "turquoise !important",
+    color: "white",
+    fontWeight: 600
+  }
+                    },
+                    MuiListItem: { // For ListItem, change this to MuiListItem
+                        root: {
+                            selected:{
+                                backgroundColor: "red", // updated backgroundColor
+                            },
+                            "&$selected": {       // this is to refer to the prop provided by M-UI
+                                backgroundColor: "black", // updated backgroundColor
+                            },
+                            backgroundColor: "pink", // updated backgroundColor
+                        },
+                        selected:{
+                            backgroundColor: "blue", // updated backgroundColor
+
+                        }
+                    },
                 },
             }),
         [DarkMode],
     );
+
 
     return (
         <ThemeProvider theme={theme}>
