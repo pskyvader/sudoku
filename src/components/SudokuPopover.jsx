@@ -1,9 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
+import Switch from '@material-ui/core/Switch';
+
 import { makeStyles } from '@material-ui/core/styles';
+
 
 import Paper from '@material-ui/core/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -29,9 +31,10 @@ const useStyles = makeStyles((theme) => {
                 padding: theme.spacing(1.5)
             },
             "&:hover": {
-                backgroundColor: primary.light,
+                backgroundColor: light ? primary.main : primary.light ,
+                color: primary.contrastText
             },
-            color: light ? "" : getContrastText(background.paper)
+            color: light ? primary.main : getContrastText(background.paper)
         },
         options: {
             height: "100%",
@@ -39,12 +42,11 @@ const useStyles = makeStyles((theme) => {
             fontWeight: "normal",
             margin: 0,
             borderRadius: 0,
-            color: light ? "" : getContrastText(background.paper)
-        },
-        checkbox: {
-            padding: 0,
-            paddingRight: theme.spacing(1),
-            color: light ? primary.main : getContrastText(background.paper),
+            color: light ?primary.main : getContrastText(background.paper),
+            "&:hover": {
+                backgroundColor: light ? primary.main : primary.light ,
+                color: primary.contrastText
+            }
         },
         label: {
             width: 0,
@@ -52,7 +54,7 @@ const useStyles = makeStyles((theme) => {
         optioncolor: {
             color: getContrastText(primary.light),
             "&:hover": {
-                backgroundColor: "primary.light",
+                backgroundColor: primary.light,
             }
         },
         optionbackground: {
@@ -134,7 +136,7 @@ const SudokuPopover = (props) => {
                 {row.map((number, valuey) => {
                     const keyy = keyx + "," + valuey;
                     const classname = clsx(classes.button, optioncolor, OptionsActive && field.options.has(number) ? classes.OptionsActiveoption : "");
-                    return <Grid key={keyy} item xs={12}>
+                    return <Grid key={keyy}>
                         <Button className={classname} onClick={() => OptionsActive ? changeOptions(number) : setNumber(number)}>
                             {number}
                         </Button>
@@ -146,13 +148,12 @@ const SudokuPopover = (props) => {
         <Grid item xs={12}>
             <Grid item xs={12}>
                 <Button classes={{ label: classes.label }} className={clsx(classes.options, optioncolor)} onClick={handleChange}>
-                    <Checkbox
-                        color="default"
-                        className={clsx(classes.checkbox, optioncolor)}
-                        checked={OptionsActive}
-                        onChange={handleChange}
-                        inputProps={{ 'aria-label': 'Option checkbox' }}
+                    <Switch
+                        edge="start"
+                        size="small" 
                         disableRipple
+                        onChange={handleChange}
+                        checked={OptionsActive}
                     />
                     {Text('options')}
                 </Button>

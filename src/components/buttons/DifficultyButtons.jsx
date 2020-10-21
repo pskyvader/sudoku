@@ -98,7 +98,6 @@ const DifficultyButtons = (props) => {
                         edge="end"
                         disableRipple
                         checked={Difficulty === e.number}
-                        inputProps={{ 'aria-labelledby': 'switch-list-label-wifi' }}
                     />
                 </ListItem>
             ))}
