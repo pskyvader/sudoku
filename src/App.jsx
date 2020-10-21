@@ -37,14 +37,22 @@ function App() {
                         color: "red"
                     }
                 },
-                overrides:{
+                components: {
                     MuiListItem: {
-                      selected: {
-                        backgroundColor: "red",
-                        color: "red"
-                      },
-                    }
-                  }
+                      styleOverrides:{
+                          
+                        button: {
+                            backgroundColor: "red"
+                          },
+                          '&$selected': {
+                            backgroundColor: "blue",
+                            '&$focusVisible': {
+                              backgroundColor: "green"
+                            }
+                          },
+                      }
+                    },
+                  },
             }),
         [DarkMode],
     );
