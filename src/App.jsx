@@ -33,52 +33,21 @@ function App() {
                         main: purple[500]
                     },
                     type: DarkMode ? 'dark' : 'light',
-                    
-                    MuiListItem: { // For ListItem, change this to MuiListItem
-                        root: {
-                            selected:{
-                                backgroundColor: "red", // updated backgroundColor
-                            },
-                            "&$selected": {       // this is to refer to the prop provided by M-UI
-                                backgroundColor: "black", // updated backgroundColor
-                            },
-                            backgroundColor: "pink", // updated backgroundColor
-                        },
-                        selected:{
-                            backgroundColor: "blue", // updated backgroundColor
-
-                        }
-                    },
+                    selected: {
+                        color: "red"
+                    }
                 },
-                overrides: {
-                    root:{
-                        
-  selected: {
-    backgroundColor: "turquoise !important",
-    color: "white",
-    fontWeight: 600
-  }
-                    },
-                    MuiListItem: { // For ListItem, change this to MuiListItem
-                        root: {
-                            selected:{
-                                backgroundColor: "red", // updated backgroundColor
-                            },
-                            "&$selected": {       // this is to refer to the prop provided by M-UI
-                                backgroundColor: "black", // updated backgroundColor
-                            },
-                            backgroundColor: "pink", // updated backgroundColor
-                        },
-                        selected:{
-                            backgroundColor: "blue", // updated backgroundColor
-
-                        }
-                    },
-                },
+                overrides:{
+                    MuiListItem: {
+                      selected: {
+                        backgroundColor: "red",
+                        color: "red"
+                      },
+                    }
+                  }
             }),
         [DarkMode],
     );
-
 
     return (
         <ThemeProvider theme={theme}>
