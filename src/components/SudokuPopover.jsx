@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => {
                 padding: theme.spacing(1.5)
             },
             "&:hover": {
-                backgroundColor: background.default,
+                backgroundColor: primary.light,
             },
             color: light ? "" : getContrastText(background.paper)
         },
@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => {
         optioncolor: {
             color: getContrastText(primary.light),
             "&:hover": {
-                backgroundColor: primary.light,
+                backgroundColor: "primary.light",
             }
         },
         optionbackground: {

@@ -4,6 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import indigo from '@material-ui/core/colors/indigo';
 import blueGrey from '@material-ui/core/colors/blueGrey';
+import Grey from '@material-ui/core/colors/grey';
 import purple from '@material-ui/core/colors/purple';
 
 import Header from './components/Header';
@@ -33,26 +34,24 @@ function App() {
                         main: purple[500]
                     },
                     type: DarkMode ? 'dark' : 'light',
-                    selected: {
-                        color: "red"
-                    }
                 },
                 components: {
                     MuiListItem: {
-                      styleOverrides:{
-                          
-                        button: {
-                            backgroundColor: "red"
-                          },
-                          '&$selected': {
-                            backgroundColor: "blue",
-                            '&$focusVisible': {
-                              backgroundColor: "green"
-                            }
-                          },
-                      }
+                        styleOverrides: {
+                            button: {
+                                '&:hover': {
+                                    backgroundColor: DarkMode?Grey[700]:Grey[200]
+                                },
+                                '&$selected': {
+                                    backgroundColor: DarkMode?Grey[600]:Grey[300],
+                                    '&:hover': {
+                                        backgroundColor: DarkMode?Grey[500]:Grey[400]
+                                    },
+                                },
+                            },
+                        }
                     },
-                  },
+                },
             }),
         [DarkMode],
     );
