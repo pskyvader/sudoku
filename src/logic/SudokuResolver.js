@@ -204,37 +204,7 @@ class SudokuResolver extends Sudoku {
             }
         }
     }
-
-    CloneBoard = () => {
-        const t = this;
-        let clonelist = [];
-        for (let i = 0; i < t.list.length; i++) {
-            const e = t.list[i];
-            clonelist.push({
-                x: e.x,
-                y: e.y,
-                i: e.i,
-                j: e.j,
-                number: e.number,
-                options: [...e.options],
-                locked: e.locked,
-                error: e.error
-            });
-        }
-        return clonelist;
-    }
-    RestoreBoard = (clonelist) => {
-        const t = this;
-        for (let index = 0; index < clonelist.length; index++) {
-            const e = clonelist[index];
-            const element = t.matrix[e.x][e.y].submatrix[e.i][e.j];
-            element.SetValue(e.number);
-            element.SetValueOptions(new Set(e.options));
-            element.locked = e.locked;
-            element.SetValueError(e.error);
-        }
-        this.CheckSuccess();
-    }
+    
 
     CheckCompleteBoard = () => {
         const t = this;
@@ -262,7 +232,7 @@ class SudokuResolver extends Sudoku {
         return t.Random(min + 1);
     }
 
-
+    // check if there are any field with only one option and use it
     FillSingleOption = () => {
         const t = this;
         let changes = 0;
@@ -280,6 +250,7 @@ class SudokuResolver extends Sudoku {
         return changes;
     }
 
+    // check if there are any line or square with a unique number in its options and use it
     FillByLine = () => {
         const t = this;
         let changes = 0;
@@ -295,6 +266,7 @@ class SudokuResolver extends Sudoku {
         return changes;
     }
 
+    //Check if this element has an unique solution
     CheckUnique = (number) => {
         const t = this;
         let unique = 0;
@@ -322,6 +294,8 @@ class SudokuResolver extends Sudoku {
         return false;
     }
 
+
+    // Check if this array has an unique solution
     UniqueList = (arr, number) => {
         const t = this;
         let options = new Set();
@@ -340,6 +314,7 @@ class SudokuResolver extends Sudoku {
         return 0;
     }
 
+    // Add available options to the list
     CheckOptions = (number) => {
         const t = this;
         let list = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
@@ -355,6 +330,7 @@ class SudokuResolver extends Sudoku {
         number.options = list;
     }
 
+    // Delete from list if element in arr
     DuplicatesList = (arr, list) => {
         for (let i = 0; i < arr.length; i++) {
             const element = arr[i];
@@ -367,12 +343,6 @@ class SudokuResolver extends Sudoku {
         }
     }
 
-    arrayEquals=(a, b)=> {
-        return Array.isArray(a) &&
-          Array.isArray(b) &&
-          a.length === b.length &&
-          a.every((val, index) => val === b[index]);
-      }
 
 }
 

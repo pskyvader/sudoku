@@ -1,9 +1,52 @@
 import SudokuNumber from './SudokuNumber';
 
 
+class HelperSudoku{
 
-class Sudoku {
+    arrayEquals=(a, b)=> {
+        return Array.isArray(a) &&
+          Array.isArray(b) &&
+          a.length === b.length &&
+          a.every((val, index) => val === b[index]);
+      }
+
+    CloneBoard = () => {
+        const t = this;
+        let clonelist = [];
+        for (let i = 0; i < t.list.length; i++) {
+            const e = t.list[i];
+            clonelist.push({
+                x: e.x,
+                y: e.y,
+                i: e.i,
+                j: e.j,
+                number: e.number,
+                options: [...e.options],
+                locked: e.locked,
+                error: e.error
+            });
+        }
+        return clonelist;
+    }
+
+    RestoreBoard = (clonelist) => {
+        const t = this;
+        for (let index = 0; index < clonelist.length; index++) {
+            const e = clonelist[index];
+            const element = t.matrix[e.x][e.y].submatrix[e.i][e.j];
+            element.SetValue(e.number);
+            element.SetValueOptions(new Set(e.options));
+            element.locked = e.locked;
+            element.SetValueError(e.error);
+        }
+        this.CheckSuccess();
+    }
+}
+
+
+class Sudoku extends HelperSudoku{
     constructor() { //creates an empty sudoku board
+        super();
         this.CreateEmptyBoard();
     }
 
@@ -21,6 +64,15 @@ class Sudoku {
                 this.EmptySpaces(x, y);
             }
             this.matrix[x] = rows;
+        }
+    }
+    
+    
+    EmptySpaces = (x, y) => {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                this.emptyspaces.push([x, y, i, j]);
+            }
         }
     }
     
@@ -74,7 +126,7 @@ class Sudoku {
         let count = 0;
         for (let i = 0; i < arr.length; i++) {
             const element = arr[i];
-            if (this.duplicated(arr, element.number)) {
+            if (this.isDuplicated(arr, element.number)) {
                 element.SetValueError(true);
                 count++;
             }
@@ -82,20 +134,13 @@ class Sudoku {
         return count;
     }
 
-    duplicated = (arr, search) => {
+    isDuplicated = (arr, search) => {
         let count = arr.reduce(function(n, element) {
             return n + (search !== "" && element.number === search);
         }, 0);
         return (count > 1);
     }
 
-    EmptySpaces = (x, y) => {
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                this.emptyspaces.push([x, y, i, j]);
-            }
-        }
-    }
 }
 
 export default Sudoku;
