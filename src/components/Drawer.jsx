@@ -85,7 +85,7 @@ function ResponsiveDrawer(props) {
                 <DifficultyButtons mode="list" board={board} setDifficulty={setDifficulty} Difficulty={Difficulty} />
             </Suspense>
             <Divider />
-            <UseServiceWorker mode="list" />
+            {/* <UseServiceWorker mode="list" /> */}
         </div>
     );
 

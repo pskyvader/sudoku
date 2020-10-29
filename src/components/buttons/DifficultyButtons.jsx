@@ -4,19 +4,17 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Radio from "@material-ui/core/Radio";
+
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import FaceIcon from '@material-ui/icons/Face';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
 import StarsIcon from '@material-ui/icons/Stars';
-
-
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Switch from '@material-ui/core/Switch';
-
 
 
 import SudokuResolver from "../../logic/SudokuResolver";
@@ -94,11 +92,10 @@ const DifficultyButtons = (props) => {
                 <ListItem button key={e.text} onClick={() => ResetBoard(e.number)} selected={Difficulty === e.number}>
                     <ListItemIcon> <e.icon /></ListItemIcon>
                     <ListItemText primary={e.text} />
-                    <Switch
+                    <Radio
                         edge="end"
-                        disableRipple
-                        checked={Difficulty === e.number}
-                    />
+                        size="small"
+                        disableRipple checked={Difficulty === e.number} />
                 </ListItem>
             ))}
         </List>

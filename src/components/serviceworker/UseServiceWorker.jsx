@@ -5,7 +5,7 @@ import SnakbarServiceWorker from "./SnakbarServiceWorker";
 
 
 const UseServiceWorker = ({ mode = "snackbar" }) => {
-    const [Message, setMessage] = React.useState("");
+    const [Message, setMessage] = React.useState("...");
     const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
     const [installPrompt, setinstallPrompt] = React.useState(null);
     const [Installed, setInstalled] = React.useState(LocalStorage.get("installed", false));
@@ -13,13 +13,16 @@ const UseServiceWorker = ({ mode = "snackbar" }) => {
 
 
     React.useEffect(() => {
+        console.log("sw loading");
         serviceWorker.register({
             onOpen: () => {
+                console.log("sw open");
                 if (Message === "") {
                     setMessage("OFFLINE");
                 }
             },
             onUpdate: registration => {
+                console.log("sw registration");
                 setWaitingServiceWorker(registration.waiting);
                 setMessage("UPDATE");
             },
@@ -59,7 +62,7 @@ const UseServiceWorker = ({ mode = "snackbar" }) => {
     if (mode === "snackbar") {
         return <SnakbarServiceWorker setInstalled={setInstalled} Message={Message} setMessage={setMessage} waitingServiceWorker={waitingServiceWorker} installPrompt={installPrompt} />
     } else {
-        return "uwu";
+        return Message;
     }
 };
 
