@@ -64,33 +64,3 @@ export default function ServiceWorkerProvider({ children }) {
         </ServiceWorkerContext.Provider>
     );
 }
-
-
-
-export const handleUpdate = (props) => {
-    const { setMessage, waitingServiceWorker } = useContext(ServiceWorkerContext);
-    if (waitingServiceWorker) {
-        // We send the SKIP_WAITING message to tell the Service Worker
-        // to update its cache and flush the old one
-        waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
-    }
-    setMessage("");
-};
-
-export const handleInstall = () => {
-    const { setMessage, installPrompt, setInstalled } = useContext(ServiceWorkerContext);
-    if (installPrompt) {
-        installPrompt.prompt();
-        // Wait for the user to respond to the prompt
-        installPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('User accepted the install prompt');
-            } else {
-                setInstalled(true);
-                LocalStorage.set("installed", true);
-                console.log('User dismissed the install prompt');
-            }
-        });
-    }
-    setMessage("");
-};

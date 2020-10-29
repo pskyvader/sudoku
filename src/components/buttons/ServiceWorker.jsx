@@ -11,9 +11,37 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 
 import Text from '../../languages/Language';
-import { ServiceWorkerContext,handleUpdate,handleInstall } from '../../ServiceWorkerContext/ServiceWorkerContext';
+import { ServiceWorkerContext } from '../../ServiceWorkerContext/ServiceWorkerContext';
 import LocalStorage from "../../logic/LocalStorage";
 
+
+const handleUpdate = (props) => {
+    const { setMessage, waitingServiceWorker } = props;
+    if (waitingServiceWorker) {
+        // We send the SKIP_WAITING message to tell the Service Worker
+        // to update its cache and flush the old one
+        waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
+    }
+    setMessage("");
+};
+
+const handleInstall = (props) => {
+    const { setMessage, installPrompt, setInstalled } = props;
+    if (installPrompt) {
+        installPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        installPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            } else {
+                setInstalled(true);
+                LocalStorage.set("installed", true);
+                console.log('User dismissed the install prompt');
+            }
+        });
+    }
+    setMessage("");
+};
 
 
 const ServiceWorkerSnackbar = () => {
@@ -34,14 +62,14 @@ const ServiceWorkerSnackbar = () => {
     if (Message === "INSTALL") {
         alertmessage = {
             severity: "success",
-            action: handleInstall,
+            action: () => handleInstall(context),
             button: Text("install"),
             text: Text("app-available")
         }
     } else if (Message === "UPDATE") {
         alertmessage = {
             severity: "info",
-            action: handleUpdate,
+            action: () => handleUpdate(context),
             button: Text("update"),
             text: Text("update-available")
         }
@@ -84,17 +112,17 @@ const ServiceWorkerList = () => {
 
     if (Message === "INSTALL") {
         alertmessage = {
-            action: handleInstall,
+            action: () => handleInstall(context),
             text: Text("install"),
         }
     } else if (Message === "UPDATE") {
         alertmessage = {
-            action: handleUpdate,
+            action: () => handleUpdate(context),
             text: Text("update"),
         }
     }
 
-    return (Message !== "OFFLINE") ?
+    return (Message !== "OFFLINE" && Message!=="") ?
         (
             <ListItem button key={alertmessage.text} onClick={alertmessage.action} >
                 <ListItemText primary={alertmessage.text} />
