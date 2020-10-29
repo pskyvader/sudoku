@@ -25,9 +25,6 @@ export default function ServiceWorkerProvider({ children }) {
             },
         });
 
-    // }, [Message]);
-
-    // React.useEffect(() => {
         window.addEventListener('beforeinstallprompt', (e) => {
             if (localStorage) {
                 // Prevent the mini-infobar from appearing on mobile
@@ -39,9 +36,6 @@ export default function ServiceWorkerProvider({ children }) {
                 }
             }
         });
-    // }, [Message,setMessage, Installed]);
-
-    // React.useEffect(() => {
         // We setup an event listener to automatically reload the page
         // after the Service Worker has been updated, this will trigger
         // on all the open tabs of our application, so that we don't leave
@@ -72,8 +66,31 @@ export default function ServiceWorkerProvider({ children }) {
 }
 
 
-// // get text according to id & current language
-// export default function Text(tid) {
-//     const ServiceWorkerContext = useContext(ServiceWorkerContext);
-//     return ServiceWorkerContext.dictionary[tid] || tid + "-TEXT";
-// }
+
+export const handleUpdate = (props) => {
+    const { setMessage, waitingServiceWorker } = useContext(ServiceWorkerContext);
+    if (waitingServiceWorker) {
+        // We send the SKIP_WAITING message to tell the Service Worker
+        // to update its cache and flush the old one
+        waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
+    }
+    setMessage("");
+};
+
+export const handleInstall = () => {
+    const { setMessage, installPrompt, setInstalled } = useContext(ServiceWorkerContext);
+    if (installPrompt) {
+        installPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        installPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            } else {
+                setInstalled(true);
+                LocalStorage.set("installed", true);
+                console.log('User dismissed the install prompt');
+            }
+        });
+    }
+    setMessage("");
+};

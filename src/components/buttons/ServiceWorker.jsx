@@ -10,119 +10,107 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 
-import { ServiceWorkerContext } from '../../ServiceWorkerContext/ServiceWorkerContext';
+import Text from '../../languages/Language';
+import { ServiceWorkerContext,handleUpdate,handleInstall } from '../../ServiceWorkerContext/ServiceWorkerContext';
 import LocalStorage from "../../logic/LocalStorage";
 
 
 
-const ServiceWorkerSnackbar = (props) => {
-    const { Message, setMessage, waitingServiceWorker, installPrompt, setInstalled } = React.useContext(ServiceWorkerContext);
-    // const { Message, setMessage, waitingServiceWorker, installPrompt, setInstalled } = props;
+const ServiceWorkerSnackbar = () => {
+    const context = React.useContext(ServiceWorkerContext);
+    const { Message, setMessage, setInstalled } = context;
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setMessage("");
-    };
-    const handleInstallClose = () => {
-        setInstalled(true);
-        LocalStorage.set("installed", true);
-        setMessage("");
-    };
-
-    const handleUpdate = () => {
-        if (waitingServiceWorker) {
-            // We send the SKIP_WAITING message to tell the Service Worker
-            // to update its cache and flush the old one
-            waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
+        if (Message === "INSTALL") {
+            setInstalled(true);
+            LocalStorage.set("installed", true);
         }
-        setMessage("");
     };
-    const handleInstall = () => {
-        if (installPrompt) {
-            installPrompt.prompt();
-            // Wait for the user to respond to the prompt
-            installPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
-                } else {
-                    setInstalled(true);
-                    LocalStorage.set("installed", true);
-                    console.log('User dismissed the install prompt');
-                }
-            });
-        }
-        setMessage("");
-    };
-    let alertmessage = <div />;
+    let alertmessage = {};
     if (Message === "INSTALL") {
-        alertmessage = <Alert elevation={6} variant="filled" severity="success"
-            action={
-                <React.Fragment>
-                    <Button color="inherit" size="small" onClick={handleInstall}> {Text("install")} </Button>
-                    <IconButton color="inherit" size="small" onClick={handleInstallClose}>
-                        <CloseIcon fontSize="small" />
-                    </IconButton>
-                </React.Fragment>
-            } >
-            {Text("app-available")}
-        </Alert>
-
+        alertmessage = {
+            severity: "success",
+            action: handleInstall,
+            button: Text("install"),
+            text: Text("app-available")
+        }
+    } else if (Message === "UPDATE") {
+        alertmessage = {
+            severity: "info",
+            action: handleUpdate,
+            button: Text("update"),
+            text: Text("update-available")
+        }
+    } else if (Message === "OFFLINE") {
+        alertmessage = {
+            severity: "success",
+            action: null,
+            button: null,
+            text: Text("offline-available")
+        }
     }
 
-    if (Message === "UPDATE") {
-        alertmessage = (
-            <Alert elevation={6} variant="filled" severity="info"
-                action={
-                    <React.Fragment>
-                        <Button color="inherit" size="small" onClick={handleUpdate}>  {Text("update")} </Button>
-                        <IconButton color="inherit" size="small" onClick={handleClose}>
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
-                } >
-                {Text("update-available")}
-            </Alert>
-        )
-    }
-    if (Message === "OFFLINE") {
-        alertmessage = (
-            <Alert elevation={6} variant="filled" severity="success" onClose={handleClose} >
-                {Text("offline-available")}
-            </Alert>
-        )
-    }
-
-    const transition = (props2) => <Slide {...props2} direction="up" />;
+    const transition = (props) => <Slide {...props} direction="up" />;
     return <Snackbar
         open={Message !== ""}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         TransitionComponent={transition}
     >
-        {alertmessage}
+        <Alert elevation={6} variant="filled" severity={alertmessage.severity}
+            action={alertmessage.action !== null &&
+                <React.Fragment>
+                    <Button color="inherit" size="small" onClick={alertmessage.action}>  {alertmessage.button} </Button>
+                    <IconButton color="inherit" size="small" onClick={handleClose}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </React.Fragment>
+            } >
+            {alertmessage.text}
+        </Alert>
     </Snackbar>
 }
 
 
 
-const ServiceWorkerList=()=>{
-    const { Message } = React.useContext(ServiceWorkerContext);
+const ServiceWorkerList = () => {
+    const context = React.useContext(ServiceWorkerContext);
+    const { Message } = context;
+    let alertmessage = {};
 
-    return <ListItem button key={Message} onClick={() => console.log("uwu")} >
-        <ListItemText primary={Message} />
-    </ListItem>
+    if (Message === "INSTALL") {
+        alertmessage = {
+            action: handleInstall,
+            text: Text("install"),
+        }
+    } else if (Message === "UPDATE") {
+        alertmessage = {
+            action: handleUpdate,
+            text: Text("update"),
+        }
+    }
+
+    return (Message !== "OFFLINE") ?
+        (
+            <ListItem button key={alertmessage.text} onClick={alertmessage.action} >
+                <ListItemText primary={alertmessage.text} />
+            </ListItem>
+        )
+        : ""
 
 }
 
 
 
-const ServiceWorker = ({mode="snackbar"}) => {
-    if(mode==="snackbar"){
-        return ServiceWorkerSnackbar;
-    }else{
-        return ServiceWorkerList;
+const ServiceWorker = ({ mode = "snackbar" }) => {
+    if (mode === "snackbar") {
+        return <ServiceWorkerSnackbar />;
+    } else {
+        return <ServiceWorkerList />;
     }
 };
 

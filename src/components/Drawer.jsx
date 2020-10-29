@@ -6,8 +6,6 @@ import Hidden from '@material-ui/core/Hidden';
 import List from '@material-ui/core/List';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
-// import UseServiceWorker from './serviceworker/UseServiceWorker';
-
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
 const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
