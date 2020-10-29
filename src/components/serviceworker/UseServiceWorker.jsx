@@ -5,7 +5,7 @@ import SnakbarServiceWorker from "./SnakbarServiceWorker";
 
 
 const UseServiceWorker = ({ mode = "snackbar" }) => {
-    const [Message, setMessage] = React.useState("...");
+    const [Message, setMessage] = React.useState("");
     const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
     const [installPrompt, setinstallPrompt] = React.useState(null);
     const [Installed, setInstalled] = React.useState(LocalStorage.get("installed", false));
@@ -25,6 +25,7 @@ const UseServiceWorker = ({ mode = "snackbar" }) => {
                 console.log("sw registration");
                 setWaitingServiceWorker(registration.waiting);
                 setMessage("UPDATE");
+                console.log("Message",Message);
             },
         });
     }, [Message]);
