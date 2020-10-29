@@ -6,11 +6,12 @@ import Hidden from '@material-ui/core/Hidden';
 import List from '@material-ui/core/List';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
-import UseServiceWorker from './serviceworker/UseServiceWorker';
+// import UseServiceWorker from './serviceworker/UseServiceWorker';
 
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
 const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
+// const UseServiceWorker = lazy(() => import('./serviceworker/UseServiceWorker'));
 
 const drawerWidth = 240;
 
@@ -63,7 +64,10 @@ function ResponsiveDrawer(props) {
         desktopOpen,
         board,
         setDifficulty,
-        Difficulty
+        Difficulty,
+        Message,
+        setMessage,
+        waitingServiceWorker
     } = props;
     const classes = useStyles();
     const theme = useTheme();
@@ -85,7 +89,9 @@ function ResponsiveDrawer(props) {
                 <DifficultyButtons mode="list" board={board} setDifficulty={setDifficulty} Difficulty={Difficulty} />
             </Suspense>
             <Divider />
-            <UseServiceWorker mode="list" />
+            <Suspense fallback={renderLoader()}>
+                <UseServiceWorker mode="list" Message={Message} setMessage={setMessage} waitingServiceWorker={waitingServiceWorker} />
+            </Suspense>
         </div>
     );
 

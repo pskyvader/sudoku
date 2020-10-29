@@ -12,10 +12,13 @@ import SudokuResolver from './logic/SudokuResolver';
 import LocalStorage from './logic/LocalStorage';
 import Text, { LanguageProvider } from './languages/Language';
 
-const Home = lazy(() => import('./pages/Home'));
+import * as serviceWorker from './serviceWorker';
+import UseServiceWorker from './components/serviceworker/UseServiceWorker';
 
+
+
+const Home = lazy(() => import('./pages/Home'));
 // const UseServiceWorker = lazy(() => import('./components/serviceworker/UseServiceWorker'));
-// import UseServiceWorker from './components/serviceworker/UseServiceWorker';
 
 const renderLoader = () => Text("loading");
 
@@ -25,6 +28,27 @@ const baseboard = new SudokuResolver(45, cacheboard);
 function App() {
     const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
     const [DarkMode, SetDarkMode] = React.useState(LocalStorage.get("dark_mode", useMediaQuery('(prefers-color-scheme: dark)')));
+
+    
+    const [Message, setMessage] = React.useState("");
+    const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
+
+    React.useEffect(() => {
+        serviceWorker.register({
+            onOpen: () => {
+                if (Message === "") {
+                    setMessage("OFFLINE");
+                }
+            },
+            onUpdate: registration => {
+                setWaitingServiceWorker(registration.waiting);
+                setMessage("UPDATE");
+            },
+        });
+    }, [Message]);
+
+
+
     const theme = React.useMemo(
         () =>
             createMuiTheme({
@@ -62,10 +86,17 @@ function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <LanguageProvider>
-                {/* <Suspense fallback={renderLoader()}>
-                    <UseServiceWorker />
-                </Suspense> */}
-                <Header board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} DarkMode={DarkMode} SetDarkMode={SetDarkMode}>
+                <UseServiceWorker mode="snackbar" Message={Message} setMessage={setMessage} waitingServiceWorker={waitingServiceWorker}/>
+                <Header board={baseboard} 
+                Difficulty={Difficulty} 
+                setDifficulty={setDifficulty} 
+                DarkMode={DarkMode} 
+                SetDarkMode={SetDarkMode}
+                mode="snackbar" 
+                Message={Message} 
+                setMessage={setMessage} 
+                waitingServiceWorker={waitingServiceWorker}
+                >
                     <Suspense fallback={renderLoader()}>
                         <Home board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} />
                     </Suspense>

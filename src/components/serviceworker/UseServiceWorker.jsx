@@ -1,34 +1,19 @@
 import React from 'react';
-import * as serviceWorker from '../../serviceWorker';
+// import * as serviceWorker from '../../serviceWorker';
 import LocalStorage from '../../logic/LocalStorage';
 import SnakbarServiceWorker from "./SnakbarServiceWorker";
 
 
-const UseServiceWorker = ({ mode = "snackbar" }) => {
-    const [Message, setMessage] = React.useState("");
-    const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+
+
+const UseServiceWorker = ({ mode = "snackbar", Message, setMessage,waitingServiceWorker }) => {
     const [installPrompt, setinstallPrompt] = React.useState(null);
     const [Installed, setInstalled] = React.useState(LocalStorage.get("installed", false));
 
 
 
-    React.useEffect(() => {
-        console.log("sw loading");
-        serviceWorker.register({
-            onOpen: () => {
-                console.log("sw open");
-                if (Message === "") {
-                    setMessage("OFFLINE");
-                }
-            },
-            onUpdate: registration => {
-                console.log("sw registration");
-                setWaitingServiceWorker(registration.waiting);
-                setMessage("UPDATE");
-                console.log("Message",Message);
-            },
-        });
-    }, [Message]);
 
 
     React.useEffect(() => {
@@ -63,7 +48,9 @@ const UseServiceWorker = ({ mode = "snackbar" }) => {
     if (mode === "snackbar") {
         return <SnakbarServiceWorker setInstalled={setInstalled} Message={Message} setMessage={setMessage} waitingServiceWorker={waitingServiceWorker} installPrompt={installPrompt} />
     } else {
-        return Message;
+        return <ListItem button key={Message} onClick={() => console.log("uwu")} >
+            <ListItemText primary={Message} />
+        </ListItem>
     }
 };
 
