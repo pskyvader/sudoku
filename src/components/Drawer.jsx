@@ -11,7 +11,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
 const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
-// const UseServiceWorker = lazy(() => import('./serviceworker/UseServiceWorker'));
+const UseServiceWorker = lazy(() => import('./serviceworker/UseServiceWorker'));
 
 const drawerWidth = 240;
 

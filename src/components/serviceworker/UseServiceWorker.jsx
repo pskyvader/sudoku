@@ -12,10 +12,6 @@ const UseServiceWorker = ({ mode = "snackbar", Message, setMessage,waitingServic
     const [installPrompt, setinstallPrompt] = React.useState(null);
     const [Installed, setInstalled] = React.useState(LocalStorage.get("installed", false));
 
-
-
-
-
     React.useEffect(() => {
         window.addEventListener('beforeinstallprompt', (e) => {
             if (localStorage) {
@@ -28,7 +24,7 @@ const UseServiceWorker = ({ mode = "snackbar", Message, setMessage,waitingServic
                 }
             }
         });
-    }, [Message, Installed]);
+    }, [Message,setMessage, Installed]);
 
     React.useEffect(() => {
         // We setup an event listener to automatically reload the page
