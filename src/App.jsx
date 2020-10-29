@@ -10,7 +10,7 @@ import purple from '@material-ui/core/colors/purple';
 import Header from './components/Header';
 import SudokuResolver from './logic/SudokuResolver';
 import LocalStorage from './logic/LocalStorage';
-import UseServiceWorker from './components/UseServiceWorker';
+import UseServiceWorker from './components/serviceworker/UseServiceWorker';
 import Text, { LanguageProvider } from './languages/Language';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -40,12 +40,12 @@ function App() {
                         styleOverrides: {
                             button: {
                                 '&:hover': {
-                                    backgroundColor: DarkMode?Grey[700]:Grey[200]
+                                    backgroundColor: DarkMode ? Grey[700] : Grey[200]
                                 },
                                 '&$selected': {
-                                    backgroundColor: DarkMode?Grey[600]:Grey[300],
+                                    backgroundColor: DarkMode ? Grey[600] : Grey[300],
                                     '&:hover': {
-                                        backgroundColor: DarkMode?Grey[500]:Grey[400]
+                                        backgroundColor: DarkMode ? Grey[500] : Grey[400]
                                     },
                                 },
                             },
