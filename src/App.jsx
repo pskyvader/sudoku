@@ -11,17 +11,11 @@ import Header from './components/Header';
 import SudokuResolver from './logic/SudokuResolver';
 import LocalStorage from './logic/LocalStorage';
 import Text, { LanguageProvider } from './languages/Language';
-
-
 import ServiceWorkerProvider from './ServiceWorkerContext/ServiceWorkerContext';
-// import * as serviceWorker from './serviceWorker';
-import UseServiceWorker from './components/serviceworker/UseServiceWorker';
-
+import ServiceWorker from './components/buttons/ServiceWorker';
 
 
 const Home = lazy(() => import('./pages/Home'));
-// const UseServiceWorker = lazy(() => import('./components/serviceworker/UseServiceWorker'));
-
 const renderLoader = () => Text("loading");
 
 const cacheboard = LocalStorage.get("sudoku_board", null);
@@ -69,7 +63,7 @@ function App() {
             <CssBaseline />
             <LanguageProvider>
                 <ServiceWorkerProvider>
-                    <UseServiceWorker mode="snackbar" />
+                    <ServiceWorker />
                     <Header board={baseboard}
                         Difficulty={Difficulty}
                         setDifficulty={setDifficulty}

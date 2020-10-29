@@ -11,7 +11,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
 const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
-const UseServiceWorker = lazy(() => import('./serviceworker/UseServiceWorker'));
+const ServiceWorker = lazy(() => import('./buttons/ServiceWorker'));
 
 const drawerWidth = 240;
 
@@ -65,9 +65,6 @@ function ResponsiveDrawer(props) {
         board,
         setDifficulty,
         Difficulty,
-        Message,
-        setMessage,
-        waitingServiceWorker
     } = props;
     const classes = useStyles();
     const theme = useTheme();
@@ -90,7 +87,7 @@ function ResponsiveDrawer(props) {
             </Suspense>
             <Divider />
             <Suspense fallback={renderLoader()}>
-                <UseServiceWorker mode="list" Message={Message} setMessage={setMessage} waitingServiceWorker={waitingServiceWorker} />
+                <ServiceWorker mode="list" />
             </Suspense>
         </div>
     );

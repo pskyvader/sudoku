@@ -1,17 +1,24 @@
 import React from 'react';
+
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
-import LocalStorage from '../../logic/LocalStorage';
-import Text from '../../languages/Language';
+
+import { ServiceWorkerContext } from '../../ServiceWorkerContext/ServiceWorkerContext';
+import LocalStorage from "../../logic/LocalStorage";
 
 
-const SnakbarServiceWorker = (props) => {
-    const { Message, setMessage, waitingServiceWorker, installPrompt, setInstalled } = props;
+
+const ServiceWorkerSnackbar = (props) => {
+    const { Message, setMessage, waitingServiceWorker, installPrompt, setInstalled } = React.useContext(ServiceWorkerContext);
+    // const { Message, setMessage, waitingServiceWorker, installPrompt, setInstalled } = props;
+
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -99,4 +106,24 @@ const SnakbarServiceWorker = (props) => {
 }
 
 
-export default SnakbarServiceWorker;
+
+const ServiceWorkerList=()=>{
+    const { Message } = React.useContext(ServiceWorkerContext);
+
+    return <ListItem button key={Message} onClick={() => console.log("uwu")} >
+        <ListItemText primary={Message} />
+    </ListItem>
+
+}
+
+
+
+const ServiceWorker = ({mode="snackbar"}) => {
+    if(mode==="snackbar"){
+        return ServiceWorkerSnackbar;
+    }else{
+        return ServiceWorkerList;
+    }
+};
+
+export default ServiceWorker;
