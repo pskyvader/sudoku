@@ -11,7 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 
 import Text from '../../languages/Language';
-import { ServiceWorkerContext } from '../../ServiceWorkerContext/ServiceWorkerContext';
+import { ServiceWorkerContext } from '../../ContextProviders/ServiceWorkerContext';
 import LocalStorage from "../../logic/LocalStorage";
 
 

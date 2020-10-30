@@ -91,7 +91,7 @@ export default function ButtonAppBar(props) {
                     </Suspense>
                     <Suspense fallback={renderLoader()}>
                         <div className={classes.margin}>
-                            <DarkModeButton {...props} />
+                            <DarkModeButton/>
                         </div>
                     </Suspense>
                     <div className={classes.margin}>

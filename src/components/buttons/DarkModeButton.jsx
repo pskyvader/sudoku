@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import LocalStorage from '../../logic/LocalStorage';
 import Text from '../../languages/Language';
+import { ThemeContext } from '../../ContextProviders/ThemeContext';
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -22,7 +23,8 @@ const useStyles = makeStyles((theme) => {
 });
 
 
-const DarkModeButton = ({ DarkMode, SetDarkMode, mode = "button" }) => {
+const DarkModeButton = ({ mode = "button" }) => {
+    const { DarkMode, SetDarkMode } = useContext(ThemeContext);
     const classes = useStyles();
     const SwitchDarkMode = () => {
         LocalStorage.set("dark_mode", !DarkMode);
