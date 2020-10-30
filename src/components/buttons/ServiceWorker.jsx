@@ -7,11 +7,31 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles } from '@material-ui/core/styles';
+
+import GetAppIcon from '@material-ui/icons/GetApp';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 
 import Text from '../../languages/Language';
 import { ServiceWorkerContext } from '../../ContextProviders/ServiceWorkerContext';
+
+
+
+const useStyles = makeStyles((theme) => ({
+    install: {
+        backgroundColor:theme.palette.info.main,
+        color:theme.palette.info.contrastText
+    },
+    update: {
+        backgroundColor:theme.palette.success.main,
+        color:theme.palette.success.contrastText
+    },
+}
+));
+
 
 
 const handleUpdate = (props) => {
@@ -43,12 +63,14 @@ const handleInstall = (props) => {
 
 const ServiceWorkerSnackbar = () => {
     const context = React.useContext(ServiceWorkerContext);
+    const [open, setOpen] = React.useState(Message !== "" && Message !== "INSTALL");
     const { Message } = context;
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
+        setOpen(false);
     };
     let alertmessage = {};
     if (Message === "INSTALL") {
@@ -77,7 +99,7 @@ const ServiceWorkerSnackbar = () => {
 
     const transition = (props) => <Slide {...props} direction="up" />;
     return <Snackbar
-        open={Message !== ""}
+        open={open}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         TransitionComponent={transition}
@@ -99,6 +121,7 @@ const ServiceWorkerSnackbar = () => {
 
 
 const ServiceWorkerList = () => {
+    const classes = useStyles();
     const context = React.useContext(ServiceWorkerContext);
     const { Message } = context;
     let alertmessage = {};
@@ -107,17 +130,22 @@ const ServiceWorkerList = () => {
         alertmessage = {
             action: () => handleInstall(context),
             text: Text("install"),
+            icon: GetAppIcon,
+            color: classes.install
         }
     } else if (Message === "UPDATE") {
         alertmessage = {
             action: () => handleUpdate(context),
             text: Text("update"),
+            icon: RefreshIcon,
+            color: classes.update
         }
     }
 
     return (Message !== "OFFLINE" && Message !== "") ?
         (
-            <ListItem button key={alertmessage.text} onClick={alertmessage.action} >
+            <ListItem button key={alertmessage.text} onClick={alertmessage.action} className={alertmessage.color} >
+                <ListItemIcon> <alertmessage.icon /> </ListItemIcon>
                 <ListItemText primary={alertmessage.text} />
             </ListItem>
         )

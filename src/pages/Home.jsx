@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => {
         subgrid: {
             borderBottom: border,
         },
-        paper: {
+        modal: {
             top: "50%",
             left: "50%",
             position: 'absolute',
@@ -103,7 +103,7 @@ const Home = (props) => {
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description" >
             <Suspense fallback={renderLoader()}>
-                <div className={classes.paper}>
+                <div className={classes.modal}>
                     <Typography id="modal-title" variant="h4" gutterBottom>
                         {Text("victory" + (Math.round(Math.random() * 9) + 1))}
                     </Typography>
