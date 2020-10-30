@@ -21,17 +21,14 @@ function App() {
         <ThemeProvider>
             <LanguageProvider>
                 <ServiceWorkerProvider>
-                    <Suspense fallback={renderLoader()}>
-                        <ServiceWorker />
-                    </Suspense>
-                    <Header board={baseboard}
-                        Difficulty={Difficulty}
-                        setDifficulty={setDifficulty}
-                    >
+                    <Header board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} >
                         <Suspense fallback={renderLoader()}>
                             <Home board={baseboard} Difficulty={Difficulty} setDifficulty={setDifficulty} />
                         </Suspense>
                     </Header>
+                    <Suspense fallback={renderLoader()}>
+                        <ServiceWorker />
+                    </Suspense>
                 </ServiceWorkerProvider>
             </LanguageProvider>
         </ThemeProvider>

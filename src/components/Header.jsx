@@ -11,7 +11,7 @@ import Hidden from '@material-ui/core/Hidden';
 
 const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
-const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
+// const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
 const Drawer = lazy(() => import('./Drawer'));
 
 const Container = lazy(() => import('@material-ui/core/Container'));
@@ -87,11 +87,11 @@ export default function ButtonAppBar(props) {
                     <Hidden smDown>
                         <Typography variant="h6" className={classes.root}> Sudoku </Typography>
                     </Hidden>
-                    <Suspense fallback={renderLoader()}>
+                    {/* <Suspense fallback={renderLoader()}>
                         <div className={classes.margin}>
                             <LanguageSelector />
                         </div>
-                    </Suspense>
+                    </Suspense> */}
                     <Suspense fallback={renderLoader()}>
                         <div className={classes.margin}>
                             <DarkModeButton/>

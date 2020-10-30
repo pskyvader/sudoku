@@ -21,13 +21,19 @@ import { ServiceWorkerContext } from '../../ContextProviders/ServiceWorkerContex
 
 
 const useStyles = makeStyles((theme) => ({
-    install: {
-        backgroundColor:theme.palette.info.main,
-        color:theme.palette.info.contrastText
-    },
     update: {
+        backgroundColor:theme.palette.info.main,
+        color:theme.palette.info.contrastText,
+        "&:hover":{
+            backgroundColor:theme.palette.info.light,
+        }
+    },
+    install: {
         backgroundColor:theme.palette.success.main,
-        color:theme.palette.success.contrastText
+        color:theme.palette.success.contrastText,
+        "&:hover":{
+            backgroundColor:theme.palette.success.light,
+        }
     },
 }
 ));
@@ -63,8 +69,10 @@ const handleInstall = (props) => {
 
 const ServiceWorkerSnackbar = () => {
     const context = React.useContext(ServiceWorkerContext);
-    const [open, setOpen] = React.useState(Message !== "" && Message !== "INSTALL");
     const { Message } = context;
+    const [open, setOpen] = React.useState(true);
+    if(Message==="" || Message==="INSTALL") return null;
+
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -73,15 +81,15 @@ const ServiceWorkerSnackbar = () => {
         setOpen(false);
     };
     let alertmessage = {};
-    if (Message === "INSTALL") {
-        return null;
+    // if (Message === "INSTALL") {
         // alertmessage = {
         //     severity: "success",
         //     action: () => handleInstall(context),
         //     button: Text("install"),
         //     text: Text("app-available")
         // }
-    } else if (Message === "UPDATE") {
+    // }
+    if (Message === "UPDATE") {
         alertmessage = {
             severity: "info",
             action: () => handleUpdate(context),
