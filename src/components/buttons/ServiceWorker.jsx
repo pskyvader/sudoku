@@ -122,14 +122,13 @@ const ServiceWorkerList = () => {
         }
     }
 
-    return (Message !== "OFFLINE" && Message!=="") ?
+    return (Message !== "OFFLINE" && Message !== "") ?
         (
             <ListItem button key={alertmessage.text} onClick={alertmessage.action} >
                 <ListItemText primary={alertmessage.text} />
             </ListItem>
         )
-        : ""
-
+        : null
 }
 
 
