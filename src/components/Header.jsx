@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
-import Container from '@material-ui/core/Container';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -14,6 +13,10 @@ const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
 const Drawer = lazy(() => import('./Drawer'));
+
+const Container = lazy(() => import('@material-ui/core/Container'));
+
+// import Container from '@material-ui/core/Container';
 
 
 
@@ -59,7 +62,7 @@ export default function ButtonAppBar(props) {
     const [desktopOpen, setdesktopOpen] = React.useState(false);
     const handleDesktopDrawerToggle = () => {
         setdesktopOpen(!desktopOpen);
-        setTimeout(function () { window.dispatchEvent(new Event('resize')) }, theme.transitions.duration.enteringScreen);
+        setTimeout( ()=> { window.dispatchEvent(new Event('resize')) }, theme.transitions.duration.enteringScreen);
     };
 
     return (

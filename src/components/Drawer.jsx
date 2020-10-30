@@ -54,7 +54,6 @@ const renderLoader = () => null;
 
 function ResponsiveDrawer(props) {
     const {
-        window,
         children,
         handleDrawerToggle,
         mobileOpen,
@@ -73,7 +72,7 @@ function ResponsiveDrawer(props) {
             <Divider />
             <List>
                 <Suspense fallback={renderLoader()}>
-                    <DarkModeButton {...props} mode="list" />
+                    <DarkModeButton mode="list" />
                 </Suspense>
                 <Suspense fallback={renderLoader()}>
                     <LanguageSelector mode="list" />
@@ -90,7 +89,6 @@ function ResponsiveDrawer(props) {
         </div>
     );
 
-    const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
         <div className={classes.root}>
@@ -98,7 +96,6 @@ function ResponsiveDrawer(props) {
                 {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Hidden smUp implementation="css">
                     <Drawer
-                        container={container}
                         variant="temporary"
                         anchor={theme.direction === 'rtl' ? 'right' : 'left'}
                         open={mobileOpen}

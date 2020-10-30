@@ -12,7 +12,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import Text from '../../languages/Language';
 import { ServiceWorkerContext } from '../../ContextProviders/ServiceWorkerContext';
-import LocalStorage from "../../logic/LocalStorage";
 
 
 const handleUpdate = (props) => {
@@ -26,7 +25,7 @@ const handleUpdate = (props) => {
 };
 
 const handleInstall = (props) => {
-    const { setMessage, installPrompt, setInstalled } = props;
+    const { setMessage, installPrompt } = props;
     if (installPrompt) {
         installPrompt.prompt();
         // Wait for the user to respond to the prompt
@@ -34,8 +33,6 @@ const handleInstall = (props) => {
             if (choiceResult.outcome === 'accepted') {
                 console.log('User accepted the install prompt');
             } else {
-                setInstalled(true);
-                LocalStorage.set("installed", true);
                 console.log('User dismissed the install prompt');
             }
         });
@@ -46,26 +43,22 @@ const handleInstall = (props) => {
 
 const ServiceWorkerSnackbar = () => {
     const context = React.useContext(ServiceWorkerContext);
-    const { Message, setMessage, setInstalled } = context;
+    const { Message } = context;
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-        setMessage("");
-        if (Message === "INSTALL") {
-            setInstalled(true);
-            LocalStorage.set("installed", true);
-        }
     };
     let alertmessage = {};
     if (Message === "INSTALL") {
-        alertmessage = {
-            severity: "success",
-            action: () => handleInstall(context),
-            button: Text("install"),
-            text: Text("app-available")
-        }
+        return null;
+        // alertmessage = {
+        //     severity: "success",
+        //     action: () => handleInstall(context),
+        //     button: Text("install"),
+        //     text: Text("app-available")
+        // }
     } else if (Message === "UPDATE") {
         alertmessage = {
             severity: "info",

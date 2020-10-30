@@ -1,6 +1,5 @@
 import React, { createContext } from 'react';
 import * as serviceWorker from '../serviceWorker';
-import LocalStorage from "../logic/LocalStorage";
 
 
 export const ServiceWorkerContext = createContext({});
@@ -10,7 +9,6 @@ export default function ServiceWorkerProvider({ children }) {
     const [Message, setMessage] = React.useState("");
     const [waitingServiceWorker, setWaitingServiceWorker] = React.useState(null);
     const [installPrompt, setinstallPrompt] = React.useState(null);
-    const [Installed, setInstalled] = React.useState(LocalStorage.get("installed", false));
 
     React.useEffect(() => {
         serviceWorker.register({
@@ -31,7 +29,7 @@ export default function ServiceWorkerProvider({ children }) {
                 e.preventDefault();
                 // Stash the event so it can be triggered later.
                 setinstallPrompt(e);
-                if (Message !== "UPDATE" && !Installed) {
+                if (Message !== "UPDATE") {
                     setMessage("INSTALL");
                 }
             }
@@ -47,14 +45,13 @@ export default function ServiceWorkerProvider({ children }) {
                 }
             });
         }
-    }, [Message,setMessage, Installed,waitingServiceWorker]);
+    }, [Message,setMessage,waitingServiceWorker]);
 
 
     const provider = {
         Message,
         setMessage,
         installPrompt,
-        setInstalled,
         waitingServiceWorker
     };
 

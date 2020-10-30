@@ -14,10 +14,8 @@ import LocalStorage from "../logic/LocalStorage";
 
 export const ThemeContext = createContext({});
 
-
 export default function ThemeContextProvider({ children }) {
     const [DarkMode, SetDarkMode] = React.useState(LocalStorage.get("dark_mode", useMediaQuery('(prefers-color-scheme: dark)')));
-
     const theme = React.useMemo(
         () =>
             createMuiTheme({
