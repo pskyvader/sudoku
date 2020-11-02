@@ -29,10 +29,8 @@ export default function BoardContextProvider({ children }) {
 
 
     const ResetBoard = (n) => {
-        const newboard = new SudokuResolver(n);
-        if(n<30){
-            console.log(81-newboard.removed);
-        }
+        let newboard = new SudokuResolver(n);
+        console.log(81 - newboard.removed,newboard.errorcount);
         setDifficulty(n);
         LocalStorage.set("difficulty", n);
         const newmatrix = newboard.CloneBoard();
