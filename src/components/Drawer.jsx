@@ -58,10 +58,7 @@ function ResponsiveDrawer(props) {
         handleDrawerToggle,
         mobileOpen,
         handleDesktopDrawerToggle,
-        desktopOpen,
-        board,
-        setDifficulty,
-        Difficulty,
+        desktopOpen
     } = props;
     const classes = useStyles();
     const theme = useTheme();
@@ -80,7 +77,7 @@ function ResponsiveDrawer(props) {
             </List>
             <Divider />
             <Suspense fallback={renderLoader()}>
-                <DifficultyButtons mode="list" board={board} setDifficulty={setDifficulty} Difficulty={Difficulty} />
+                <DifficultyButtons mode="list" />
             </Suspense>
             <Divider />
             <Suspense fallback={renderLoader()}>

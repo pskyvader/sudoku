@@ -99,7 +99,7 @@ export default function ButtonAppBar(props) {
                     </Suspense>
                     <div className={classes.margin}>
                         <Suspense fallback={renderLoader()}>
-                            <DifficultyButtons {...props} />
+                            <DifficultyButtons />
                         </Suspense>
                     </div>
                 </Toolbar>

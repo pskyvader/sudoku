@@ -49,10 +49,17 @@ export default function ThemeContextProvider({ children }) {
         [DarkMode],
     );
 
+    
+    const SwitchDarkMode = () => {
+        SetDarkMode(!DarkMode);
+        LocalStorage.set("dark_mode", !DarkMode);
+    }
+
 
     const provider = {
         SetDarkMode,
-        DarkMode
+        DarkMode,
+        SwitchDarkMode
     };
 
     return (

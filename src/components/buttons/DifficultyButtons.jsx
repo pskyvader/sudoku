@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,9 +17,9 @@ import MoodBadIcon from '@material-ui/icons/MoodBad';
 import StarsIcon from '@material-ui/icons/Stars';
 
 
-import SudokuResolver from "../../logic/SudokuResolver";
-import LocalStorage from "../../logic/LocalStorage";
 import Text from '../../languages/Language';
+
+import { BoardContext } from '../../ContextProviders/BoardContext';
 
 const buttoncolor = (pallete, getContrastText) => {
     return {
@@ -53,18 +53,10 @@ const useStyles = makeStyles((theme) => {
 });
 
 const DifficultyButtons = (props) => {
-    const { board, setDifficulty, Difficulty, mode = "button" } = props;
+    const { mode = "button" } = props;
+    const { Difficulty,ResetBoard } = useContext(BoardContext);
 
     const classes = useStyles();
-
-    function ResetBoard(n) {
-        const newboard = new SudokuResolver(n);
-        setDifficulty(n);
-        LocalStorage.set("difficulty", n);
-        const newmatrix = newboard.CloneBoard();
-        board.RestoreBoard(newmatrix);
-        LocalStorage.set("sudoku_board", newmatrix);
-    }
 
     const difficultylist = [
         { number: 63, text: Text('veryeasymode'), class: classes.button1, icon: EmojiEmotionsIcon },

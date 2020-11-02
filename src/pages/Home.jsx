@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense,useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
 import Text from '../languages/Language';
+
+import { BoardContext } from '../ContextProviders/BoardContext';
 
 const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyButtons'));
 
@@ -59,7 +61,7 @@ function debounce(fn, ms) {
 
 
 const Home = (props) => {
-    const { board } = props;
+    const { board} = useContext(BoardContext);
     const classes = useStyles();
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));

@@ -9,7 +9,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import LocalStorage from '../../logic/LocalStorage';
 import Text from '../../languages/Language';
 import { ThemeContext } from '../../ContextProviders/ThemeContext';
 
@@ -24,12 +23,8 @@ const useStyles = makeStyles((theme) => {
 
 
 const DarkModeButton = ({ mode = "button" }) => {
-    const { DarkMode, SetDarkMode } = useContext(ThemeContext);
+    const { DarkMode,SwitchDarkMode } = useContext(ThemeContext);
     const classes = useStyles();
-    const SwitchDarkMode = () => {
-        LocalStorage.set("dark_mode", !DarkMode);
-        SetDarkMode(!DarkMode);
-    }
 
     if (mode === "button") {
         return <Tooltip title={Text('darkmode')}>
