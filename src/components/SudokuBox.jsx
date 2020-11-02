@@ -23,13 +23,13 @@ const SudokuSubBox = ({ matrix, height}) => {
     const key = matrix.x + "," + matrix.y;
 
     return <Grid container justify="center" className={classes.subbox}>
-        {box.map((row, x) => {
+        {box.map((column, x) => {
             const keyx = key + "-" + x;
             return <Grid key={keyx} item xs={4} className={classes.grid}>
-                {row.map((column, y) => {
+                {column.map((row, y) => {
                     const keyy = keyx + "," + y;
                     return <Grid key={keyy} item xs={12} className={classes.subgrid}>
-                        <SudokuNumberBox field={column} height={height}/>
+                        <SudokuNumberBox field={row} height={height}/>
                     </Grid>
                 })}
             </Grid>

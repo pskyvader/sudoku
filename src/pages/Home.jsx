@@ -117,11 +117,11 @@ const Home = () => {
         <Box className={classes.box} ref={canvas}>
             {modal}
             <Grid container justify="center" className={classes.root}>
-                {board.matrix.map((row, x) => (
+                {board.matrix.map((column, x) => (
                     <Grid key={x} item xs={4} className={classes.grid}>
-                        {row.map((column, y) => (
+                        {column.map((row, y) => (
                             <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                <SudokuBox matrix={column} height={height} />
+                                <SudokuBox matrix={row} height={height} />
                             </Grid>
                         ))}
                     </Grid>

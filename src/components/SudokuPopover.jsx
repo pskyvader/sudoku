@@ -131,7 +131,7 @@ const SudokuPopover = (props) => {
     });
 
 
-    return <Grid container justify="center" className={clsx(OptionsActive ? classes.optionbackground : "")} >
+    return <Grid container justify="center" className={clsx(OptionsActive && classes.optionbackground )} >
         {box.map((row, valuex) => {
             const keyx = key + "-" + valuex;
             return <Grid key={keyx} item xs={4}>

@@ -63,9 +63,9 @@ class SudokuResolver extends Sudoku {
             throw Error("number out of range");
         }
         const emptyspaces = [...t.emptyspaces];
-        let removed = 0;
+        this.removed = 0;
 
-        while (removed < 81 - n && emptyspaces.length > 0) {
+        while (this.removed < 81 - n && emptyspaces.length > 0) {
             const pos = Math.floor(Math.random() * (emptyspaces.length - 1));
             const current = emptyspaces[pos];
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
@@ -78,7 +78,7 @@ class SudokuResolver extends Sudoku {
                 console.log(solutions,"solutions");
             }
             if (solutions===1) {
-                removed++;
+                this.removed++;
             } else {
                 field.number = tmp;
             }

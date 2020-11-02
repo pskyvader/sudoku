@@ -22,7 +22,6 @@ export default function BoardContextProvider({ children }) {
     const board = new SudokuResolver(45, cacheboard);
     const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
     const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
-
     const [Success, setSuccess] = React.useState(board.success);
     board.setSuccess = setSuccess;
     board.success = Success;
@@ -31,6 +30,9 @@ export default function BoardContextProvider({ children }) {
 
     const ResetBoard = (n) => {
         const newboard = new SudokuResolver(n);
+        if(n<30){
+            console.log(81-newboard.removed);
+        }
         setDifficulty(n);
         LocalStorage.set("difficulty", n);
         const newmatrix = newboard.CloneBoard();
