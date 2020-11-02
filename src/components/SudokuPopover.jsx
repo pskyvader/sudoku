@@ -113,7 +113,6 @@ const SudokuPopover = (props) => {
         } else {
             const pressednumber = parseInt(event.key);
             if (!isNaN(pressednumber)) {
-
                 if (OptionsActive) {
                     changeOptions(pressednumber);
                 } else {
