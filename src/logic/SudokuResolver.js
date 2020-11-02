@@ -54,12 +54,7 @@ class SudokuResolver extends Sudoku {
             t.CreateBoard(n, deep + 1);
         }
         if (deep === 0) {
-            
-            var t0 = performance.now();
             t.CleanBoard(n);
-            
-            var t1 = performance.now();
-            t.totaltime=(t1-t0);
         }
     }
     CleanBoard = (n) => {
