@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense,useContext } from 'react';
 import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Popper from '@material-ui/core/Popper';
 
 import SudokuOptions from './SudokuOptions';
+import { BoardContext } from '../ContextProviders/BoardContext';
 
 const SudokuPopover = lazy(() => import('./SudokuPopover'));
 
@@ -54,7 +55,8 @@ const useStyles = makeStyles((theme) => {
 
 
 
-const SudokuNumber = ({ field, OptionsActive, setOptionsActive, SaveBoard }) => {
+const SudokuNumber = ({ field }) => {
+    const { SaveBoard } = useContext(BoardContext);
     const classes = useStyles();
     const anchorRef = React.useRef(null);
 
@@ -87,7 +89,7 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive, SaveBoard }) => 
     field.SetOptions = SetOptions;
     field.options = Options;
 
-    const className = clsx(classes.button, FinalError && classes.error, open && classes.selected, ChangeOption);
+    const className = clsx(classes.button, FinalError && classes.error, open && classes.selected);
 
     if (locked) {
         return (
@@ -109,8 +111,6 @@ const SudokuNumber = ({ field, OptionsActive, setOptionsActive, SaveBoard }) => 
                                 placement={placement}
                                 handleClose={handleClose}
                                 field={field}
-                                OptionsActive={OptionsActive}
-                                setOptionsActive={setOptionsActive}
                                 parentOptions={SetChangeOption}
                             />
                         )}

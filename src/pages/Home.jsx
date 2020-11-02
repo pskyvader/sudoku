@@ -1,4 +1,4 @@
-import React, { lazy, Suspense,useContext } from 'react';
+import React, { lazy, Suspense, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -60,16 +60,11 @@ function debounce(fn, ms) {
 }
 
 
-const Home = (props) => {
-    const { board} = useContext(BoardContext);
+const Home = () => {
+    const { board,Success,setSuccess } = useContext(BoardContext);
     const classes = useStyles();
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
-    const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
-
-    const [Success, setSuccess] = React.useState(board.success);
-    board.setSuccess = setSuccess;
-    board.success = Success;
 
     const handleClose = () => {
         setSuccess(false);
@@ -86,10 +81,6 @@ const Home = (props) => {
     }
     const debouncedHandleResize = debounce(BoxHeight, 100);
 
-    const Save = () => {
-        LocalStorage.set("sudoku_board", board.CloneBoard());
-    }
-    const SaveBoard = debounce(Save, 3000);
 
     React.useLayoutEffect(debouncedHandleResize, []);
     React.useEffect(() => {
@@ -112,7 +103,7 @@ const Home = (props) => {
                     <Typography id="modal-description" variant="h5" gutterBottom>
                         {Text("newgame")}
                     </Typography>
-                    <DifficultyButtons {...props} />
+                    <DifficultyButtons />
                     <p> ... {Text("victorycomment" + (Math.round(Math.random() * 9) + 1))}</p>
                 </div>
             </Suspense>
@@ -124,14 +115,13 @@ const Home = (props) => {
 
     return (
         <Box className={classes.box} ref={canvas}>
-        {modal}
-            
+            {modal}
             <Grid container justify="center" className={classes.root}>
                 {board.matrix.map((row, x) => (
                     <Grid key={x} item xs={4} className={classes.grid}>
                         {row.map((column, y) => (
                             <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                <SudokuBox matrix={column} height={height} OptionsActive={OptionsActive} setOptionsActive={setOptionsActive} SaveBoard={SaveBoard} />
+                                <SudokuBox matrix={column} height={height} />
                             </Grid>
                         ))}
                     </Grid>

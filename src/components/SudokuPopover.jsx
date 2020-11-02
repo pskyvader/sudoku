@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -13,6 +13,7 @@ import Grow from '@material-ui/core/Grow';
 
 import Text from '../languages/Language';
 
+import { BoardContext } from '../ContextProviders/BoardContext';
 
 const useStyles = makeStyles((theme) => {
     const { primary, secondary, getContrastText, background } = theme.palette;
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => {
                 padding: theme.spacing(1.5)
             },
             "&:hover": {
-                backgroundColor: light ? primary.main : primary.light ,
+                backgroundColor: light ? primary.main : primary.light,
                 color: primary.contrastText
             },
             color: light ? primary.main : getContrastText(background.paper)
@@ -42,9 +43,9 @@ const useStyles = makeStyles((theme) => {
             fontWeight: "normal",
             margin: 0,
             borderRadius: 0,
-            color: light ?primary.main : getContrastText(background.paper),
+            color: light ? primary.main : getContrastText(background.paper),
             "&:hover": {
-                backgroundColor: light ? primary.main : primary.light ,
+                backgroundColor: light ? primary.main : primary.light,
                 color: primary.contrastText
             }
         },
@@ -72,7 +73,8 @@ const useStyles = makeStyles((theme) => {
 
 
 const SudokuPopover = (props) => {
-    const { handleClose, field, OptionsActive, setOptionsActive, parentOptions } = props;
+    const { handleClose, field, parentOptions } = props;
+    const {OptionsActive,setOptionsActive}=useContext(BoardContext);
     const [ChangeOption, SetChangeOption] = React.useState(false);
     const handleChange = () => {
         setOptionsActive(!OptionsActive);
@@ -129,7 +131,7 @@ const SudokuPopover = (props) => {
     });
 
 
-    return <Grid container justify="center" className={clsx(OptionsActive ? classes.optionbackground : "", ChangeOption)} >
+    return <Grid container justify="center" className={clsx(OptionsActive ? classes.optionbackground : "")} >
         {box.map((row, valuex) => {
             const keyx = key + "-" + valuex;
             return <Grid key={keyx} item xs={4}>
@@ -150,7 +152,7 @@ const SudokuPopover = (props) => {
                 <Button classes={{ label: classes.label }} className={clsx(classes.options, optioncolor)} onClick={handleChange}>
                     <Switch
                         edge="start"
-                        size="small" 
+                        size="small"
                         disableRipple
                         onChange={handleChange}
                         checked={OptionsActive}

@@ -54,11 +54,12 @@ const useStyles = makeStyles((theme) => {
 
 const DifficultyButtons = (props) => {
     const { mode = "button" } = props;
-    const { Difficulty,ResetBoard } = useContext(BoardContext);
+    const { Difficulty, ResetBoard } = useContext(BoardContext);
 
     const classes = useStyles();
 
     const difficultylist = [
+        { number: 80, text: Text('veryeasymode'), class: classes.button1, icon: EmojiEmotionsIcon },
         { number: 63, text: Text('veryeasymode'), class: classes.button1, icon: EmojiEmotionsIcon },
         { number: 45, text: Text('easymode'), class: classes.button2, icon: InsertEmoticonIcon },
         { number: 36, text: Text('mediummode'), class: classes.button3, icon: FaceIcon },
