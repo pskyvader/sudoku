@@ -10,6 +10,7 @@ const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
 const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
 const ServiceWorker = lazy(() => import('./buttons/ServiceWorker'));
+const ColorSelector = lazy(() => import('./buttons/ColorSelector'));
 
 const drawerWidth = 240;
 
@@ -82,6 +83,9 @@ function ResponsiveDrawer(props) {
             <Divider />
             <Suspense fallback={renderLoader()}>
                 <ServiceWorker mode="list" />
+            </Suspense>
+            <Suspense fallback={renderLoader()}>
+                <ColorSelector />
             </Suspense>
         </div>
     );
