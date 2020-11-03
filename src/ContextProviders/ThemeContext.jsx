@@ -4,7 +4,6 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import indigo from '@material-ui/core/colors/indigo';
-import blueGrey from '@material-ui/core/colors/blueGrey';
 import Grey from '@material-ui/core/colors/grey';
 import purple from '@material-ui/core/colors/purple';
 
@@ -14,18 +13,25 @@ import LocalStorage from "../logic/LocalStorage";
 
 export const ThemeContext = createContext({});
 
+const DefaultColor = {
+    primary: { light: indigo[600], dark: indigo[800] },
+    secondary: { light: purple[600], dark: purple[800] },
+};
+
 export default function ThemeContextProvider({ children }) {
     const [DarkMode, SetDarkMode] = React.useState(LocalStorage.get("dark_mode", useMediaQuery('(prefers-color-scheme: dark)')));
+    const [SelectedColor, SetSelectedColor] = React.useState(LocalStorage.get("selected_color", DefaultColor));
+
     const theme = React.useMemo(
         () =>
             createMuiTheme({
                 palette: {
                     primary: {
                         // main: DarkMode ? blueGrey[800] : indigo[800],
-                        main: DarkMode ?  indigo[600]: indigo[800],
+                        main: DarkMode ? SelectedColor['primary']['dark'] : SelectedColor['primary']['light'],
                     },
                     secondary: {
-                        main: purple[500]
+                        main: DarkMode ? SelectedColor['secondary']['dark'] : SelectedColor['secondary']['light'],
                     },
                     type: DarkMode ? 'dark' : 'light',
                 },
@@ -47,20 +53,39 @@ export default function ThemeContextProvider({ children }) {
                     },
                 },
             }),
-        [DarkMode],
+        [DarkMode, SelectedColor],
     );
 
-    
+
     const SwitchDarkMode = () => {
         SetDarkMode(!DarkMode);
         LocalStorage.set("dark_mode", !DarkMode);
+    }
+    const SetColor = (color, primary = true) => {
+        const newcolor = {};
+        if (primary) {
+            newcolor['primary'] = color;
+            newcolor['secondary'] = SelectedColor['secondary'];
+        } else {
+            newcolor['secondary'] = color;
+            newcolor['primary'] = SelectedColor['primary'];
+        }
+        SetSelectedColor(newcolor);
+        LocalStorage.set("selected_color", newcolor);
+    }
+
+    const ResetColor=()=>{
+        SetSelectedColor(DefaultColor);
+        LocalStorage.set("selected_color", DefaultColor);
     }
 
 
     const provider = {
         SetDarkMode,
         DarkMode,
-        SwitchDarkMode
+        SwitchDarkMode,
+        SetColor,
+        ResetColor
     };
 
     return (

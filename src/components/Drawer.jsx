@@ -85,7 +85,8 @@ function ResponsiveDrawer(props) {
                 <ServiceWorker mode="list" />
             </Suspense>
             <Suspense fallback={renderLoader()}>
-                <ColorSelector />
+                <ColorSelector  mode="primary"/>
+                <ColorSelector mode="secondary"/>
             </Suspense>
         </div>
     );

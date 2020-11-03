@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useContext } from 'react';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -23,21 +22,9 @@ import { ColorPalette } from 'material-ui-color';
 
 // import LocalStorage from '../../logic/LocalStorage';
 import Text from '../../languages/Language';
+import { ThemeContext } from '../../ContextProviders/ThemeContext';
 
 
-
-const useStyles = makeStyles((theme) => ({
-    select: {
-        color: theme.palette.primary.contrastText,
-        padding: theme.spacing(1, 0)
-    },
-    icon: {
-        margin: theme.spacing(1),
-    },
-    nested: {
-        paddingLeft: theme.spacing(4),
-    },
-}));
 
 
 const colors = {
@@ -62,22 +49,25 @@ const colors = {
     yellow: yellow
 };
 
-const getColor=(hue)=>{
-    console.log(Object.entries(colors));
-    
+const getColor = (hue) => {
     var palette = {};
-      return palette;
+    for (const [key, value] of Object.entries(colors)) {
+        palette[key] = value[hue];
+    }
+    return palette;
 }
 
 
-export default function LanguageSelector({ mode = "button" }) {
-    const classes = useStyles();
-    // const { userLanguage, userLanguageChange } = useContext(LanguageContext);
-    const selectedcolor = "red";
+export default function ColorSelector({ mode = "primary" }) {
+    const { SetColor, ResetColor } = useContext(ThemeContext);
 
     // set selected language by calling context method
-    const handleMenuItemClick = (key,value) => {
-
+    const handleMenuItemClick = (key) => {
+        const selectedcolor = {
+            light: colors[key][600],
+            dark: colors[key][800]
+        }
+        SetColor(selectedcolor, mode === "primary");
         setOpen(false);
     }
 
@@ -86,7 +76,7 @@ export default function LanguageSelector({ mode = "button" }) {
     const handleClickList = () => {
         setOpen(!open);
     };
-    const palette=getColor(800);
+    const palette = getColor(600);
 
 
 
@@ -95,20 +85,15 @@ export default function LanguageSelector({ mode = "button" }) {
             <ListItemIcon>
                 <PaletteIcon />
             </ListItemIcon>
-            <ListItemText primary={Text("selectcolor")} />
+            <ListItemText primary={Text("selectcolor" + mode)} />
             {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-                <ColorPalette palette={palette} className={classes.nested} onSelect={handleMenuItemClick} size={32} />
-                {/* {Object.entries(palette).map(([id, name]) => (
-                    <ListItem key={id} selected={id === selectedcolor} button className={classes.nested} onClick={(event) => handleMenuItemClick(event, id)}>
-                        <ListItemIcon>
-                            {id}
-                        </ListItemIcon>
-                        <ListItemText primary={name} />
-                    </ListItem>
-                ))} */}
+                <ColorPalette palette={palette} onSelect={handleMenuItemClick} size={32} />
+                <ListItem key={"resetcolor"} button onClick={(event) => ResetColor(mode==="primary")}>
+                    <ListItemText primary={Text("resetcolor")} />
+                </ListItem>
             </List>
         </Collapse>
     </React.Fragment>
