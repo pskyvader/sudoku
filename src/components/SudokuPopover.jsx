@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => {
             width: 0,
         },
         optioncolor: {
-            color: getContrastText(primary.light),
+            color: getContrastText(primary.main),
             "&:hover": {
                 backgroundColor: primary.light,
             }

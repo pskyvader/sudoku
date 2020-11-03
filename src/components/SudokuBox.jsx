@@ -8,7 +8,7 @@ import SudokuNumberBox from "./SudokuNumberBox";
 
 const useStyles = makeStyles((theme) => {
     const light = theme.palette.type === "light";
-    const mainbordercolor = light ? theme.palette.info.dark : theme.palette.primary.light;
+    const mainbordercolor = light ? theme.palette.primary.main : theme.palette.primary.light;
     return {
         subbox: { textAlign: "center", height: "100%" },
         grid: { borderRight: theme.spacing(0.125) + " solid " + mainbordercolor },

@@ -21,7 +21,8 @@ export default function ThemeContextProvider({ children }) {
             createMuiTheme({
                 palette: {
                     primary: {
-                        main: DarkMode ? blueGrey[800] : indigo[800],
+                        // main: DarkMode ? blueGrey[800] : indigo[800],
+                        main: DarkMode ?  indigo[900]: indigo[800],
                     },
                     secondary: {
                         main: purple[500]

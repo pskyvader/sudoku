@@ -16,7 +16,7 @@ const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyBut
 
 const useStyles = makeStyles((theme) => {
     const light = theme.palette.type === "light";
-    const mainbordercolor = light ? theme.palette.info.dark : theme.palette.primary.light;
+    const mainbordercolor = light ? theme.palette.primary.main : theme.palette.primary.light;
     const mainborder = theme.spacing(0.25 + 0.125) + " solid " + mainbordercolor;
     const border = theme.spacing(0.25) + " solid " + mainbordercolor;
     return {
