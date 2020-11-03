@@ -15,7 +15,7 @@ export const ThemeContext = createContext({});
 
 const DefaultColor = {
     primary: { light: indigo[600], dark: indigo[800] },
-    secondary: { light: purple[600], dark: purple[800] },
+    secondary: { light: purple[600], dark: purple[900] },
 };
 
 export default function ThemeContextProvider({ children }) {
@@ -74,9 +74,17 @@ export default function ThemeContextProvider({ children }) {
         LocalStorage.set("selected_color", newcolor);
     }
 
-    const ResetColor=()=>{
-        SetSelectedColor(DefaultColor);
-        LocalStorage.set("selected_color", DefaultColor);
+    const ResetColor=(primary = true)=>{
+        const newcolor = {};
+        if (primary) {
+            newcolor['secondary'] = SelectedColor['secondary'];
+            newcolor['primary'] = DefaultColor['primary'];
+        } else {
+            newcolor['primary'] = SelectedColor['primary'];
+            newcolor['secondary'] = DefaultColor['secondary'];
+        }
+        SetSelectedColor(newcolor);
+        LocalStorage.set("selected_color", newcolor);
     }
 
 

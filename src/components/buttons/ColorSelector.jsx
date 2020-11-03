@@ -28,25 +28,25 @@ import { ThemeContext } from '../../ContextProviders/ThemeContext';
 
 
 const colors = {
-    amber: amber,
-    blue: blue,
-    blueGrey: blueGrey,
-    brown: brown,
-    cyan: cyan,
-    deepOrange: deepOrange,
-    deepPurple: deepPurple,
-    green: green,
-    grey: grey,
-    indigo: indigo,
-    lightBlue: lightBlue,
-    lightGreen: lightGreen,
-    lime: lime,
-    orange: orange,
+    red: red,
     pink: pink,
     purple: purple,
-    red: red,
+    deepPurple: deepPurple,
+    indigo: indigo,
+    blue: blue,
+    lightBlue: lightBlue,
+    cyan: cyan,
     teal: teal,
-    yellow: yellow
+    green: green,
+    lightGreen: lightGreen,
+    lime: lime,
+    yellow: yellow,
+    amber: amber,
+    orange: orange,
+    deepOrange: deepOrange,
+    brown: brown,
+    grey: grey,
+    blueGrey: blueGrey,
 };
 
 const getColor = (hue) => {
@@ -63,12 +63,16 @@ export default function ColorSelector({ mode = "primary" }) {
 
     // set selected language by calling context method
     const handleMenuItemClick = (key) => {
+        setOpen(false);
         const selectedcolor = {
             light: colors[key][600],
-            dark: colors[key][800]
+            dark: colors[key][900]
         }
         SetColor(selectedcolor, mode === "primary");
+    }
+    const Reset=()=>{
         setOpen(false);
+        ResetColor(mode === "primary");
     }
 
     const [open, setOpen] = React.useState(false);
@@ -89,10 +93,12 @@ export default function ColorSelector({ mode = "primary" }) {
             {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-                <ColorPalette palette={palette} onSelect={handleMenuItemClick} size={32} />
-                <ListItem key={"resetcolor"} button onClick={(event) => ResetColor(mode==="primary")}>
-                    <ListItemText primary={Text("resetcolor")} />
+            <List component="div" >
+                <ListItem key={"selectcolor"} button onClick={handleClickList}>
+                    <ColorPalette palette={palette} onSelect={handleMenuItemClick} size={36} />
+                </ListItem>
+                <ListItem key={"resetcolor"} button onClick={Reset}>
+                    <ListItemText inset primary={Text("resetcolor")} />
                 </ListItem>
             </List>
         </Collapse>
