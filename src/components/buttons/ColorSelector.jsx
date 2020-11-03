@@ -9,16 +9,14 @@ import Collapse from '@material-ui/core/Collapse';
 
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import LanguageIcon from '@material-ui/icons/Language';
+import PaletteIcon from '@material-ui/icons/Palette';
 
 import {
-    amber, blue, blueGrey, brown, common, cyan,
+    amber, blue, blueGrey, brown, cyan,
     deepOrange, deepPurple, green, grey, indigo,
     lightBlue, lightGreen, lime, orange,
     pink, purple, red, teal, yellow
 } from '@material-ui/core/colors';
-
-
 
 
 import { ColorPalette } from 'material-ui-color';
@@ -42,6 +40,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+const colors = {
+    amber: amber,
+    blue: blue,
+    blueGrey: blueGrey,
+    brown: brown,
+    cyan: cyan,
+    deepOrange: deepOrange,
+    deepPurple: deepPurple,
+    green: green,
+    grey: grey,
+    indigo: indigo,
+    lightBlue: lightBlue,
+    lightGreen: lightGreen,
+    lime: lime,
+    orange: orange,
+    pink: pink,
+    purple: purple,
+    red: red,
+    teal: teal,
+    yellow: yellow
+};
+
+const getColor=(hue)=>{
+    console.log(Object.entries(colors));
+    
+    var palette = {};
+      return palette;
+}
+
 
 export default function LanguageSelector({ mode = "button" }) {
     const classes = useStyles();
@@ -49,8 +76,8 @@ export default function LanguageSelector({ mode = "button" }) {
     const selectedcolor = "red";
 
     // set selected language by calling context method
-    const handleMenuItemClick = (e, id) => {
-        console.log(e);
+    const handleMenuItemClick = (key,value) => {
+
         setOpen(false);
     }
 
@@ -59,38 +86,21 @@ export default function LanguageSelector({ mode = "button" }) {
     const handleClickList = () => {
         setOpen(!open);
     };
-    const palette = {
-        amber: amber[800],
-        blue: blue[800],
-        blueGrey: blueGrey[800],
-        brown: brown[800],
-        cyan: cyan[800],
-        deepOrange: deepOrange[800],
-        deepPurple: deepPurple[800],
-        green: green[800],
-        grey: grey[800],
-        indigo: indigo[800],
-        lightBlue: lightBlue[800],
-        lightGreen: lightGreen[800],
-        lime: lime[800],
-        orange: orange[800],
-        pink: pink[800],
-        purple: purple[800],
-        red: red[800],
-        teal: teal[800],
-        yellow: yellow[800]
-    };
+    const palette=getColor(800);
+
+
+
     return <React.Fragment>
         <ListItem button onClick={handleClickList}>
             <ListItemIcon>
-                <LanguageIcon />
+                <PaletteIcon />
             </ListItemIcon>
             <ListItemText primary={Text("selectcolor")} />
             {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-                <ColorPalette palette={palette} className={classes.nested} onSelect={(event) => handleMenuItemClick(event)} />
+                <ColorPalette palette={palette} className={classes.nested} onSelect={handleMenuItemClick} size={32} />
                 {/* {Object.entries(palette).map(([id, name]) => (
                     <ListItem key={id} selected={id === selectedcolor} button className={classes.nested} onClick={(event) => handleMenuItemClick(event, id)}>
                         <ListItemIcon>
