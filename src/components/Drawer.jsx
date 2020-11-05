@@ -82,11 +82,12 @@ function ResponsiveDrawer(props) {
             </Suspense>
             <Divider />
             <Suspense fallback={renderLoader()}>
-                <ServiceWorker mode="list" />
-            </Suspense>
-            <Suspense fallback={renderLoader()}>
                 <ColorSelector  mode="primary"/>
                 <ColorSelector mode="secondary"/>
+            </Suspense>
+            <Divider />
+            <Suspense fallback={renderLoader()}>
+                <ServiceWorker mode="list" />
             </Suspense>
         </div>
     );
