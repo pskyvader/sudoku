@@ -222,7 +222,7 @@ class SudokuResolver extends Sudoku {
         for (let i = 0; i < t.list.length; i++) {
             const element = t.list[i];
             if (element.number === "") {
-                t.CheckOptions(element);
+                element.SetValueOptions(t.CheckOptions(element));
                 if (element.options.size < min) {
                     return element;
                 }
@@ -238,7 +238,9 @@ class SudokuResolver extends Sudoku {
         for (let index = 0; index < t.list.length; index++) {
             const element = t.list[index];
             if (element.number === "") {
-                t.CheckOptions(element);
+                console.log(element.options);
+                element.SetValueOptions(t.CheckOptions(element));
+                console.log(element.options,"asdfasdf");
                 if (element.options.size === 1) {
                     element.SetValue(element.options.values().next().value);
                     element.options.clear();
@@ -301,7 +303,7 @@ class SudokuResolver extends Sudoku {
         for (let i = 0; i < arr.length; i++) {
             const element = arr[i];
             if (element.number === "" && element !== number) {
-                t.CheckOptions(element);
+                element.SetValueOptions(t.CheckOptions(element));
                 options = new Set([...options, ...element.options]);
             }
         }
@@ -313,34 +315,6 @@ class SudokuResolver extends Sudoku {
         return 0;
     }
 
-    // Add available options to the list
-    CheckOptions = (number) => {
-        const t = this;
-        let list = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-        const {
-            x,
-            y,
-            i,
-            j
-        } = number;
-        t.DuplicatesList(t.matrix[x][y].checklist, list);
-        t.DuplicatesList(t.verticallines[x][i], list);
-        t.DuplicatesList(t.horizontallines[y][j], list);
-        number.options = list;
-    }
-
-    // Delete from list if element in arr
-    DuplicatesList = (arr, list) => {
-        for (let i = 0; i < arr.length; i++) {
-            const element = arr[i];
-            if (element.number !== "") {
-                list.delete(element.number);
-            }
-        }
-        if (list.size === 0) {
-            throw Error("Empty options");
-        }
-    }
 
 
 }

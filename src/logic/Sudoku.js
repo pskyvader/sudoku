@@ -1,14 +1,14 @@
 import SudokuNumber from './SudokuNumber';
 
 
-class HelperSudoku{
+class HelperSudoku {
 
-    arrayEquals=(a, b)=> {
+    arrayEquals = (a, b) => {
         return Array.isArray(a) &&
-          Array.isArray(b) &&
-          a.length === b.length &&
-          a.every((val, index) => val === b[index]);
-      }
+            Array.isArray(b) &&
+            a.length === b.length &&
+            a.every((val, index) => val === b[index]);
+    }
 
     CloneBoard = () => {
         const t = this;
@@ -41,10 +41,41 @@ class HelperSudoku{
         }
         this.CheckSuccess();
     }
+
+    // Add available options to the list
+    CheckOptions = (number) => {
+        const t = this;
+        let list = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        const {
+            x,
+            y,
+            i,
+            j
+        } = number;
+        t.DuplicatesList(t.matrix[x][y].checklist, list);
+        t.DuplicatesList(t.verticallines[x][i], list);
+        t.DuplicatesList(t.horizontallines[y][j], list);
+        return list;
+    }
+
+    // Delete from list if element in arr
+    DuplicatesList = (arr, list) => {
+        console.log("before",arr,list);
+        for (let i = 0; i < arr.length; i++) {
+            const element = arr[i];
+            if (element.number !== "") {
+                list.delete(element.number);
+            }
+        }
+        console.log("afer",arr,list);
+        if (list.size === 0) {
+            throw Error("Empty options");
+        }
+    }
 }
 
 
-class Sudoku extends HelperSudoku{
+class Sudoku extends HelperSudoku {
     constructor() { //creates an empty sudoku board
         super();
         this.CreateEmptyBoard();
@@ -54,8 +85,40 @@ class Sudoku extends HelperSudoku{
         this.success = false;
         this.matrix = [];
         this.emptyspaces = [];
-        this.verticallines = [ [ [], [], [] ], [ [], [], [] ], [ [], [], [] ] ]; //3x3 vertical lines
-        this.horizontallines = [ [ [], [], [] ], [ [], [], [] ], [ [], [], [] ] ]; //3x3 horizontal lines
+        this.verticallines = [
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ]
+        ]; //3x3 vertical lines
+        this.horizontallines = [
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ]
+        ]; //3x3 horizontal lines
         this.list = []; //complete list
         for (let x = 0; x < 3; x++) {
             let rows = [];
@@ -66,8 +129,8 @@ class Sudoku extends HelperSudoku{
             this.matrix[x] = rows;
         }
     }
-    
-    
+
+
     EmptySpaces = (x, y) => {
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
@@ -75,8 +138,8 @@ class Sudoku extends HelperSudoku{
             }
         }
     }
-    
-    SetSuccessValue=(value)=>{
+
+    SetSuccessValue = (value) => {
         if (this.setSuccess !== undefined) {
             this.setSuccess(value);
         }
@@ -141,6 +204,12 @@ class Sudoku extends HelperSudoku{
         return (count > 1);
     }
 
+    CheckEmpty = () => {
+        for (let i = 0; i < this.list.length; i++) {
+            const element = this.list[i];
+           //element.SetValueError(false);
+        }
+    }
 }
 
 export default Sudoku;

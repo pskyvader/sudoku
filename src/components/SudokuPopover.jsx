@@ -1,4 +1,4 @@
-import React,{useContext} from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => {
 
 const SudokuPopover = (props) => {
     const { handleClose, field } = props;
-    const {OptionsActive,setOptionsActive}=useContext(BoardContext);
+    const { OptionsActive, setOptionsActive } = useContext(BoardContext);
     const handleChange = () => {
         setOptionsActive(!OptionsActive);
     };
@@ -86,14 +86,14 @@ const SudokuPopover = (props) => {
 
     const Clear = () => {
         field.options.clear();
-        field.SetOptions(new Set(field.options));
+        field.SetValueOptions(new Set(field.options));
         field.SetNumber("");
         handleClose();
     }
 
     const setNumber = (number) => {
         field.options.clear();
-        field.SetOptions(new Set(field.options));
+        field.SetValueOptions(new Set(field.options));
         field.SetNumber(number);
         handleClose();
     };
@@ -104,7 +104,7 @@ const SudokuPopover = (props) => {
         } else {
             field.options.add(number);
         }
-        field.SetOptions(new Set(field.options));
+        field.SetValueOptions(new Set(field.options));
     };
 
     const pressNumber = (event) => {
@@ -130,7 +130,7 @@ const SudokuPopover = (props) => {
     });
 
 
-    return <Grid container justify="center" className={clsx(OptionsActive && classes.optionbackground )} >
+    return <Grid container justify="center" className={clsx(OptionsActive && classes.optionbackground)} >
         {box.map((row, valuex) => {
             const keyx = key + "-" + valuex;
             return <Grid key={keyx} item xs={4}>
