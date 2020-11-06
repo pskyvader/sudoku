@@ -74,10 +74,10 @@ class SudokuResolver extends Sudoku {
             const clonelist = t.CloneBoard();
             const solutions = t.ResolveUnique();
             t.RestoreBoard(clonelist);
-            if(solutions===0){
-                console.log(solutions,"solutions");
+            if (solutions === 0) {
+                console.log(solutions, "solutions");
             }
-            if (solutions===1) {
+            if (solutions === 1) {
                 this.removed++;
             } else {
                 field.number = tmp;
@@ -87,22 +87,26 @@ class SudokuResolver extends Sudoku {
         for (let index = 0; index < t.emptyspaces.length; index++) {
             const current = t.emptyspaces[index];
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
-            if(field.number!==""){
-                field.locked=true;
+            if (field.number !== "") {
+                field.locked = true;
             }
         }
     }
 
 
-    ResolveUnique = (deep = 0,solutions=0) => {
-        if (solutions>1){
+    ResolveUnique = (deep = 0, solutions = 0) => {
+        if (solutions > 1) {
             return solutions;
         }
         const t = this;
         let changes = 1;
         while (changes > 0) {
             changes = 0;
-            changes += t.FillSingleOption(); // check if there are any field with only one option and use it
+            try {
+                changes += t.FillSingleOption(); // check if there are any field with only one option and use it
+            } catch (error) { //if 0 options, no solution
+                return 0;
+            }
             if (changes === 0) {
                 changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
             }
@@ -121,17 +125,17 @@ class SudokuResolver extends Sudoku {
                 t.RestoreBoard(clonelist);
                 randomtry.number = last;
                 try {
-                    let sol=solutions;
-                    solutions=t.ResolveUnique(deep + 1,solutions);
-                    if(solutions>sol){
+                    let sol = solutions;
+                    solutions = t.ResolveUnique(deep + 1, solutions);
+                    if (solutions > sol) {
                         solutions++;
                     }
                 } catch (error) {
                     //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
-                    if(!t.arrayEquals(randomoptions,[...randomtry.options])){
+                    if (!t.arrayEquals(randomoptions, [...randomtry.options])) {
                         randomoptions = [...randomtry.options];
-                        i=0;
+                        i = 0;
                     } else {
                         i++;
                     }
@@ -144,7 +148,7 @@ class SudokuResolver extends Sudoku {
             }
 
             if (!t.CheckCompleteBoard()) {
-                return t.ResolveUnique(deep + 1,solutions);
+                return t.ResolveUnique(deep + 1, solutions);
             } else {
                 solutions++;
                 return solutions;
@@ -183,16 +187,16 @@ class SudokuResolver extends Sudoku {
                 } catch (error) {
                     //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
                 } finally {
-                    if(!t.arrayEquals(randomoptions,[...randomtry.options])){
+                    if (!t.arrayEquals(randomoptions, [...randomtry.options])) {
                         randomoptions = [...randomtry.options];
-                        i=0;
+                        i = 0;
                     } else {
                         i++;
                     }
                     randomtry.number = randomoptions[i];
                 }
             }
-            randomtry.number="";
+            randomtry.number = "";
 
 
             if (!t.CheckCompleteBoard()) {
@@ -203,7 +207,7 @@ class SudokuResolver extends Sudoku {
             }
         }
     }
-    
+
 
     CheckCompleteBoard = () => {
         const t = this;
@@ -238,9 +242,7 @@ class SudokuResolver extends Sudoku {
         for (let index = 0; index < t.list.length; index++) {
             const element = t.list[index];
             if (element.number === "") {
-                console.log(element.options);
                 element.SetValueOptions(t.CheckOptions(element));
-                console.log(element.options,"asdfasdf");
                 if (element.options.size === 1) {
                     element.SetValue(element.options.values().next().value);
                     element.options.clear();
@@ -307,7 +309,7 @@ class SudokuResolver extends Sudoku {
                 options = new Set([...options, ...element.options]);
             }
         }
-        t.CheckOptions(number);
+        number.SetValueOptions(t.CheckOptions(number));
         let difference = new Set([...number.options].filter(x => !options.has(x)));
         if (difference.size === 1) {
             return difference.values().next().value;

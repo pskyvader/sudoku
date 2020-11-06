@@ -60,14 +60,12 @@ class HelperSudoku {
 
     // Delete from list if element in arr
     DuplicatesList = (arr, list) => {
-        console.log("before",arr,list);
         for (let i = 0; i < arr.length; i++) {
             const element = arr[i];
             if (element.number !== "") {
                 list.delete(element.number);
             }
         }
-        console.log("afer",arr,list);
         if (list.size === 0) {
             throw Error("Empty options");
         }
@@ -162,6 +160,9 @@ class Sudoku extends HelperSudoku {
         for (let i = 0; i < this.list.length; i++) {
             const element = this.list[i];
             element.SetValueError(false);
+            if (element.number === "X") {
+                element.SetValue("");
+            }
         }
     }
 
@@ -207,7 +208,14 @@ class Sudoku extends HelperSudoku {
     CheckEmpty = () => {
         for (let i = 0; i < this.list.length; i++) {
             const element = this.list[i];
-           //element.SetValueError(false);
+            if (element.number === "") {
+                try {
+                    this.CheckOptions(element);
+                } catch (error) {
+                    element.SetValue("X");
+                    element.SetValueError(true);
+                }
+            }
         }
     }
 }
