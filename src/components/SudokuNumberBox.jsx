@@ -62,7 +62,6 @@ const SudokuNumber = ({ field }) => {
 
     const [open, setOpen] = React.useState(false);
 
-    const [ChangeOption, SetChangeOption] = React.useState(false);
 
 
     const handleClick = (event) => {
@@ -89,29 +88,28 @@ const SudokuNumber = ({ field }) => {
     field.SetOptions = SetOptions;
     field.options = Options;
 
-    const className = clsx(classes.button, FinalError && classes.error, open && classes.selected,ChangeOption);
+    const className = clsx(classes.button, FinalError && classes.error, open && classes.selected);
 
     if (locked) {
         return (
             <Button disabled classes={{ root: className, disabled: classes.disabled, }}  >
-                <SudokuOptions options={Options}> {number}</SudokuOptions>
+                <SudokuOptions options={Options}> {FinalNumber}</SudokuOptions>
             </Button>
         )
     } else {
         return (
             <React.Fragment>
                 <Button ref={anchorRef} className={className} onClick={handleClick}>
-                    <SudokuOptions options={Options}> {number}</SudokuOptions>
+                    <SudokuOptions options={Options}> {FinalNumber}</SudokuOptions>
                 </Button>
                 <Suspense fallback={renderLoader()}>
-                    <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition className={classes.popper}>
+                    <Popper open={open} anchorEl={anchorRef.current} transition className={classes.popper}>
                         {({ TransitionProps, placement }) => (
                             <SudokuPopover
                                 TransitionProps={TransitionProps}
                                 placement={placement}
                                 handleClose={handleClose}
                                 field={field}
-                                parentOptions={SetChangeOption}
                             />
                         )}
                     </Popper>

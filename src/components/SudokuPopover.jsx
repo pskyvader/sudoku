@@ -27,9 +27,9 @@ const useStyles = makeStyles((theme) => {
             fontWeight: "normal",
             minWidth: 0,
             borderRadius: 0,
-            padding: theme.spacing(1),
+            padding: theme.spacing(1.5),
             [theme.breakpoints.up('md')]: {
-                padding: theme.spacing(1.5)
+                padding: theme.spacing(2.5)
             },
             "&:hover": {
                 backgroundColor: light ? primary.main : primary.light,
@@ -73,9 +73,8 @@ const useStyles = makeStyles((theme) => {
 
 
 const SudokuPopover = (props) => {
-    const { handleClose, field, parentOptions } = props;
+    const { handleClose, field } = props;
     const {OptionsActive,setOptionsActive}=useContext(BoardContext);
-    const [ChangeOption, SetChangeOption] = React.useState(false);
     const handleChange = () => {
         setOptionsActive(!OptionsActive);
     };
@@ -87,12 +86,14 @@ const SudokuPopover = (props) => {
 
     const Clear = () => {
         field.options.clear();
+        field.SetOptions(new Set(field.options));
         field.SetNumber("");
         handleClose();
     }
 
     const setNumber = (number) => {
         field.options.clear();
+        field.SetOptions(new Set(field.options));
         field.SetNumber(number);
         handleClose();
     };
@@ -103,8 +104,7 @@ const SudokuPopover = (props) => {
         } else {
             field.options.add(number);
         }
-        parentOptions(!ChangeOption);
-        SetChangeOption(!ChangeOption);
+        field.SetOptions(new Set(field.options));
     };
 
     const pressNumber = (event) => {
@@ -166,9 +166,6 @@ const SudokuPopover = (props) => {
 
     </Grid>
 }
-
-// export default SudokuPopover;
-
 
 const SudokuPopoverContainer = (props) => {
     const { TransitionProps, placement, handleClose } = props;

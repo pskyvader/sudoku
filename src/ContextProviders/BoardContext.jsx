@@ -45,7 +45,6 @@ export default function BoardContextProvider({ children }) {
     const provider = {
         board,
         Difficulty,
-        setDifficulty,
         ResetBoard,
         SaveBoard,
         Success,
