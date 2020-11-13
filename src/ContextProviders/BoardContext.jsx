@@ -31,31 +31,35 @@ export default function BoardContextProvider({ children }) {
     React.useEffect(() => {
         if (cacheboard === null) {
             board.CreateBoard(45);
-            //LocalStorage.set("sudoku_board", board.CloneBoard());
+            LocalStorage.set("sudoku_board", board.CloneBoard());
         }
     }, [board, cacheboard]);
 
 
-    const newboardresolver = (n) => {
-        let newboard = new SudokuResolver(n);
-        for (let index = 0; index < 10; index++) {
-            newboard = new SudokuResolver(n);
+
+
+    const ResetBoard = (n, deep = 0) => {
+        if (n > 20) {
+            board.CreateEmptyBoard();
+            board.CreateBoard(n);
+            LocalStorage.set("difficulty", n);
+            setDifficulty(n);
+            Save();
+            setLoading(false);
+        } else {
+            board.CreateEmptyBoard();
+            board.CreateBoard(n);
+            if (deep < 10) {
+                setTimeout(() => {
+                    ResetBoard(n, deep + 1);
+                }, 0);
+            } else {
+                LocalStorage.set("difficulty", n);
+                setDifficulty(n);
+                Save();
+                setLoading(false);
+            }
         }
-        return newboard;
-    }
-
-
-    const ResetBoard = (n) => {
-        // const newboard = newboardresolver(n)
-        // const newmatrix = newboard.CloneBoard();
-        // board.RestoreBoard(newmatrix);
-        
-        board.CreateEmptyBoard();
-        board.CreateBoard(n);
-        LocalStorage.set("difficulty", n);
-        setDifficulty(n);
-        // Save();
-        LocalStorage.set("sudoku_board", board.CloneBoard());
     }
 
     const Save = () => {

@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 
 import Fade from '@material-ui/core/Fade';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import LinearProgress from '@material-ui/core/LinearProgress';
 
 
 import SudokuBox from "../components/SudokuBox";
@@ -114,15 +113,12 @@ const Home = () => {
             </Suspense>
         </Modal>
     );
-
-    const loadingtext = Text("loading");
-
     return (
         <Box className={classes.box} ref={canvas}>
             {modal}
             {Loading ?
-                <Fade in={Loading} style={{ transitionDelay: Loading ? '0ms' : '0ms', }} unmountOnExit >
-                    <CircularProgress variant="determinate" value={50} />
+                <Fade in={Loading} style={{ transitionDelay: Loading ? '800ms' : '0ms', }} unmountOnExit >
+                    <CircularProgress />
                 </Fade>
                 :
                 <Grid container justify="center" className={classes.rootgrid}>
