@@ -22,21 +22,31 @@ export default function BoardContextProvider({ children }) {
     const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
 
     const cacheboard = LocalStorage.get("sudoku_board", null);
-    const board=new SudokuResolver(45, cacheboard,true);
+    const board = new SudokuResolver(45, cacheboard, true);
     const [Success, setSuccess] = React.useState(board.success);
     board.setSuccess = setSuccess;
     board.success = Success;
 
-    React.useEffect(()=>{
-        if(cacheboard===null){
+
+    React.useEffect(() => {
+        if (cacheboard === null) {
             board.CreateBoard(45);
             //LocalStorage.set("sudoku_board", board.CloneBoard());
         }
-    },[Loading,board,cacheboard]);
+    }, [Loading, board, cacheboard]);
 
 
 
     const ResetBoard = (n) => {
+        const worker = new window.Worker("SudokuWorker.js"); // this line has moved inside the event handler
+        worker.postMessage("asdfadf");
+        worker.onerror = (err) => err;
+        worker.onmessage = (e) => {
+            console.log(e);
+          worker.terminate() // this line terminates the worker
+        };
+        console.log(worker);
+
         //setLoading(true);
         setDifficulty(n);
         LocalStorage.set("difficulty", n);
