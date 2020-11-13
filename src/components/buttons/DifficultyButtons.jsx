@@ -56,11 +56,11 @@ const DifficultyButtons = (props) => {
     const { mode = "button" } = props;
     const { Difficulty, ResetBoard, setLoading } = useContext(BoardContext);
 
-    const Reset = (number) => {
+    const Reset =  (number) => {
         setLoading(true);
-        window.setTimeout(() => {
-            ResetBoard(number);
-        }, 2000);
+        setTimeout(() => {
+        ResetBoard(number);
+        }, 1);
     }
 
     const classes = useStyles();

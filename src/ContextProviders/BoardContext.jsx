@@ -36,29 +36,23 @@ export default function BoardContextProvider({ children }) {
     }, [Loading, board, cacheboard]);
 
 
-
-    const ResetBoard = (n) => {
-        const worker = new window.Worker("SudokuWorker.js"); // this line has moved inside the event handler
-        worker.postMessage("asdfadf");
-        worker.onerror = (err) => err;
-        worker.onmessage = (e) => {
-            console.log(e);
-          worker.terminate() // this line terminates the worker
-        };
-        console.log(worker);
-
-        //setLoading(true);
-        setDifficulty(n);
-        LocalStorage.set("difficulty", n);
-
+    const newboardresolver = (n) => {
         let newboard = new SudokuResolver(n);
         for (let index = 0; index < 10; index++) {
             newboard = new SudokuResolver(n);
         }
-        setLoading(false);
+        return newboard;
+    }
+
+
+    const ResetBoard = (n) => {
+        setDifficulty(n);
+        LocalStorage.set("difficulty", n);
+        const newboard = newboardresolver(n)
         const newmatrix = newboard.CloneBoard();
         board.RestoreBoard(newmatrix);
         LocalStorage.set("sudoku_board", newmatrix);
+
     }
 
     const Save = () => {

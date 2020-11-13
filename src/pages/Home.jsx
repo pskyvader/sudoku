@@ -114,27 +114,24 @@ const Home = () => {
         </Modal>
     );
 
-    console.log(Loading);
+    const loadingtext = Text("loading");
 
     return (
         <Box className={classes.box} ref={canvas}>
             {modal}
-            <Fade in={Loading} style={{ transitionDelay: Loading ? '800ms' : '0ms', }} unmountOnExit >
-                <CircularProgress />
-            </Fade>
-            {!Loading &&
-                <Grid container justify="center" className={classes.rootgrid}>
-                    {board.matrix.map((column, x) => (
-                        <Grid key={x} item xs={4} className={classes.grid}>
-                            {column.map((row, y) => (
-                                <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                    <SudokuBox matrix={row} height={height} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    ))}
-                </Grid>
-            }
+            {Loading && loadingtext}
+            <Grid container justify="center" className={classes.rootgrid}>
+                {board.matrix.map((column, x) => (
+                    <Grid key={x} item xs={4} className={classes.grid}>
+                        {column.map((row, y) => (
+                            <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
+                                <SudokuBox matrix={row} height={height} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                ))}
+            </Grid>
+
         </Box>
     )
 }
