@@ -17,24 +17,35 @@ function debounce(fn, ms) {
 }
 
 export default function BoardContextProvider({ children }) {
+    const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
+    const [Loading, setLoading] = React.useState(LocalStorage.get("loading", true));
+    const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
 
     const cacheboard = LocalStorage.get("sudoku_board", null);
-    const board = new SudokuResolver(45, cacheboard);
-    const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
-    const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
-    const [Success, setSuccess] = React.useState(board.success);
-    board.setSuccess = setSuccess;
-    board.success = Success;
+    const [Success, setSuccess] = React.useState(false);
+    const [board, setBoard] = React.useState(null);
+
+    React.useEffect(()=>{
+        setBoard(new SudokuResolver(45, cacheboard));
+        if(board!==null){
+            board.setSuccess = setSuccess;
+            board.success = Success;
+            setSuccess(board.success);
+        }
+        setLoading(false);
+    },[board,setBoard,Success,setSuccess,cacheboard])
 
 
 
     const ResetBoard = (n) => {
+        setLoading(true);
         let newboard = new SudokuResolver(n);
         setDifficulty(n);
         LocalStorage.set("difficulty", n);
         const newmatrix = newboard.CloneBoard();
         board.RestoreBoard(newmatrix);
         LocalStorage.set("sudoku_board", newmatrix);
+        setLoading(false);
     }
 
     const Save = () => {
@@ -50,7 +61,8 @@ export default function BoardContextProvider({ children }) {
         Success,
         setSuccess,
         OptionsActive,
-        setOptionsActive
+        setOptionsActive,
+        Loading
     };
 
     return (

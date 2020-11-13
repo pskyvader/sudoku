@@ -5,6 +5,11 @@ import Box from '@material-ui/core/Box';
 import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 
+
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+
 import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
 import Text from '../languages/Language';
@@ -23,8 +28,11 @@ const useStyles = makeStyles((theme) => {
         box: {
             maxWidth: "calc(100vh - " + theme.mixins.toolbar.minHeight * 2 + "px)",
             margin: theme.spacing(1, "auto"),
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
         },
-        root: {
+        rootgrid: {
             flexGrow: 1,
             borderLeft: mainborder,
             borderTop: mainborder,
@@ -61,7 +69,7 @@ function debounce(fn, ms) {
 
 
 const Home = () => {
-    const { board,Success,setSuccess,Loading } = useContext(BoardContext);
+    const { board, Success, setSuccess, Loading } = useContext(BoardContext);
     const classes = useStyles();
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
@@ -90,11 +98,7 @@ const Home = () => {
 
     const renderLoader = () => Text("loading");
     const modal = (
-        <Modal
-            open={Success}
-            onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description" >
+        <Modal open={Success} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" >
             <Suspense fallback={renderLoader()}>
                 <div className={classes.modal}>
                     <Typography id="modal-title" variant="h4" gutterBottom>
@@ -112,21 +116,29 @@ const Home = () => {
 
 
 
+    let content = null;
+    if (Loading) {
+        content = <Fade in={Loading} style={{ transitionDelay: Loading ? '800ms' : '0ms', }} unmountOnExit >
+            <CircularProgress />
+        </Fade>
+    } else {
+        content = <Grid container justify="center" className={classes.rootgrid}>
+            {board.matrix.map((column, x) => (
+                <Grid key={x} item xs={4} className={classes.grid}>
+                    {column.map((row, y) => (
+                        <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
+                            <SudokuBox matrix={row} height={height} />
+                        </Grid>
+                    ))}
+                </Grid>
+            ))}
+        </Grid>
+    }
 
     return (
         <Box className={classes.box} ref={canvas}>
             {modal}
-            <Grid container justify="center" className={classes.root}>
-                {board.matrix.map((column, x) => (
-                    <Grid key={x} item xs={4} className={classes.grid}>
-                        {column.map((row, y) => (
-                            <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                <SudokuBox matrix={row} height={height} />
-                            </Grid>
-                        ))}
-                    </Grid>
-                ))}
-            </Grid>
+            {content}
         </Box>
     )
 }
