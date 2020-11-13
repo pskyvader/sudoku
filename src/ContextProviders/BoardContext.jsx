@@ -33,7 +33,7 @@ export default function BoardContextProvider({ children }) {
             board.CreateBoard(45);
             //LocalStorage.set("sudoku_board", board.CloneBoard());
         }
-    }, [Loading, board, cacheboard]);
+    }, [board, cacheboard]);
 
 
     const newboardresolver = (n) => {
@@ -46,13 +46,16 @@ export default function BoardContextProvider({ children }) {
 
 
     const ResetBoard = (n) => {
-        setDifficulty(n);
+        // const newboard = newboardresolver(n)
+        // const newmatrix = newboard.CloneBoard();
+        // board.RestoreBoard(newmatrix);
+        
+        board.CreateEmptyBoard();
+        board.CreateBoard(n);
         LocalStorage.set("difficulty", n);
-        const newboard = newboardresolver(n)
-        const newmatrix = newboard.CloneBoard();
-        board.RestoreBoard(newmatrix);
-        LocalStorage.set("sudoku_board", newmatrix);
-
+        setDifficulty(n);
+        // Save();
+        LocalStorage.set("sudoku_board", board.CloneBoard());
     }
 
     const Save = () => {

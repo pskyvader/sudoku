@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 import Fade from '@material-ui/core/Fade';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 
 import SudokuBox from "../components/SudokuBox";
@@ -119,19 +120,23 @@ const Home = () => {
     return (
         <Box className={classes.box} ref={canvas}>
             {modal}
-            {Loading && loadingtext}
-            <Grid container justify="center" className={classes.rootgrid}>
-                {board.matrix.map((column, x) => (
-                    <Grid key={x} item xs={4} className={classes.grid}>
-                        {column.map((row, y) => (
-                            <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                <SudokuBox matrix={row} height={height} />
-                            </Grid>
-                        ))}
-                    </Grid>
-                ))}
-            </Grid>
-
+            {Loading ?
+                <Fade in={Loading} style={{ transitionDelay: Loading ? '0ms' : '0ms', }} unmountOnExit >
+                    <CircularProgress variant="determinate" value={50} />
+                </Fade>
+                :
+                <Grid container justify="center" className={classes.rootgrid}>
+                    {board.matrix.map((column, x) => (
+                        <Grid key={x} item xs={4} className={classes.grid}>
+                            {column.map((row, y) => (
+                                <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
+                                    <SudokuBox matrix={row} height={height} />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    ))}
+                </Grid>
+            }
         </Box>
     )
 }
