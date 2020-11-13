@@ -1,17 +1,16 @@
 import Sudoku from './Sudoku';
 
 class SudokuResolver extends Sudoku {
-    constructor(n, cacheboard = null) {
+    constructor(n, cacheboard = null,newboard=false) {
         super();
         this.errorcount = 0;
-        if (cacheboard === null) {
+        if(cacheboard!==null){
+            this.RestoreBoard(cacheboard);
+        }else if(!newboard){
             var t0 = performance.now();
             this.CreateBoard(n);
             var t1 = performance.now();
             console.log("CreateSudoku took " + (t1 - t0) + " milliseconds.");
-            //console.log(t1 - t0);
-        } else {
-            this.RestoreBoard(cacheboard);
         }
     }
     RandomNumbers = (number) => {

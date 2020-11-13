@@ -23,17 +23,19 @@ export default function BoardContextProvider({ children }) {
 
     const cacheboard = LocalStorage.get("sudoku_board", null);
     const [Success, setSuccess] = React.useState(false);
-    const [board, setBoard] = React.useState(null);
+    const board=new SudokuResolver(45, cacheboard,true);
+    board.setSuccess = setSuccess;
+    board.success = Success;
+    setSuccess(board.success);
 
     React.useEffect(()=>{
-        setBoard(new SudokuResolver(45, cacheboard));
-        if(board!==null){
-            board.setSuccess = setSuccess;
-            board.success = Success;
-            setSuccess(board.success);
+        if(Loading && cacheboard===null){
+            let newboard = new SudokuResolver(45);
+            const newmatrix = newboard.CloneBoard();
+            board.RestoreBoard(newmatrix);
         }
         setLoading(false);
-    },[board,setBoard,Success,setSuccess,cacheboard])
+    },[Loading,board,cacheboard]);
 
 
 
@@ -45,7 +47,7 @@ export default function BoardContextProvider({ children }) {
         const newmatrix = newboard.CloneBoard();
         board.RestoreBoard(newmatrix);
         LocalStorage.set("sudoku_board", newmatrix);
-        setLoading(false);
+        setLoading(true);
     }
 
     const Save = () => {
