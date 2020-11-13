@@ -43,33 +43,46 @@ export default function BoardContextProvider({ children }) {
             board.CreateEmptyBoard();
             board.CreateBoard(n);
         }
-        if (n > 20) {
+        if (n > 80) {
             LocalStorage.set("difficulty", n);
             setDifficulty(n);
             Save();
             setLoading(false);
         } else {
-            if (best_solution === null || best_solution.difficultycount < board.difficultycount) {
+            if (best_solution === null) {
                 best_solution = {
                     difficultycount: board.difficultycount,
-                    board: board.CloneBoard()
+                    remaining: 81 - board.removed,
+                    board: board.CloneBoard(),
+                    worst: board.difficultycount
                 }
+            }
+            if (best_solution.difficultycount < board.difficultycount) {
+                best_solution.difficultycount = board.difficultycount;
+                best_solution.remaining = 81 - board.removed;
+                best_solution.board = board.CloneBoard();
+            }
+
+            if (best_solution.worst > board.difficultycount) {
+                best_solution.worst = board.difficultycount;
             }
 
             if (deep < 10) {
                 board.RestoreBoard(board.fullboard);
                 board.CleanBoard(n);
+                // board.CreateBoard(n);
                 setTimeout(() => {
                     ResetBoard(n, deep + 1, best_solution);
                 }, 0);
             } else {
+                board.RestoreBoard(best_solution.board);
                 LocalStorage.set("difficulty", n);
                 setDifficulty(n);
                 Save();
                 setLoading(false);
             }
         }
-        console.log(board.difficultycount,81-board.removed, "best", best_solution);
+        console.log(board.difficultycount, 81 - board.removed, "best", best_solution);
     }
 
     const Save = () => {
