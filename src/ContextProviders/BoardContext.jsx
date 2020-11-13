@@ -38,20 +38,29 @@ export default function BoardContextProvider({ children }) {
 
 
 
-    const ResetBoard = (n, deep = 0) => {
-        if (n > 20) {
+    const ResetBoard = (n, deep = 0, best_solution = null) => {
+        if (deep === 0) {
             board.CreateEmptyBoard();
             board.CreateBoard(n);
+        }
+        if (n > 20) {
             LocalStorage.set("difficulty", n);
             setDifficulty(n);
             Save();
             setLoading(false);
         } else {
-            board.CreateEmptyBoard();
-            board.CreateBoard(n);
+            if (best_solution === null || best_solution.difficultycount < board.difficultycount) {
+                best_solution = {
+                    difficultycount: board.difficultycount,
+                    board: board.CloneBoard()
+                }
+            }
+
             if (deep < 10) {
+                board.RestoreBoard(board.fullboard);
+                board.CleanBoard(n);
                 setTimeout(() => {
-                    ResetBoard(n, deep + 1);
+                    ResetBoard(n, deep + 1, best_solution);
                 }, 0);
             } else {
                 LocalStorage.set("difficulty", n);
@@ -60,6 +69,7 @@ export default function BoardContextProvider({ children }) {
                 setLoading(false);
             }
         }
+        console.log(board.difficultycount,81-board.removed, "best", best_solution);
     }
 
     const Save = () => {

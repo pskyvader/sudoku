@@ -4,6 +4,7 @@ class SudokuResolver extends Sudoku {
     constructor(n, cacheboard = null, newboard = false) {
         super();
         this.errorcount = 0;
+        this.difficultycount=0;
         if (cacheboard !== null) {
             this.RestoreBoard(cacheboard);
         } else if (!newboard) {
@@ -50,6 +51,7 @@ class SudokuResolver extends Sudoku {
             t.CreateEmptyBoard();
             t.CreateBoard(n, deep + 1);
         }
+        t.fullboard=t.CloneBoard();
         if (deep === 0) {
             t.CleanBoard(n);
         }
@@ -60,13 +62,14 @@ class SudokuResolver extends Sudoku {
     }
     CleanBoard = (n) => {
         const t = this;
+        t.difficultycount=0;
         if (n > 81 || n < 1) {
             throw Error("number out of range");
         }
         const emptyspaces = [...t.emptyspaces];
-        this.removed = 0;
+        t.removed = 0;
 
-        while (this.removed < 81 - n && emptyspaces.length > 0) {
+        while (t.removed < 81 - n && emptyspaces.length > 0) {
             const pos = Math.floor(Math.random() * (emptyspaces.length - 1));
             const current = emptyspaces[pos];
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
@@ -79,7 +82,8 @@ class SudokuResolver extends Sudoku {
                 console.log(solutions, "solutions");
             }
             if (solutions === 1) {
-                this.removed++;
+                t.difficultycount++;
+                t.removed++;
             } else {
                 field.number = tmp;
             }
@@ -96,21 +100,24 @@ class SudokuResolver extends Sudoku {
 
 
     ResolveUnique = (deep = 0, solutions = 0) => {
+        const t = this;
         if (solutions > 1) {
             return solutions;
         }
-        const t = this;
         let changes = 1;
         while (changes > 0) {
             changes = 0;
             try {
                 changes += t.FillSingleOption(); // check if there are any field with only one option and use it
             } catch (error) { //if 0 options, no solution
+                t.difficultycount--;
                 return 0;
             }
+            
             if (changes === 0) {
                 changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
             }
+            t.difficultycount+=changes;
         }
 
         if (!t.CheckCompleteBoard()) {
