@@ -1,16 +1,13 @@
 import Sudoku from './Sudoku';
 
 class SudokuResolver extends Sudoku {
-    constructor(n, cacheboard = null,newboard=false) {
+    constructor(n, cacheboard = null, newboard = false) {
         super();
         this.errorcount = 0;
-        if(cacheboard!==null){
+        if (cacheboard !== null) {
             this.RestoreBoard(cacheboard);
-        }else if(!newboard){
-            var t0 = performance.now();
+        } else if (!newboard) {
             this.CreateBoard(n);
-            var t1 = performance.now();
-            console.log("CreateSudoku took " + (t1 - t0) + " milliseconds.");
         }
     }
     RandomNumbers = (number) => {
@@ -38,6 +35,7 @@ class SudokuResolver extends Sudoku {
     }
 
     CreateBoard = (n, deep = 0) => {
+        var t0 = performance.now();
         const t = this;
         if (n > 81 || n < 1) {
             throw Error("number out of range");
@@ -54,6 +52,10 @@ class SudokuResolver extends Sudoku {
         }
         if (deep === 0) {
             t.CleanBoard(n);
+        }
+        var t1 = performance.now();
+        if(deep===0){
+            console.log("CreateSudoku took " + (t1 - t0) + " milliseconds.");
         }
     }
     CleanBoard = (n) => {

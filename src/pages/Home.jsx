@@ -114,7 +114,7 @@ const Home = () => {
         </Modal>
     );
 
-
+    console.log(Loading);
 
     return (
         <Box className={classes.box} ref={canvas}>

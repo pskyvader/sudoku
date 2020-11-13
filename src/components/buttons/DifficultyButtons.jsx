@@ -54,7 +54,14 @@ const useStyles = makeStyles((theme) => {
 
 const DifficultyButtons = (props) => {
     const { mode = "button" } = props;
-    const { Difficulty, ResetBoard } = useContext(BoardContext);
+    const { Difficulty, ResetBoard, setLoading } = useContext(BoardContext);
+
+    const Reset = (number) => {
+        setLoading(true);
+        window.setTimeout(() => {
+            ResetBoard(number);
+        }, 2000);
+    }
 
     const classes = useStyles();
 
@@ -72,7 +79,7 @@ const DifficultyButtons = (props) => {
         return <ButtonGroup size="small">
             {difficultylist.map((e) => (
                 <Tooltip key={e.text} title={e.text}>
-                    <Button className={e.class} onClick={() => ResetBoard(e.number)}>
+                    <Button className={e.class} onClick={() => Reset(e.number)}>
                         <e.icon />
                         {Difficulty === e.number ? <StarsIcon className={classes.buttonstar} /> : ""}
                     </Button>
@@ -82,7 +89,7 @@ const DifficultyButtons = (props) => {
     } else {
         return <List>
             {difficultylist.map((e) => (
-                <ListItem button key={e.text} onClick={() => ResetBoard(e.number)} selected={Difficulty === e.number}>
+                <ListItem button key={e.text} onClick={() => Reset(e.number)} selected={Difficulty === e.number}>
                     <ListItemIcon> <e.icon /></ListItemIcon>
                     <ListItemText primary={e.text} />
                     <Radio
