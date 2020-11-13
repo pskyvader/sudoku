@@ -61,7 +61,7 @@ function debounce(fn, ms) {
 
 
 const Home = () => {
-    const { board,Success,setSuccess } = useContext(BoardContext);
+    const { board,Success,setSuccess,Loading } = useContext(BoardContext);
     const classes = useStyles();
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
