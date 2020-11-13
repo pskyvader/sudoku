@@ -54,13 +54,13 @@ const useStyles = makeStyles((theme) => {
 
 const DifficultyButtons = (props) => {
     const { mode = "button" } = props;
-    const { Difficulty, ResetBoard, setLoading } = useContext(BoardContext);
+    const { Difficulty, ResetBoard, setLoading, Loading } = useContext(BoardContext);
 
     const Reset = (number) => {
         setLoading(true);
         setTimeout(() => {
             ResetBoard(number);
-        }, 1);
+        }, 100);
     }
 
     const classes = useStyles();
@@ -73,7 +73,10 @@ const DifficultyButtons = (props) => {
     ]
 
 
-
+    const textloading = Text('loading');
+    if (Loading && Difficulty <= 20) {
+        return textloading
+    }
     if (mode === "button") {
         return <ButtonGroup size="small">
             {difficultylist.map((e) => (

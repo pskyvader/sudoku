@@ -75,7 +75,7 @@ class SudokuResolver extends Sudoku {
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
             const tmp = field.number;
             field.number = "";
-            const tmpdifficultycount=t.difficultycount;
+            // const tmpdifficultycount=t.difficultycount;
             const clonelist = t.CloneBoard();
             const solutions = t.ResolveUnique();
             t.RestoreBoard(clonelist);
@@ -85,7 +85,7 @@ class SudokuResolver extends Sudoku {
             if (solutions === 1) {
                 t.difficultycount++;
                 t.removed++;
-                console.log(tmpdifficultycount,t.difficultycount);
+                // console.log(tmpdifficultycount,t.difficultycount);
             } else {
                 field.number = tmp;
             }
