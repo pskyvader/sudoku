@@ -74,7 +74,8 @@ class SudokuResolver extends Sudoku {
             const current = emptyspaces[pos];
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
             const tmp = field.number;
-            field.number = "";
+            // field.number = "";
+            field.SetValue("");
             // const tmpdifficultycount=t.difficultycount;
             const clonelist = t.CloneBoard();
             const solutions = t.ResolveUnique();
@@ -87,7 +88,8 @@ class SudokuResolver extends Sudoku {
                 t.removed++;
                 // console.log(tmpdifficultycount,t.difficultycount);
             } else {
-                field.number = tmp;
+                // field.number = tmp;
+                field.SetValue(tmp);
             }
             emptyspaces.splice(pos, 1);
         }

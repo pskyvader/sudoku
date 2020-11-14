@@ -75,7 +75,7 @@ const SudokuNumber = ({ field }) => {
 
 
     let { number, locked, error, options } = field;
-
+    
     const [FinalNumber, SetFinalNumber] = React.useState(number);
     field.SetFinalNumber = SetFinalNumber;
     field.number = FinalNumber;

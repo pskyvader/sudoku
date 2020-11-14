@@ -39,16 +39,19 @@ export default function BoardContextProvider({ children }) {
 
 
     const ResetBoard = (n, deep = 0, best_solution = null,t1=null) => {
-        if (deep === 0) {
+        if (n > 20) {
+            const newboard= new SudokuResolver(n);
+            board.RestoreBoard(newboard.CloneBoard());
+            Save();
+            LocalStorage.set("difficulty", n);
+            setDifficulty(n);
+        } 
+        else if (deep === 0) {
             // t1 = performance.now();
             board.CreateEmptyBoard();
             board.CreateBoard(n);
             LocalStorage.set("difficulty", n);
             setDifficulty(n);
-        }
-        if (n > 20) {
-            Save();
-            setLoading(false);
         } else {
             if (best_solution === null) {
                 best_solution = {
@@ -68,13 +71,13 @@ export default function BoardContextProvider({ children }) {
                 best_solution.worst = board.difficultycount;
             }
 
-            if (deep < 3) {
+            if (deep < 5) {
                 board.RestoreBoard(board.fullboard);
                 board.CleanBoard(n);
                 // board.CreateBoard(n);
                 setTimeout(() => {
                     ResetBoard(n, deep + 1, best_solution,t1);
-                }, 100);
+                }, 0);
             } else {
                 board.RestoreBoard(best_solution.board);
                 Save();
@@ -94,6 +97,7 @@ export default function BoardContextProvider({ children }) {
     const provider = {
         board,
         Difficulty,
+        setDifficulty,
         ResetBoard,
         SaveBoard,
         Success,
