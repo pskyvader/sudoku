@@ -38,54 +38,54 @@ export default function BoardContextProvider({ children }) {
 
 
 
-    const ResetBoard = (n, deep = 0, best_solution = null,t1=null) => {
+    const ResetBoard = (n, depth = 0, best_solution = null, t1 = null) => {
         if (n > 20) {
-            const newboard= new SudokuResolver(n);
+            const newboard = new SudokuResolver(n);
             board.RestoreBoard(newboard.CloneBoard());
             Save();
             LocalStorage.set("difficulty", n);
             setDifficulty(n);
-        } 
-        else if (deep === 0) {
+            return;
+        }
+        if (depth === 0) {
             // t1 = performance.now();
             board.CreateEmptyBoard();
             board.CreateBoard(n);
             LocalStorage.set("difficulty", n);
             setDifficulty(n);
-        } else {
-            if (best_solution === null) {
-                best_solution = {
-                    difficultycount: board.difficultycount,
-                    remaining: 81 - board.removed,
-                    board: board.CloneBoard(),
-                    worst: board.difficultycount
-                }
-            }
-            if (best_solution.difficultycount < board.difficultycount) {
-                best_solution.difficultycount = board.difficultycount;
-                best_solution.remaining = 81 - board.removed;
-                best_solution.board = board.CloneBoard();
-            }
-
-            if (best_solution.worst > board.difficultycount) {
-                best_solution.worst = board.difficultycount;
-            }
-
-            if (deep < 5) {
-                board.RestoreBoard(board.fullboard);
-                board.CleanBoard(n);
-                // board.CreateBoard(n);
-                setTimeout(() => {
-                    ResetBoard(n, deep + 1, best_solution,t1);
-                }, 0);
-            } else {
-                board.RestoreBoard(best_solution.board);
-                Save();
-                setLoading(false);
-                // var t2=performance.now();
-                // console.log("total",t2-t1);
+            best_solution = {
+                difficultycount: board.difficultycount,
+                remaining: 81 - board.removed,
+                board: board.CloneBoard(),
+                worst: board.difficultycount
             }
         }
+
+        if (best_solution.difficultycount < board.difficultycount) {
+            best_solution.difficultycount = board.difficultycount;
+            best_solution.remaining = 81 - board.removed;
+            best_solution.board = board.CloneBoard();
+        }
+
+        if (best_solution.worst > board.difficultycount) {
+            best_solution.worst = board.difficultycount;
+        }
+
+        if (depth < 5) {
+            board.RestoreBoard(board.fullboard);
+            board.CleanBoard(n);
+            // board.CreateBoard(n);
+            setTimeout(() => {
+                ResetBoard(n, depth + 1, best_solution, t1);
+            }, 0);
+        } else {
+            board.RestoreBoard(best_solution.board);
+            Save();
+            setLoading(false);
+            // var t2=performance.now();
+            // console.log("total",t2-t1);
+        }
+
         // console.log(board.difficultycount, 81 - board.removed, "best", best_solution);
     }
 
