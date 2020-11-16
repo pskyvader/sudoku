@@ -125,8 +125,8 @@ class SudokuResolver extends Sudoku {
                 changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
             }
             if (changes > 0) {
-                // t.difficultycount += (changes + (depth * 100));
-                t.difficultycount += (changes * (depth+1));
+                t.difficultycount += (changes + (depth * 100));
+                // t.difficultycount += (changes * (depth+1));
                 // console.log("depth",depth,t.difficultycount);
             }
         }
@@ -136,7 +136,7 @@ class SudokuResolver extends Sudoku {
             const randomtry = t.Random();
             let randomoptions = [...randomtry.options];
             randomtry.number = randomoptions[0];
-            let last = -1;
+            let last = 0;
             let i = 0;
             //let solutions = 0;
             while (randomtry.number !== last && randomtry.number !== undefined) {
@@ -147,16 +147,13 @@ class SudokuResolver extends Sudoku {
                     let sol = solutions;
                     const tmpdifficultycount = t.difficultycount;
                     solutions = t.ResolveUnique(depth + 1, solutions);
+                    // console.log(sol,solutions);
+
                     if (solutions === 0) {
                         t.difficultycount = tmpdifficultycount;
                     }
-                    
-                    if (solutions > sol && sol>0) {
-                        solutions++;
-                    }
-                    // if (solutions > sol) {
-                    //     solutions++;
-                    // }
+                    solutions+=sol;
+
                     if(solutions>1){
                         return solutions;
                     }
@@ -167,6 +164,7 @@ class SudokuResolver extends Sudoku {
                     if (!t.arrayEquals(randomoptions, [...randomtry.options])) {
                         randomoptions = [...randomtry.options];
                         i = 0;
+                        console.log("restart",solutions);
                     } else {
                         i++;
                     }
@@ -181,16 +179,19 @@ class SudokuResolver extends Sudoku {
             if (!t.CheckCompleteBoard()) {
                 return t.ResolveUnique(depth + 1, solutions);
             } else {
-                solutions++;
+                if(solutions===0){
+                    solutions=1;
+                }
+                // solutions++;
                 //solutions=1;
                 return solutions;
             }
         } else {
             // console.log(solutions);
-            if(solutions===0){
-                solutions=1;
-            }
-            // solutions++;
+            // if(solutions===0){
+            //     solutions=1;
+            // }
+            solutions++;
             // solutions=1;
             return solutions;
         }

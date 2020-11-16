@@ -45,10 +45,12 @@ export default function BoardContextProvider({ children }) {
         if (n > 20) {
             const newboard = new SudokuResolver(n);
             board.RestoreBoard(newboard.CloneBoard());
+            board.difficultycount=newboard.difficultycount;
+            setDifficultyCount(board.difficultycount);
             Save();
             LocalStorage.set("difficulty", n);
             setDifficulty(n);
-            console.log(newboard.difficultycount);
+            console.log(board.difficultycount);
             return;
         }
         if (depth === 0) {
@@ -89,7 +91,7 @@ export default function BoardContextProvider({ children }) {
             Save();
             setLoading(false);
             console.log("total",t2-t1);
-            console.log(board.difficultycount, 81 - board.removed, best_solution,best_solution.difficultycount-best_solution.worst,depth);
+            console.log(board.difficultycount, 81 - board.removed, best_solution,depth);
         }
     }
 
