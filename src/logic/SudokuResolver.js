@@ -107,7 +107,7 @@ class SudokuResolver extends Sudoku {
     }
 
 
-    ResolveUnique = (deep = 0, solutions = 0) => {
+    ResolveUnique = (depth = 0, solutions = 0) => {
         const t = this;
         if (solutions > 1) {
             return solutions;
@@ -125,8 +125,8 @@ class SudokuResolver extends Sudoku {
                 changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
             }
             if (changes > 0) {
-                t.difficultycount += (changes + (deep * 100));
-                // console.log("deep",deep,t.difficultycount);
+                t.difficultycount += (changes + (depth * 100));
+                // console.log("depth",depth,t.difficultycount);
             }
         }
 
@@ -135,29 +135,32 @@ class SudokuResolver extends Sudoku {
             const randomtry = t.Random();
             let randomoptions = [...randomtry.options];
             randomtry.number = randomoptions[0];
-            let last = 0;
+            let last = -1;
             let i = 0;
             //let solutions = 0;
             while (randomtry.number !== last && randomtry.number !== undefined) {
+                console.log(depth,"antes",randomtry.number,last);
                 last = randomtry.number;
                 t.RestoreBoard(clonelist);
                 randomtry.number = last;
+                console.log(depth,"medio",randomtry.number,last);
                 try {
                     let sol = solutions;
                     const tmpdifficultycount = t.difficultycount;
-                    solutions = t.ResolveUnique(deep + 1, solutions);
-                    // console.log("solutions",solutions);
+                    solutions = t.ResolveUnique(depth + 1, solutions);
                     if (solutions === 0) {
                         t.difficultycount = tmpdifficultycount;
                     }
-                    if (solutions > sol) {
-                        solutions++;
-                    }
+                    
                     if(solutions>1){
                         return solutions;
                     }
+                    if (solutions > sol && sol>0) {
+                        solutions++;
+                    }
                 } catch (error) {
-                    //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);
+                    // console.log(error.message, t.errorcount, "Submatrix", "depth:", depth);
+                    return 0;
                 } finally {
                     if (!t.arrayEquals(randomoptions, [...randomtry.options])) {
                         randomoptions = [...randomtry.options];
@@ -167,6 +170,7 @@ class SudokuResolver extends Sudoku {
                     }
                     randomtry.number = randomoptions[i];
                 }
+                console.log(depth,"despues",randomtry.number,last);
             }
             randomtry.number = "";
             if (solutions > 1) {
@@ -174,13 +178,14 @@ class SudokuResolver extends Sudoku {
             }
 
             if (!t.CheckCompleteBoard()) {
-                return t.ResolveUnique(deep + 1, solutions);
+                return t.ResolveUnique(depth + 1, solutions);
             } else {
-                solutions++;
+                //solutions++;
+                solutions=1;
                 return solutions;
             }
         } else {
-            solutions++;
+            solutions=1;
             return solutions;
         }
     }
