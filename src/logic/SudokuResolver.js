@@ -57,7 +57,7 @@ class SudokuResolver extends Sudoku {
         }
         var t1 = performance.now();
         if (deep === 0) {
-            //console.log("CreateSudoku took " + (t1 - t0) + " milliseconds.");
+            console.log("CreateSudoku took " + (t1 - t0) + " milliseconds.");
         }
     }
     CleanBoard = (n) => {
@@ -69,12 +69,12 @@ class SudokuResolver extends Sudoku {
         const emptyspaces = [...t.emptyspaces];
         t.removed = 0;
 
+        let maxdiff = 0;
         while (t.removed < 81 - n && emptyspaces.length > 0) {
             const pos = Math.floor(Math.random() * (emptyspaces.length - 1));
             const current = emptyspaces[pos];
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
             const tmp = field.number;
-            // field.number = "";
             field.SetValue("");
             const tmpdifficultycount = t.difficultycount;
             const clonelist = t.CloneBoard();
@@ -85,16 +85,18 @@ class SudokuResolver extends Sudoku {
             }
             if (solutions === 1) {
                 t.difficultycount++;
+                if (t.difficultycount - tmpdifficultycount > maxdiff) {
+                    maxdiff = t.difficultycount - tmpdifficultycount;
+                }
                 t.removed++;
-                // console.log(tmpdifficultycount,t.difficultycount,"UNIQUE");
             } else {
-                // console.log(tmpdifficultycount,t.difficultycount,"MULTIPLE");
                 t.difficultycount = tmpdifficultycount;
-                // field.number = tmp;
                 field.SetValue(tmp);
             }
             emptyspaces.splice(pos, 1);
         }
+
+        t.difficultycount = maxdiff;
         for (let index = 0; index < t.emptyspaces.length; index++) {
             const current = t.emptyspaces[index];
             let field = t.matrix[current[0]][current[1]].submatrix[current[2]][current[3]];
@@ -122,7 +124,10 @@ class SudokuResolver extends Sudoku {
             if (changes === 0) {
                 changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
             }
-            t.difficultycount += (changes * (deep + 1));
+            if (changes > 0) {
+                t.difficultycount += (changes + (deep * 100));
+                // console.log("deep",deep,t.difficultycount);
+            }
         }
 
         if (!t.CheckCompleteBoard()) {
@@ -134,7 +139,6 @@ class SudokuResolver extends Sudoku {
             let i = 0;
             //let solutions = 0;
             while (randomtry.number !== last && randomtry.number !== undefined) {
-                t.difficultycount += (deep + 1);
                 last = randomtry.number;
                 t.RestoreBoard(clonelist);
                 randomtry.number = last;
@@ -142,11 +146,15 @@ class SudokuResolver extends Sudoku {
                     let sol = solutions;
                     const tmpdifficultycount = t.difficultycount;
                     solutions = t.ResolveUnique(deep + 1, solutions);
+                    // console.log("solutions",solutions);
                     if (solutions === 0) {
                         t.difficultycount = tmpdifficultycount;
                     }
                     if (solutions > sol) {
                         solutions++;
+                    }
+                    if(solutions>1){
+                        return solutions;
                     }
                 } catch (error) {
                     //console.log(error.message, t.errorcount, "Submatrix", "deep:", deep);

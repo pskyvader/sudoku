@@ -75,7 +75,7 @@ export default function BoardContextProvider({ children }) {
         }
 
         var t2=performance.now();
-        if (t2-t1<3000 && (best_solution.difficultycount)<1750) {
+        if (t2-t1<3000 && (best_solution.difficultycount)<30000) {
             board.RestoreBoard(board.fullboard);
             board.CleanBoard(n);
             setTimeout(() => {
