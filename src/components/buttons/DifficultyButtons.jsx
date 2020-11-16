@@ -73,7 +73,7 @@ const DifficultyButtons = (props) => {
         { number: 63, text: Text('veryeasymode'), class: classes.button1, icon: EmojiEmotionsIcon },
         { number: 45, text: Text('easymode'), class: classes.button2, icon: InsertEmoticonIcon },
         { number: 36, text: Text('mediummode'), class: classes.button3, icon: FaceIcon },
-        { number: 10, text: Text('hardmode'), class: classes.button4, icon: MoodBadIcon }
+        { number: 27, text: Text('hardmode'), class: classes.button4, icon: MoodBadIcon }
     ]
 
 

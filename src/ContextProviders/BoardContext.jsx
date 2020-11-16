@@ -48,6 +48,7 @@ export default function BoardContextProvider({ children }) {
             Save();
             LocalStorage.set("difficulty", n);
             setDifficulty(n);
+            console.log(newboard.difficultycount);
             return;
         }
         if (depth === 0) {

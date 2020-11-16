@@ -125,7 +125,8 @@ class SudokuResolver extends Sudoku {
                 changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
             }
             if (changes > 0) {
-                t.difficultycount += (changes + (depth * 100));
+                // t.difficultycount += (changes + (depth * 100));
+                t.difficultycount += (changes * (depth+1));
                 // console.log("depth",depth,t.difficultycount);
             }
         }
@@ -139,11 +140,9 @@ class SudokuResolver extends Sudoku {
             let i = 0;
             //let solutions = 0;
             while (randomtry.number !== last && randomtry.number !== undefined) {
-                console.log(depth,"antes",randomtry.number,last);
                 last = randomtry.number;
                 t.RestoreBoard(clonelist);
                 randomtry.number = last;
-                console.log(depth,"medio",randomtry.number,last);
                 try {
                     let sol = solutions;
                     const tmpdifficultycount = t.difficultycount;
@@ -152,11 +151,11 @@ class SudokuResolver extends Sudoku {
                         t.difficultycount = tmpdifficultycount;
                     }
                     
-                    if(solutions>1){
-                        return solutions;
-                    }
                     if (solutions > sol && sol>0) {
                         solutions++;
+                    }
+                    if(solutions>1){
+                        return solutions;
                     }
                 } catch (error) {
                     // console.log(error.message, t.errorcount, "Submatrix", "depth:", depth);
@@ -170,7 +169,6 @@ class SudokuResolver extends Sudoku {
                     }
                     randomtry.number = randomoptions[i];
                 }
-                console.log(depth,"despues",randomtry.number,last);
             }
             randomtry.number = "";
             if (solutions > 1) {
