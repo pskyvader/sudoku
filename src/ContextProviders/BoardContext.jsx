@@ -71,7 +71,8 @@ export default function BoardContextProvider({ children }) {
             best_solution.worst = board.difficultycount;
         }
 
-        if (depth < 100) {
+        var t2=performance.now();
+        if (t2-t1<5000 && (best_solution.difficultycount)<1800) {
             board.RestoreBoard(board.fullboard);
             board.CleanBoard(n);
             // board.CreateBoard(n);
@@ -82,9 +83,8 @@ export default function BoardContextProvider({ children }) {
             board.RestoreBoard(best_solution.board);
             Save();
             setLoading(false);
-            var t2=performance.now();
             console.log("total",t2-t1);
-            console.log(board.difficultycount, 81 - board.removed, best_solution,best_solution.difficultycount-best_solution.worst);
+            console.log(board.difficultycount, 81 - board.removed, best_solution,best_solution.difficultycount-best_solution.worst,depth);
         }
     }
 
