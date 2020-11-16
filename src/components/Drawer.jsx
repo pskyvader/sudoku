@@ -1,16 +1,19 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useContext } from 'react';
 import clsx from 'clsx';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import List from '@material-ui/core/List';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { BoardContext } from '../ContextProviders/BoardContext';
 
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
 const DifficultyButtons = lazy(() => import('./buttons/DifficultyButtons'));
 const ServiceWorker = lazy(() => import('./buttons/ServiceWorker'));
 const ColorSelector = lazy(() => import('./buttons/ColorSelector'));
+
+
 
 const drawerWidth = 240;
 
@@ -61,12 +64,15 @@ function ResponsiveDrawer(props) {
         handleDesktopDrawerToggle,
         desktopOpen
     } = props;
+
+    const { DifficultyCount } = useContext(BoardContext);
     const classes = useStyles();
     const theme = useTheme();
 
     const drawer = (
         <div>
             <div className={classes.toolbar} />
+            {DifficultyCount}
             <Divider />
             <List>
                 <Suspense fallback={renderLoader()}>
@@ -82,8 +88,8 @@ function ResponsiveDrawer(props) {
             </Suspense>
             <Divider />
             <Suspense fallback={renderLoader()}>
-                <ColorSelector  mode="primary"/>
-                <ColorSelector mode="secondary"/>
+                <ColorSelector mode="primary" />
+                <ColorSelector mode="secondary" />
             </Suspense>
             <Divider />
             <Suspense fallback={renderLoader()}>

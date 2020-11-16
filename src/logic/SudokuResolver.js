@@ -57,7 +57,7 @@ class SudokuResolver extends Sudoku {
         }
         var t1 = performance.now();
         if (deep === 0) {
-            console.log("CreateSudoku took " + (t1 - t0) + " milliseconds.");
+            //console.log("CreateSudoku took " + (t1 - t0) + " milliseconds.");
         }
     }
     CleanBoard = (n) => {

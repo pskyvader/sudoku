@@ -27,6 +27,9 @@ export default function BoardContextProvider({ children }) {
     board.setSuccess = setSuccess;
     board.success = Success;
 
+    
+    const [DifficultyCount, setDifficultyCount] = React.useState(board.difficultycount);
+
 
     React.useEffect(() => {
         if (cacheboard === null) {
@@ -72,19 +75,25 @@ export default function BoardContextProvider({ children }) {
         }
 
         var t2=performance.now();
-        if (t2-t1<5000 && (best_solution.difficultycount)<1800) {
+        if (t2-t1<30000 && (best_solution.difficultycount)<3000) {
+            var t3=performance.now();
             board.RestoreBoard(board.fullboard);
             board.CleanBoard(n);
+            var t4=performance.now();
+            // console.log(board.difficultycount,t4-t3,best_solution.difficultycount,t4-t1);
+            console.log(best_solution.difficultycount,t4-t1);
             // board.CreateBoard(n);
             setTimeout(() => {
                 ResetBoard(n, depth + 1, best_solution, t1);
             }, 0);
         } else {
             board.RestoreBoard(best_solution.board);
+            board.difficultycount=best_solution.difficultycount;
+            setDifficultyCount(board.difficultycount);
             Save();
             setLoading(false);
-            console.log("total",t2-t1);
-            console.log(board.difficultycount, 81 - board.removed, best_solution,best_solution.difficultycount-best_solution.worst,depth);
+            //console.log("total",t2-t1);
+            //console.log(board.difficultycount, 81 - board.removed, best_solution,best_solution.difficultycount-best_solution.worst,depth);
         }
     }
 
@@ -104,7 +113,8 @@ export default function BoardContextProvider({ children }) {
         OptionsActive,
         setOptionsActive,
         setLoading,
-        Loading
+        Loading,
+        DifficultyCount
     };
 
     return (
