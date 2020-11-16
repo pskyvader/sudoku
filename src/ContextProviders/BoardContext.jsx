@@ -48,7 +48,7 @@ export default function BoardContextProvider({ children }) {
             return;
         }
         if (depth === 0) {
-            // t1 = performance.now();
+            t1 = performance.now();
             board.CreateEmptyBoard();
             board.CreateBoard(n);
             LocalStorage.set("difficulty", n);
@@ -71,7 +71,7 @@ export default function BoardContextProvider({ children }) {
             best_solution.worst = board.difficultycount;
         }
 
-        if (depth < 5) {
+        if (depth < 100) {
             board.RestoreBoard(board.fullboard);
             board.CleanBoard(n);
             // board.CreateBoard(n);
@@ -82,11 +82,10 @@ export default function BoardContextProvider({ children }) {
             board.RestoreBoard(best_solution.board);
             Save();
             setLoading(false);
-            // var t2=performance.now();
-            // console.log("total",t2-t1);
+            var t2=performance.now();
+            console.log("total",t2-t1);
+            console.log(board.difficultycount, 81 - board.removed, best_solution,best_solution.difficultycount-best_solution.worst);
         }
-
-        // console.log(board.difficultycount, 81 - board.removed, "best", best_solution);
     }
 
     const Save = () => {

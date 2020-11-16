@@ -4,7 +4,7 @@ class SudokuResolver extends Sudoku {
     constructor(n, cacheboard = null, newboard = false) {
         super();
         this.errorcount = 0;
-        this.difficultycount=0;
+        this.difficultycount = 0;
         if (cacheboard !== null) {
             this.RestoreBoard(cacheboard);
         } else if (!newboard) {
@@ -51,18 +51,18 @@ class SudokuResolver extends Sudoku {
             t.CreateEmptyBoard();
             t.CreateBoard(n, deep + 1);
         }
-        t.fullboard=t.CloneBoard();
+        t.fullboard = t.CloneBoard();
         if (deep === 0) {
             t.CleanBoard(n);
         }
         var t1 = performance.now();
-        if(deep===0){
+        if (deep === 0) {
             console.log("CreateSudoku took " + (t1 - t0) + " milliseconds.");
         }
     }
     CleanBoard = (n) => {
         const t = this;
-        t.difficultycount=0;
+        t.difficultycount = 0;
         if (n > 81 || n < 1) {
             throw Error("number out of range");
         }
@@ -76,7 +76,7 @@ class SudokuResolver extends Sudoku {
             const tmp = field.number;
             // field.number = "";
             field.SetValue("");
-            // const tmpdifficultycount=t.difficultycount;
+            const tmpdifficultycount = t.difficultycount;
             const clonelist = t.CloneBoard();
             const solutions = t.ResolveUnique();
             t.RestoreBoard(clonelist);
@@ -86,8 +86,10 @@ class SudokuResolver extends Sudoku {
             if (solutions === 1) {
                 t.difficultycount++;
                 t.removed++;
-                // console.log(tmpdifficultycount,t.difficultycount);
+                // console.log(tmpdifficultycount,t.difficultycount,"UNIQUE");
             } else {
+                // console.log(tmpdifficultycount,t.difficultycount,"MULTIPLE");
+                t.difficultycount = tmpdifficultycount;
                 // field.number = tmp;
                 field.SetValue(tmp);
             }
@@ -114,14 +116,13 @@ class SudokuResolver extends Sudoku {
             try {
                 changes += t.FillSingleOption(); // check if there are any field with only one option and use it
             } catch (error) { //if 0 options, no solution
-                t.difficultycount--;
                 return 0;
             }
-            
+
             if (changes === 0) {
                 changes += t.FillByLine(); // check if there are any line or square with a unique number in its options and use it
             }
-            t.difficultycount+=changes;
+            t.difficultycount += (changes * (deep + 1));
         }
 
         if (!t.CheckCompleteBoard()) {
@@ -133,13 +134,17 @@ class SudokuResolver extends Sudoku {
             let i = 0;
             //let solutions = 0;
             while (randomtry.number !== last && randomtry.number !== undefined) {
-                t.difficultycount++;
+                t.difficultycount += (deep + 1);
                 last = randomtry.number;
                 t.RestoreBoard(clonelist);
                 randomtry.number = last;
                 try {
                     let sol = solutions;
+                    const tmpdifficultycount = t.difficultycount;
                     solutions = t.ResolveUnique(deep + 1, solutions);
+                    if (solutions === 0) {
+                        t.difficultycount = tmpdifficultycount;
+                    }
                     if (solutions > sol) {
                         solutions++;
                     }
