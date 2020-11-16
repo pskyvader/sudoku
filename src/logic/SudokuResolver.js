@@ -154,6 +154,9 @@ class SudokuResolver extends Sudoku {
                     if (solutions > sol && sol>0) {
                         solutions++;
                     }
+                    // if (solutions > sol) {
+                    //     solutions++;
+                    // }
                     if(solutions>1){
                         return solutions;
                     }
@@ -178,12 +181,17 @@ class SudokuResolver extends Sudoku {
             if (!t.CheckCompleteBoard()) {
                 return t.ResolveUnique(depth + 1, solutions);
             } else {
-                //solutions++;
-                solutions=1;
+                solutions++;
+                //solutions=1;
                 return solutions;
             }
         } else {
-            solutions=1;
+            // console.log(solutions);
+            if(solutions===0){
+                solutions=1;
+            }
+            // solutions++;
+            // solutions=1;
             return solutions;
         }
     }
