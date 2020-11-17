@@ -188,6 +188,7 @@ class SudokuResolver extends Sudoku {
             }
         } else {
             // console.log(solutions);
+
             // if(solutions===0){
             //     solutions=1;
             // }
