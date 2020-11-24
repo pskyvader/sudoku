@@ -68,40 +68,64 @@ class SudokuResolver extends Sudoku {
         t.FromString(best.puzzle);
     }
 
-    FromString=(boardstring)=>{
+    FromString = (boardstring) => {
         console.log(boardstring);
         const t = this;
         var board = boardstring.split("-").join("").trim().split("\n");
-        var newboard=[[[],[],[]],[[],[],[]],[[],[],[]]];
-        var x1=0;
-        var y1=0;
-        board.forEach((row,i) => {
-            var r=row.split("|");
-            console.log(r,x1,y1);
-            r.forEach((column,j) => {
-                if(column!==""){
-                    var c=column.trim().split(" ");
+        var newboard = [
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ]
+        ];
+        var y1 = 0;
+        var i1 = 0;
+        board.forEach((row, i) => {
+            var r = row.split("|");
+            var x1 = 0;
+            r.forEach((column, j) => {
+                if (column !== "") {
+                    var c = column.trim().split(" ");
                     // r1[j]=c;
-                    console.log(x1,y1,c);
-                    newboard[x1][y1].push(c);
-                    y1++;
-                }else{
-                    // r=null;
+                    // console.log(y1, x1, i1, c, newboard[x1][y1][i1]);
+                    newboard[x1][y1][i1] = c;
+                    x1++;
+                    if (x1 > 2) {
+                        x1 = 0;
+                    }
+                } else {
+                    r=null;
                     return;
                 }
             });
-            if(y1>2){
-                y1=0;
-                x1++;
-            }
-            if(x1>2){
-                x1=0;
+            console.log(r, y1, x1, i1);
+            // console.log(y1,x1);
+            if(r!==null){
+                i1++;
+                if (i1 > 2) {
+                    i1 = 0;
+                    y1++;
+                }
+                if (y1 > 2) {
+                    y1 = 0;
+                }
             }
             // if(r!==null){
-            //     // newboard[x1][y1]=r1;
-            //     if(y1===2){
-            //         y1=0;
-            //         x1++;
+            //     // newboard[y1][x1]=r1;
+            //     if(x1===2){
+            //         x1=0;
+            //         y1++;
             //     }
             // }
         });
@@ -111,25 +135,25 @@ class SudokuResolver extends Sudoku {
                 for (let i = 0; i < 3; i++) {
                     for (let j = 0; j < 3; j++) {
                         // console.log(x,y,i,j,newboard[x][y][i][j]  );
-                        const number=newboard[x][y][i][j];
+                        const number = newboard[x][y][j][i];
                         const element = t.matrix[x][y].submatrix[i][j];
-                        if(number!=="."){
+                        if (number !== ".") {
                             element.SetValue(number);
                             element.locked = true;
-                        }else{
+                        } else {
                             element.SetValue("");
                             element.locked = false;
                         }
                         element.SetValueOptions(new Set());
                         element.SetValueError(false);
                     }
-                    
+
                 }
-                
+
             }
-            
+
         }
-        
+
     }
 
     CreateBoard2 = (n, deep = 0) => {
