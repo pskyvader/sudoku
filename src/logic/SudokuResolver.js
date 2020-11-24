@@ -69,26 +69,9 @@ class SudokuResolver extends Sudoku {
     }
 
     FromString = (boardstring) => {
-        console.log(boardstring);
         const t = this;
         var board = boardstring.split("-").join("").trim().split("\n");
-        var newboard = [
-            [
-                [],
-                [],
-                []
-            ],
-            [
-                [],
-                [],
-                []
-            ],
-            [
-                [],
-                [],
-                []
-            ]
-        ];
+        var newboard = [ [ [], [], [] ], [ [], [], [] ], [ [], [], [] ] ];
         var y1 = 0;
         var i1 = 0;
         board.forEach((row, i) => {
@@ -97,8 +80,6 @@ class SudokuResolver extends Sudoku {
             r.forEach((column, j) => {
                 if (column !== "") {
                     var c = column.trim().split(" ");
-                    // r1[j]=c;
-                    // console.log(y1, x1, i1, c, newboard[x1][y1][i1]);
                     newboard[x1][y1][i1] = c;
                     x1++;
                     if (x1 > 2) {
@@ -109,8 +90,6 @@ class SudokuResolver extends Sudoku {
                     return;
                 }
             });
-            console.log(r, y1, x1, i1);
-            // console.log(y1,x1);
             if(r!==null){
                 i1++;
                 if (i1 > 2) {
@@ -121,15 +100,7 @@ class SudokuResolver extends Sudoku {
                     y1 = 0;
                 }
             }
-            // if(r!==null){
-            //     // newboard[y1][x1]=r1;
-            //     if(x1===2){
-            //         x1=0;
-            //         y1++;
-            //     }
-            // }
         });
-        console.log(newboard);
         for (let x = 0; x < 3; x++) {
             for (let y = 0; y < 3; y++) {
                 for (let i = 0; i < 3; i++) {

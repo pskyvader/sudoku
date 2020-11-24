@@ -59,7 +59,7 @@ const getColor = (hue) => {
 
 
 export default function ColorSelector({ mode = "primary" }) {
-    const { SetColor, ResetColor } = useContext(ThemeContext);
+    const { SetColor, ResetColor,DarkMode } = useContext(ThemeContext);
 
     // set selected language by calling context method
     const handleMenuItemClick = (key) => {
@@ -80,7 +80,7 @@ export default function ColorSelector({ mode = "primary" }) {
     const handleClickList = () => {
         setOpen(!open);
     };
-    const palette = getColor(600);
+    const palette = (DarkMode)? getColor(900): getColor(600);
 
 
 

@@ -1,11 +1,10 @@
-import React, { lazy, Suspense, useContext } from 'react';
+import React, { lazy, Suspense } from 'react';
 import clsx from 'clsx';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import List from '@material-ui/core/List';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { BoardContext } from '../ContextProviders/BoardContext';
 
 const DarkModeButton = lazy(() => import('./buttons/DarkModeButton'));
 const LanguageSelector = lazy(() => import('./buttons/LanguageSelector'));
@@ -65,14 +64,13 @@ function ResponsiveDrawer(props) {
         desktopOpen
     } = props;
 
-    const { DifficultyCount } = useContext(BoardContext);
     const classes = useStyles();
     const theme = useTheme();
 
     const drawer = (
         <div>
             <div className={classes.toolbar} />
-            {DifficultyCount}
+            {navigator.language +","+navigator.userLanguage}
             <Divider />
             <List>
                 <Suspense fallback={renderLoader()}>
