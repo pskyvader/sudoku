@@ -28,11 +28,12 @@ q.setPrintStyle(qqwing.PrintStyle.ONE_LINE);
 var diff=[0,0,0,0,0];
 var tries=0;
 
-while(q.getDifficulty()!==1 && tries<50){
+while(q.getDifficulty()!==1 && tries<10){
     q.generatePuzzle();
     q.solve();
     tries++;
     diff[q.getDifficulty()]++;
+    console.log(q.getDifficulty());
 }
 
 console.log(q.getDifficulty());
