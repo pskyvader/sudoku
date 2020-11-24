@@ -17,12 +17,12 @@ function debounce(fn, ms) {
 }
 
 export default function BoardContextProvider({ children }) {
-    const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 45));
+    const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 2));
     const [Loading, setLoading] = React.useState(false);
     const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
 
     const cacheboard = LocalStorage.get("sudoku_board", null);
-    const board = new SudokuResolver(45, cacheboard, true);
+    const board = new SudokuResolver(2, cacheboard, true);
     const [Success, setSuccess] = React.useState(board.success);
     board.setSuccess = setSuccess;
     board.success = Success;

@@ -1,3 +1,4 @@
+import qqwing from 'qqwing';
 import Sudoku from './Sudoku';
 
 class SudokuResolver extends Sudoku {
@@ -35,7 +36,54 @@ class SudokuResolver extends Sudoku {
         }
     }
 
-    CreateBoard = (n, deep = 0) => {
+    CreateBoard = (n) => {
+        const t = this;
+        var t1 = performance.now();
+        var q = new qqwing();
+        q.setRecordHistory(true);
+        q.setPrintStyle(qqwing.PrintStyle.ONE_LINE);
+        var tries = 0;
+        var best = {
+            closer: 10,
+            difficulty: 0,
+            puzzle: ""
+        }
+        var difficultytarget = n;
+
+        while (q.getDifficulty() !== difficultytarget && tries < 10) {
+            q.generatePuzzle();
+            q.solve();
+            tries++;
+            const closer = Math.abs(difficultytarget - q.getDifficulty());
+            if (best.closer > closer) {
+                best = {
+                    closer: closer,
+                    difficulty: q.getDifficulty(),
+                    puzzle: q.getPuzzleString()
+                }
+            }
+        }
+        var t2 = performance.now();
+        console.log(t2 - t1, tries);
+        t.FromString(best.puzzle);
+    }
+
+    FromString=(boardstring)=>{
+        const t = this;
+        var res = boardstring.split("");
+        console.log(boardstring);
+        console.log(res);
+        // for (let index = 0; index < clonelist.length; index++) {
+        //     const e = clonelist[index];
+        //     const element = t.matrix[e.x][e.y].submatrix[e.i][e.j];
+        //     element.SetValue(e.number);
+        //     element.SetValueOptions(new Set(e.options));
+        //     element.locked = e.locked;
+        //     element.SetValueError(e.error);
+        // }
+    }
+
+    CreateBoard2 = (n, deep = 0) => {
         var t0 = performance.now();
         const t = this;
         if (n > 81 || n < 1) {
@@ -152,9 +200,9 @@ class SudokuResolver extends Sudoku {
                     if (solutions === 0) {
                         t.difficultycount = tmpdifficultycount;
                     }
-                    solutions+=sol;
+                    solutions += sol;
 
-                    if(solutions>1){
+                    if (solutions > 1) {
                         return solutions;
                     }
                 } catch (error) {
@@ -164,7 +212,7 @@ class SudokuResolver extends Sudoku {
                     if (!t.arrayEquals(randomoptions, [...randomtry.options])) {
                         randomoptions = [...randomtry.options];
                         i = 0;
-                        console.log("restart",solutions);
+                        console.log("restart", solutions);
                     } else {
                         i++;
                     }
@@ -179,8 +227,8 @@ class SudokuResolver extends Sudoku {
             if (!t.CheckCompleteBoard()) {
                 return t.ResolveUnique(depth + 1, solutions);
             } else {
-                if(solutions===0){
-                    solutions=1;
+                if (solutions === 0) {
+                    solutions = 1;
                 }
                 // solutions++;
                 //solutions=1;

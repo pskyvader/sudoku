@@ -16,34 +16,7 @@ import Text from '../languages/Language';
 
 import { BoardContext } from '../ContextProviders/BoardContext';
 
-import qqwing from 'qqwing';
-
 const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyButtons'));
-
-var t1=performance.now();
-var q=new qqwing();
-q.setRecordHistory(true);
-q.setPrintStyle(qqwing.PrintStyle.ONE_LINE);
-
-var diff=[0,0,0,0,0];
-var tries=0;
-
-while(q.getDifficulty()!==1 && tries<10){
-    q.generatePuzzle();
-    q.solve();
-    tries++;
-    diff[q.getDifficulty()]++;
-    console.log(q.getDifficulty());
-}
-
-console.log(q.getDifficulty());
-console.log(q.getDifficultyAsString());
-// console.log(q.getSolutionString());
-console.log(q.getPuzzleString());
-
-var t2=performance.now();
-
-console.log(t2-t1,tries,diff);
 
 const useStyles = makeStyles((theme) => {
     const light = theme.palette.type === "light";
