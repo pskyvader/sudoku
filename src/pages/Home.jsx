@@ -16,7 +16,20 @@ import Text from '../languages/Language';
 
 import { BoardContext } from '../ContextProviders/BoardContext';
 
+import qqwing from 'qqwing';
+
 const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyButtons'));
+
+var q=new qqwing();
+q.generatePuzzle();
+let tries=0;
+while(q.getDifficulty()===0 && tries<10){
+    q.generatePuzzle();
+    tries++;
+}
+console.log(q.getDifficulty());
+console.log(q.getDifficultyAsString());
+console.log(q.getSolutionString());
 
 
 const useStyles = makeStyles((theme) => {
@@ -90,7 +103,8 @@ const Home = () => {
     const debouncedHandleResize = debounce(BoxHeight, 100);
 
 
-    React.useLayoutEffect(debouncedHandleResize, []);
+    React.useLayoutEffect(debouncedHandleResize, [debouncedHandleResize]);
+
     React.useEffect(() => {
         window.addEventListener("resize", debouncedHandleResize);
         return () => window.removeEventListener("resize", debouncedHandleResize);
