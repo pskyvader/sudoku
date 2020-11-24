@@ -57,11 +57,12 @@ const DifficultyButtons = (props) => {
     const { Difficulty, ResetBoard, setLoading, Loading,setDifficulty } = useContext(BoardContext);
 
     const Reset = (number) => {
-        if (number <= 20) {
-            setLoading(true);
-        }else{
-            setDifficulty(0);
-        }
+        // if (number <= 20) {
+        //     setLoading(true);
+        // }else{
+            
+        // }
+        setDifficulty(0);
         setTimeout(() => {
             ResetBoard(number);
         }, 0);
@@ -77,10 +78,10 @@ const DifficultyButtons = (props) => {
     ]
 
 
-    const textloading = Text('loading');
-    if (Loading && Difficulty <= 20) {
-        return textloading
-    }
+    // const textloading = Text('loading');
+    // if (Loading && Difficulty <= 20) {
+    //     return textloading
+    // }
     if (mode === "button") {
         return <ButtonGroup size="small">
             {difficultylist.map((e) => (
