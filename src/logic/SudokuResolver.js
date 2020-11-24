@@ -41,7 +41,7 @@ class SudokuResolver extends Sudoku {
         var t1 = performance.now();
         var q = new qqwing();
         q.setRecordHistory(true);
-        q.setPrintStyle(qqwing.PrintStyle.ONE_LINE);
+        q.setPrintStyle(qqwing.PrintStyle.READABLE);
         var tries = 0;
         var best = {
             closer: 10,
@@ -70,9 +70,28 @@ class SudokuResolver extends Sudoku {
 
     FromString=(boardstring)=>{
         const t = this;
-        var res = boardstring.split("");
         console.log(boardstring);
-        console.log(res);
+        var board = boardstring.split("\n");
+        console.log(board);
+        board.forEach(element => {
+            element.split("|");
+        });
+        console.log(board);
+
+
+        for (let x = 0; x < 3; x++) {
+            for (let y = 0; y < 3; y++) {
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 3; j++) {
+                        //console.log(x,y,i,j,(x*3+y),   board[(x*y)+(i*j)]);
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
         // for (let index = 0; index < clonelist.length; index++) {
         //     const e = clonelist[index];
         //     const element = t.matrix[e.x][e.y].submatrix[e.i][e.j];
