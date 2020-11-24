@@ -70,20 +70,45 @@ class SudokuResolver extends Sudoku {
 
     FromString=(boardstring)=>{
         const t = this;
-        console.log(boardstring);
-        var board = boardstring.split("\n");
-        console.log(board);
-        board.forEach(element => {
-            element.split("|");
+        var board = boardstring.split("-").join("").trim().split("\n");
+        var newboard=[[],[],[]];
+        var r1=[];
+        var x1=0;
+        board.forEach((row,i) => {
+            var r=row.split("|");
+            r.forEach((column,j) => {
+                if(column!==""){
+                    var c=column.trim().split(" ");
+                    r1[j]=c;
+                }else{
+                    r=null;
+                    return;
+                }
+            });
+            if(r!==null){
+                newboard[x1].push(r1);
+            }else{
+                r1=[];
+                x1++;
+            }
         });
-        console.log(board);
-
-
+        console.log(newboard);
         for (let x = 0; x < 3; x++) {
             for (let y = 0; y < 3; y++) {
                 for (let i = 0; i < 3; i++) {
                     for (let j = 0; j < 3; j++) {
-                        //console.log(x,y,i,j,(x*3+y),   board[(x*y)+(i*j)]);
+                        console.log(x,y,i,j,newboard[x][y][i][j]  );
+                        const number=newboard[x][y][i][j];
+                        const element = t.matrix[x][y].submatrix[i][j];
+                        if(number!=="."){
+                            element.SetValue(number);
+                            element.locked = true;
+                        }else{
+                            element.SetValue("");
+                            element.locked = false;
+                        }
+                        element.SetValueOptions(new Set());
+                        element.SetValueError(false);
                     }
                     
                 }
@@ -92,14 +117,6 @@ class SudokuResolver extends Sudoku {
             
         }
         
-        // for (let index = 0; index < clonelist.length; index++) {
-        //     const e = clonelist[index];
-        //     const element = t.matrix[e.x][e.y].submatrix[e.i][e.j];
-        //     element.SetValue(e.number);
-        //     element.SetValueOptions(new Set(e.options));
-        //     element.locked = e.locked;
-        //     element.SetValueError(e.error);
-        // }
     }
 
     CreateBoard2 = (n, deep = 0) => {

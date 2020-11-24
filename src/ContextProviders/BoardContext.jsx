@@ -17,7 +17,8 @@ function debounce(fn, ms) {
 }
 
 export default function BoardContextProvider({ children }) {
-    const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", 2));
+    const default_difficulty=2;
+    const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", default_difficulty));
     const [Loading, setLoading] = React.useState(false);
     const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
 
@@ -33,7 +34,7 @@ export default function BoardContextProvider({ children }) {
 
     React.useEffect(() => {
         if (cacheboard === null) {
-            board.CreateBoard(45);
+            board.CreateBoard(default_difficulty);
             LocalStorage.set("sudoku_board", board.CloneBoard());
         }
     }, [board, cacheboard]);
