@@ -25,3 +25,5 @@ yarn-error.log*
 .autogit
 .eslintcache
 .vscode
+.eslintcache2
+.vscode2
