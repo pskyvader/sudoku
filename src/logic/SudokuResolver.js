@@ -105,11 +105,10 @@ class SudokuResolver extends Sudoku {
             for (let y = 0; y < 3; y++) {
                 for (let i = 0; i < 3; i++) {
                     for (let j = 0; j < 3; j++) {
-                        // console.log(x,y,i,j,newboard[x][y][i][j]  );
                         const number = newboard[x][y][j][i];
                         const element = t.matrix[x][y].submatrix[i][j];
                         if (number !== ".") {
-                            element.SetValue(number);
+                            element.SetValue(parseInt(number));
                             element.locked = true;
                         } else {
                             element.SetValue("");

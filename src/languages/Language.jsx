@@ -41,7 +41,7 @@ export function LanguageProvider({ children }) {
 
     const ChangeLanguage = async (selected) => {
         const newLanguage = languageOptions[selected] ? selected : defaultlanguage;
-        LocalStorage.set("rcml-lang", newLanguage);
+        LocalStorage.set("rcml-lang", newLanguage,365);
         if (!dictionaryList[newLanguage]) {
             await loadlanguage(newLanguage).then(() => {
                 setUserLanguage(newLanguage);

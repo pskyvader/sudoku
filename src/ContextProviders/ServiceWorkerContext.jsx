@@ -1,8 +1,8 @@
 import React, { createContext } from 'react';
-import * as serviceWorker from '../serviceWorker';
+import * as serviceWorker from '../serviceWorkerRegistration';
 
 
-export const ServiceWorkerContext = createContext({});
+export const ServiceWorkerContext = createContext();
 
 
 export default function ServiceWorkerProvider({ children }) {

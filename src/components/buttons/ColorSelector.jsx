@@ -20,7 +20,6 @@ import {
 
 import { ColorPalette } from 'material-ui-color';
 
-// import LocalStorage from '../../logic/LocalStorage';
 import Text from '../../languages/Language';
 import { ThemeContext } from '../../ContextProviders/ThemeContext';
 

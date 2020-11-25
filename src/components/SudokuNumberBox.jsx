@@ -1,4 +1,4 @@
-import React, { lazy, Suspense,useContext } from 'react';
+import React, { lazy, Suspense, useContext } from 'react';
 import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -15,7 +15,7 @@ const renderLoader = () => null;
 
 const useStyles = makeStyles((theme) => {
     const { primary, getContrastText, background, grey } = theme.palette;
-    const light = theme.palette.type === "light";
+    const light = theme.palette.mode === "light";
     return {
         button: {
             height: "100%",
@@ -75,7 +75,7 @@ const SudokuNumber = ({ field }) => {
 
 
     let { number, locked, error, options } = field;
-    
+
     const [FinalNumber, SetFinalNumber] = React.useState(number);
     field.SetFinalNumber = SetFinalNumber;
     field.number = FinalNumber;
@@ -89,7 +89,6 @@ const SudokuNumber = ({ field }) => {
     field.options = Options;
 
     const className = clsx(classes.button, FinalError && classes.error, open && classes.selected);
-
     if (locked) {
         return (
             <Button disabled classes={{ root: className, disabled: classes.disabled, }}  >
@@ -128,7 +127,15 @@ const SudokuNumberBox = (props) => {
         fontsize = 50;
     }
 
-    return <Box height={height} width="100%" fontSize={fontsize} display="flex" alignItems="center" justifyContent="center">
+    return <Box sx={{
+        width: "100%",
+        height: height,
+        fontSize: fontsize,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+    }}
+    >
         <SudokuNumber {...props} />
     </Box>
 }

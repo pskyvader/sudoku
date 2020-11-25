@@ -19,7 +19,7 @@ import { BoardContext } from '../ContextProviders/BoardContext';
 const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyButtons'));
 
 const useStyles = makeStyles((theme) => {
-    const light = theme.palette.type === "light";
+    const light = theme.palette.mode === "light";
     const mainbordercolor = light ? theme.palette.primary.main : theme.palette.primary.light;
     const mainborder = theme.spacing(0.25 + 0.125) + " solid " + mainbordercolor;
     const border = theme.spacing(0.25) + " solid " + mainbordercolor;

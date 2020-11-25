@@ -17,7 +17,7 @@ import { BoardContext } from '../ContextProviders/BoardContext';
 
 const useStyles = makeStyles((theme) => {
     const { primary, secondary, getContrastText, background } = theme.palette;
-    const light = theme.palette.type === "light";
+    const light = theme.palette.mode === "light";
 
     return {
         button: {

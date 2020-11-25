@@ -22,7 +22,7 @@ const Container = lazy(() => import('@material-ui/core/Container'));
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
-    root: { flexGrow: 1, },
+    root: { flexGrow: 1},
     margin: {
         marginRight: theme.spacing(2),
         [theme.breakpoints.down('xs')]: {

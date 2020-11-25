@@ -7,7 +7,7 @@ import SudokuNumberBox from "./SudokuNumberBox";
 
 
 const useStyles = makeStyles((theme) => {
-    const light = theme.palette.type === "light";
+    const light = theme.palette.mode === "light";
     const mainbordercolor = light ? theme.palette.primary.main : theme.palette.primary.light;
     return {
         subbox: { textAlign: "center", height: "100%" },
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 
-const SudokuSubBox = ({ matrix, height}) => {
+const SudokuSubBox = ({ matrix, height }) => {
     const classes = useStyles();
     const box = matrix.submatrix;
     const key = matrix.x + "," + matrix.y;
@@ -29,7 +29,7 @@ const SudokuSubBox = ({ matrix, height}) => {
                 {column.map((row, y) => {
                     const keyy = keyx + "," + y;
                     return <Grid key={keyy} item xs={12} className={classes.subgrid}>
-                        <SudokuNumberBox field={row} height={height}/>
+                        <SudokuNumberBox field={row} height={height} />
                     </Grid>
                 })}
             </Grid>
@@ -40,7 +40,10 @@ const SudokuSubBox = ({ matrix, height}) => {
 const SudokuBox = (props) => {
     const { height } = props;
     const subheight = height / 3 - 1; // x / 3 (3 squares) -1 (1px borders ) 
-    return <Box height={height} width="100%">
+    return <Box sx={{
+        width: "100%",
+        height: height,
+    }}>
         <SudokuSubBox {...props} height={subheight} />
     </Box>;
 }

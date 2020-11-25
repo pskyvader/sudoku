@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
         width: drawerWidth,
+        backgroundColor:theme.palette.background.paper
     },
     content: {
         flexGrow: 1,

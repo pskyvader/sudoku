@@ -27,13 +27,12 @@ export default function ThemeContextProvider({ children }) {
             createMuiTheme({
                 palette: {
                     primary: {
-                        // main: DarkMode ? blueGrey[800] : indigo[800],
                         main: DarkMode ? SelectedColor['primary']['dark'] : SelectedColor['primary']['light'],
                     },
                     secondary: {
                         main: DarkMode ? SelectedColor['secondary']['dark'] : SelectedColor['secondary']['light'],
                     },
-                    type: DarkMode ? 'dark' : 'light',
+                    mode: DarkMode ? 'dark' : 'light',
                 },
                 components: {
                     MuiListItem: {
@@ -59,7 +58,7 @@ export default function ThemeContextProvider({ children }) {
 
     const SwitchDarkMode = () => {
         SetDarkMode(!DarkMode);
-        LocalStorage.set("dark_mode", !DarkMode);
+        LocalStorage.set("dark_mode", !DarkMode,365);
     }
     const SetColor = (color, primary = true) => {
         const newcolor = {};
@@ -71,10 +70,10 @@ export default function ThemeContextProvider({ children }) {
             newcolor['primary'] = SelectedColor['primary'];
         }
         SetSelectedColor(newcolor);
-        LocalStorage.set("selected_color", newcolor);
+        LocalStorage.set("selected_color", newcolor,365);
     }
 
-    const ResetColor=(primary = true)=>{
+    const ResetColor = (primary = true) => {
         const newcolor = {};
         if (primary) {
             newcolor['secondary'] = SelectedColor['secondary'];
@@ -84,7 +83,7 @@ export default function ThemeContextProvider({ children }) {
             newcolor['secondary'] = DefaultColor['secondary'];
         }
         SetSelectedColor(newcolor);
-        LocalStorage.set("selected_color", newcolor);
+        LocalStorage.set("selected_color", newcolor,365);
     }
 
 
