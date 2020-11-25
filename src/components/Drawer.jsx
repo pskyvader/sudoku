@@ -113,7 +113,7 @@ function ResponsiveDrawer(props) {
                         {drawer}
                     </Drawer>
                 </Hidden>
-                <Hidden xsDown implementation="css">
+                <Hidden smDown implementation="css">
                     <Drawer
                         anchor={theme.direction === 'rtl' ? 'right' : 'left'}
                         className={classes.drawer}

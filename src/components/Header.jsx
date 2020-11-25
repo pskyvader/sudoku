@@ -76,12 +76,12 @@ export default function ButtonAppBar(props) {
                             <MenuIcon />
                         </IconButton>
                     </Hidden>
-                    <Hidden xsDown>
+                    <Hidden smDown>
                         <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDesktopDrawerToggle}>
                             <MenuIcon />
                         </IconButton>
                     </Hidden>
-                    <Hidden mdUp>
+                    <Hidden smUp>
                         <div className={classes.root}></div>
                     </Hidden>
                     <Hidden smDown>
