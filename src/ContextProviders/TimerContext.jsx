@@ -3,7 +3,7 @@ import LocalStorage from "../logic/LocalStorage";
 
 export const TimerContext = createContext({});
 export default function TimerContextProvider({ children }) {
-    const [seconds, SetSeconds] = React.useState(LocalStorage.get("seconds", 0));
+    const [seconds, SetSeconds] = React.useState(LocalStorage.get("seconds", 3590));
     // const [RemainingSeconds, SetRemainingSeconds] = React.useState(LocalStorage.get("RemainingSeconds", 0));
     const [IsTimerActive, SetIsTimerActive] = React.useState(LocalStorage.get("IsTimerActive", true));
 
@@ -54,10 +54,11 @@ export default function TimerContextProvider({ children }) {
         LocalStorage.set("seconds", 0);
     }
     const Time=()=>{
-        const hours;
-        const minutes;
-        
-        return seconds;
+        if(seconds<3600){
+            return new Date(seconds * 1000).toISOString().substr(14, 5);
+        }else{
+            return new Date(seconds * 1000).toISOString().substr(11, 8);
+        }
     }
 
 

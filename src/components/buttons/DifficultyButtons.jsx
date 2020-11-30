@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
+import Hidden from '@material-ui/core/Hidden';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import List from '@material-ui/core/List';
@@ -49,22 +52,21 @@ const useStyles = makeStyles((theme) => {
         button1: buttoncolor(info, getContrastText),
         button2: buttoncolor(success, getContrastText),
         button3: buttoncolor(warning, getContrastText),
-        button4: buttoncolor(error, getContrastText)
+        button4: buttoncolor(error, getContrastText),
     }
 });
 
 const DifficultyButtons = (props) => {
+    const classes = useStyles();
     const { mode = "button" } = props;
-    const { Difficulty, ResetBoard,setDifficulty } = useContext(BoardContext);
-    const {ResetTimer } = useContext(TimerContext);
+    const { Difficulty, ResetBoard } = useContext(BoardContext);
+    const { ResetTimer } = useContext(TimerContext);
 
     const Reset = (number) => {
-        // setDifficulty(0);
         ResetBoard(number);
         ResetTimer();
     }
 
-    const classes = useStyles();
 
     const difficultylist = [
         { number: 1, text: Text('veryeasymode'), class: classes.button1, icon: EmojiEmotionsIcon },
@@ -73,22 +75,66 @@ const DifficultyButtons = (props) => {
         { number: 4, text: Text('hardmode'), class: classes.button4, icon: MoodBadIcon }
     ]
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-    // const textloading = Text('loading');
-    // if (Loading && Difficulty <= 20) {
-    //     return textloading
-    // }
+    // set selected language by calling context method
+    const handleMenuItemClick = (e, id) => {
+        Reset(id);
+        setAnchorEl(null);
+    }
+
+
+
+
+    const currentDifficulty = difficultylist[Difficulty - 1];
+
     if (mode === "button") {
-        return <ButtonGroup size="small">
-            {difficultylist.map((e) => (
-                <Tooltip key={e.text} title={e.text}>
-                    <Button className={e.class} onClick={() => Reset(e.number)}>
-                        <e.icon />
-                        {Difficulty === e.number ? <StarsIcon className={classes.buttonstar} /> : ""}
+        return <React.Fragment>
+            <Hidden smDown>
+                <ButtonGroup size="small">
+                    {difficultylist.map((e) => (
+                        <Tooltip key={e.text} title={e.text}>
+                            <Button className={e.class} onClick={() => Reset(e.number)}>
+                                <e.icon />
+                                {Difficulty === e.number ? <StarsIcon className={classes.buttonstar} /> : ""}
+                            </Button>
+                        </Tooltip>
+                    ))}
+                </ButtonGroup>
+            </Hidden>
+            <Hidden smUp>
+                <Tooltip title={Text('difficulty')}>
+                    <Button size="small" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} className={currentDifficulty.class}>
+                        <currentDifficulty.icon />
                     </Button>
                 </Tooltip>
-            ))}
-        </ButtonGroup>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}>
+
+                    {difficultylist.map((e) => (
+                        <MenuItem key={e.text} selected={Difficulty === e.number} onClick={(event) => handleMenuItemClick(event, e.number)}>
+                            <Tooltip key={e.text} title={e.text}>
+                                <Button className={e.class}>
+                                    <e.icon />
+                                    {Difficulty === e.number ? <StarsIcon className={classes.buttonstar} /> : ""}
+                                </Button>
+                            </Tooltip></MenuItem>
+                    ))}
+
+                </Menu>
+            </Hidden>
+        </React.Fragment>
+
+
     } else {
         return <List>
             {difficultylist.map((e) => (
