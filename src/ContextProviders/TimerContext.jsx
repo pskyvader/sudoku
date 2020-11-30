@@ -5,7 +5,7 @@ export const TimerContext = createContext({});
 export default function TimerContextProvider({ children }) {
     const [seconds, SetSeconds] = React.useState(LocalStorage.get("seconds", 0));
     // const [RemainingSeconds, SetRemainingSeconds] = React.useState(LocalStorage.get("RemainingSeconds", 0));
-    const [IsTimerActive, SetIsTimerActive] = React.useState(LocalStorage.get("IsTimerActive", true));
+    const [IsTimerActive, SetIsTimerActive] = React.useState(true);
 
     React.useEffect(() => {
         let interval = null;
@@ -45,7 +45,6 @@ export default function TimerContextProvider({ children }) {
     });
 
     const ToggleTimer = () => {
-        LocalStorage.set("IsTimerActive", !IsTimerActive);
         SetIsTimerActive(!IsTimerActive);
     }
 
