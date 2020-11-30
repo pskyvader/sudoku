@@ -4,6 +4,7 @@ import Text, { LanguageProvider } from './languages/Language';
 import ServiceWorkerProvider from './ContextProviders/ServiceWorkerContext';
 import ThemeProvider from './ContextProviders/ThemeContext';
 import BoardProvider from './ContextProviders/BoardContext';
+import TimerProvider from './ContextProviders/TimerContext';
 
 
 const Home = lazy(() => import('./pages/Home'));
@@ -16,11 +17,13 @@ function App() {
             <LanguageProvider>
                 <ServiceWorkerProvider>
                     <BoardProvider>
+                    <TimerProvider>
                         <Header>
                             <Suspense fallback={renderLoader()}>
                                 <Home />
                             </Suspense>
                         </Header>
+                        </TimerProvider>
                     </BoardProvider>
                     <Suspense fallback={renderLoader()}>
                         <ServiceWorker />

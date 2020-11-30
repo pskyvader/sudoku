@@ -20,6 +20,7 @@ import StarsIcon from '@material-ui/icons/Stars';
 import Text from '../../languages/Language';
 
 import { BoardContext } from '../../ContextProviders/BoardContext';
+import { TimerContext } from '../../ContextProviders/TimerContext';
 
 const buttoncolor = (pallete, getContrastText) => {
     return {
@@ -55,10 +56,12 @@ const useStyles = makeStyles((theme) => {
 const DifficultyButtons = (props) => {
     const { mode = "button" } = props;
     const { Difficulty, ResetBoard,setDifficulty } = useContext(BoardContext);
+    const {ResetTimer } = useContext(TimerContext);
 
     const Reset = (number) => {
-        setDifficulty(0);
+        // setDifficulty(0);
         ResetBoard(number);
+        ResetTimer();
     }
 
     const classes = useStyles();
