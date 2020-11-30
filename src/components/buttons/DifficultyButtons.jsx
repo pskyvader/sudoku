@@ -25,8 +25,9 @@ import Text from '../../languages/Language';
 import { BoardContext } from '../../ContextProviders/BoardContext';
 import { TimerContext } from '../../ContextProviders/TimerContext';
 
-const buttoncolor = (pallete, getContrastText) => {
+const buttoncolor = (pallete, getContrastText, minWidth) => {
     return {
+        minWidth: minWidth,
         backgroundColor: pallete.main,
         color: getContrastText(pallete.main),
         border: "none",
@@ -34,7 +35,7 @@ const buttoncolor = (pallete, getContrastText) => {
             backgroundColor: pallete.dark,
             color: getContrastText(pallete.dark),
             border: "none",
-        },
+        }
     }
 }
 const useStyles = makeStyles((theme) => {
@@ -47,12 +48,13 @@ const useStyles = makeStyles((theme) => {
             fontSize: "0.75rem",
             borderRadius: "100%",
             backgroundColor: "white",
-            color: warning.light
+            color: warning.light,
         },
-        button1: buttoncolor(info, getContrastText),
-        button2: buttoncolor(success, getContrastText),
-        button3: buttoncolor(warning, getContrastText),
-        button4: buttoncolor(error, getContrastText),
+        button1: buttoncolor(info, getContrastText, theme.spacing(5)),
+        button2: buttoncolor(success, getContrastText, theme.spacing(5)),
+        button3: buttoncolor(warning, getContrastText, theme.spacing(5)),
+        button4: buttoncolor(error, getContrastText, theme.spacing(5)),
+        button4selected: buttoncolor(error, getContrastText, theme.spacing(5)),
     }
 });
 
@@ -72,7 +74,7 @@ const DifficultyButtons = (props) => {
         { number: 1, text: Text('veryeasymode'), class: classes.button1, icon: EmojiEmotionsIcon },
         { number: 2, text: Text('easymode'), class: classes.button2, icon: InsertEmoticonIcon },
         { number: 3, text: Text('mediummode'), class: classes.button3, icon: FaceIcon },
-        { number: 4, text: Text('hardmode'), class: classes.button4, icon: MoodBadIcon }
+        { number: 4, text: Text('hardmode'), class: classes.button4, selected: classes.button4selected, icon: MoodBadIcon }
     ]
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -108,7 +110,7 @@ const DifficultyButtons = (props) => {
                     ))}
                 </ButtonGroup>
             </Hidden>
-            <Hidden smUp>
+            <Hidden smDown>
                 <Tooltip title={Text('difficulty')}>
                     <Button size="small" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} className={currentDifficulty.class}>
                         <currentDifficulty.icon />
@@ -118,16 +120,18 @@ const DifficultyButtons = (props) => {
                     id="simple-menu"
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
-                    onClose={handleClose}>
+                    onClose={handleClose}
+                    variant="menu">
 
                     {difficultylist.map((e) => (
-                        <MenuItem key={e.text} selected={Difficulty === e.number} onClick={(event) => handleMenuItemClick(event, e.number)}>
-                            <Tooltip key={e.text} title={e.text}>
-                                <Button className={e.class}>
+                        <MenuItem classes={{ root: e.class, selected: e.selected, }} key={e.text} selected={Difficulty === e.number} onClick={(event) => handleMenuItemClick(event, e.number)}>
+                            <Tooltip key={e.text} title={e.text} placement="left">
+                                <React.Fragment>
                                     <e.icon />
                                     {Difficulty === e.number ? <StarsIcon className={classes.buttonstar} /> : ""}
-                                </Button>
-                            </Tooltip></MenuItem>
+                                </React.Fragment>
+                            </Tooltip>
+                        </MenuItem>
                     ))}
 
                 </Menu>
