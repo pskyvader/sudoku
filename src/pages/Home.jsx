@@ -1,4 +1,5 @@
 import React, { lazy, Suspense, useContext } from 'react';
+import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -6,15 +7,12 @@ import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
 
 
-import Fade from '@material-ui/core/Fade';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
-
 import SudokuBox from "../components/SudokuBox";
 import LocalStorage from "../logic/LocalStorage";
 import Text from '../languages/Language';
 
 import { BoardContext } from '../ContextProviders/BoardContext';
+import { TimerContext } from '../ContextProviders/TimerContext';
 
 const DifficultyButtons = lazy(() => import('../components/buttons/DifficultyButtons'));
 
@@ -30,6 +28,9 @@ const useStyles = makeStyles((theme) => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+        },
+        hidebox:{
+            opacity:0.01
         },
         rootgrid: {
             flexGrow: 1,
@@ -68,7 +69,8 @@ function debounce(fn, ms) {
 
 
 const Home = () => {
-    const { board, Success, setSuccess, Loading } = useContext(BoardContext);
+    const { board, Success, setSuccess } = useContext(BoardContext);
+    const { IsTimerActive } = useContext(TimerContext);
     const classes = useStyles();
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
@@ -113,26 +115,21 @@ const Home = () => {
             </Suspense>
         </Modal>
     );
+
     return (
-        <Box className={classes.box} ref={canvas}>
+        <Box className={clsx(classes.box , { [classes.hidebox]: !IsTimerActive, })} ref={canvas}>
             {modal}
-            {Loading ?
-                <Fade in={Loading} style={{ transitionDelay: Loading ? '800ms' : '0ms', }} unmountOnExit >
-                    <CircularProgress />
-                </Fade>
-                :
-                <Grid container justify="center" className={classes.rootgrid}>
-                    {board.matrix.map((column, x) => (
-                        <Grid key={x} item xs={4} className={classes.grid}>
-                            {column.map((row, y) => (
-                                <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
-                                    <SudokuBox matrix={row} height={height} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    ))}
-                </Grid>
-            }
+            <Grid container justify="center" className={classes.rootgrid}>
+                {board.matrix.map((column, x) => (
+                    <Grid key={x} item xs={4} className={classes.grid}>
+                        {column.map((row, y) => (
+                            <Grid key={x + "," + y} item xs={12} className={classes.subgrid}>
+                                <SudokuBox matrix={row} height={height} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                ))}
+            </Grid>
         </Box>
     )
 }

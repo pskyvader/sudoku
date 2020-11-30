@@ -3,6 +3,7 @@
     "loading": "LOADING...",
     "language": "Language",
     "darkmode": "Dark Mode",
+    "difficulty": "Difficulty",
     "selectcolorprimary":"Primary Color",
     "selectcolorsecondary":"Secondary Color",
     "resetcolor":"Reset Color",

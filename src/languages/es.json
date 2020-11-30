@@ -3,6 +3,7 @@
   "loading": "CARGANGO...",
   "language": "Idioma",
   "darkmode": "Modo oscuro",
+  "difficulty": "Dificultad",
   "selectcolorprimary":"Color Primario",
   "selectcolorsecondary":"Color Secundario",
   "resetcolor":"Restablecer Color",

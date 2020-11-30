@@ -38,6 +38,11 @@ const buttoncolor = (pallete, getContrastText, minWidth) => {
         },
         '&$selected': {
             backgroundColor: pallete.dark,
+            color: getContrastText(pallete.dark),
+            '&:hover': {
+                backgroundColor: pallete.main,
+                color: getContrastText(pallete.main),
+            },
         },
     }
 }
@@ -57,6 +62,10 @@ const useStyles = makeStyles((theme) => {
         button2: buttoncolor(success, getContrastText, theme.spacing(5)),
         button3: buttoncolor(warning, getContrastText, theme.spacing(5)),
         button4: buttoncolor(error, getContrastText, theme.spacing(5)),
+        menu:{
+            padding:theme.spacing(0.5)
+        },
+        selected: {}
     }
 });
 
@@ -122,11 +131,11 @@ const DifficultyButtons = (props) => {
                     id="simple-menu"
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                    variant="menu">
+                    onClose={handleClose} 
+                    classes={{list:classes.menu}}>
 
                     {difficultylist.map((e) => (
-                        <MenuItem classes={{ root: e.class, selected: "", }} key={e.text} selected={Difficulty === e.number} onClick={(event) => handleMenuItemClick(event, e.number)}>
+                        <MenuItem classes={{ root: e.class, selected: classes.selected, }} key={e.text} selected={Difficulty === e.number} onClick={(event) => handleMenuItemClick(event, e.number)}>
                             <Tooltip key={e.text} title={e.text} placement="left">
                                 <div>
                                     <e.icon />
