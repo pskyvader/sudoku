@@ -35,7 +35,10 @@ const buttoncolor = (pallete, getContrastText, minWidth) => {
             backgroundColor: pallete.dark,
             color: getContrastText(pallete.dark),
             border: "none",
-        }
+        },
+        '&$selected': {
+            backgroundColor: pallete.dark,
+        },
     }
 }
 const useStyles = makeStyles((theme) => {
@@ -54,7 +57,6 @@ const useStyles = makeStyles((theme) => {
         button2: buttoncolor(success, getContrastText, theme.spacing(5)),
         button3: buttoncolor(warning, getContrastText, theme.spacing(5)),
         button4: buttoncolor(error, getContrastText, theme.spacing(5)),
-        button4selected: buttoncolor(error, getContrastText, theme.spacing(5)),
     }
 });
 
@@ -74,7 +76,7 @@ const DifficultyButtons = (props) => {
         { number: 1, text: Text('veryeasymode'), class: classes.button1, icon: EmojiEmotionsIcon },
         { number: 2, text: Text('easymode'), class: classes.button2, icon: InsertEmoticonIcon },
         { number: 3, text: Text('mediummode'), class: classes.button3, icon: FaceIcon },
-        { number: 4, text: Text('hardmode'), class: classes.button4, selected: classes.button4selected, icon: MoodBadIcon }
+        { number: 4, text: Text('hardmode'), class: classes.button4, icon: MoodBadIcon }
     ]
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -110,7 +112,7 @@ const DifficultyButtons = (props) => {
                     ))}
                 </ButtonGroup>
             </Hidden>
-            <Hidden smDown>
+            <Hidden smUp>
                 <Tooltip title={Text('difficulty')}>
                     <Button size="small" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} className={currentDifficulty.class}>
                         <currentDifficulty.icon />
@@ -124,12 +126,12 @@ const DifficultyButtons = (props) => {
                     variant="menu">
 
                     {difficultylist.map((e) => (
-                        <MenuItem classes={{ root: e.class, selected: e.selected, }} key={e.text} selected={Difficulty === e.number} onClick={(event) => handleMenuItemClick(event, e.number)}>
+                        <MenuItem classes={{ root: e.class, selected: "", }} key={e.text} selected={Difficulty === e.number} onClick={(event) => handleMenuItemClick(event, e.number)}>
                             <Tooltip key={e.text} title={e.text} placement="left">
-                                <React.Fragment>
+                                <div>
                                     <e.icon />
                                     {Difficulty === e.number ? <StarsIcon className={classes.buttonstar} /> : ""}
-                                </React.Fragment>
+                                    </div>
                             </Tooltip>
                         </MenuItem>
                     ))}

@@ -47,6 +47,7 @@ export default function ThemeContextProvider({ children }) {
                                         backgroundColor: DarkMode ? Grey[500] : Grey[400]
                                     },
                                 },
+                                selected:{}
                             },
                         }
                     },
