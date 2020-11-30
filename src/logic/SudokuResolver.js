@@ -48,10 +48,15 @@ class SudokuResolver extends Sudoku {
             difficulty: 0,
             puzzle: ""
         }
-        var difficultytarget = n;
+        var difficultytarget = 10;
+        var difficultylist=[0,0,0,0,0];
 
-        while (q.getDifficulty() !== difficultytarget && tries < 10) {
-            q.generatePuzzle();
+        while (q.getDifficulty() !== difficultytarget && tries < 2000) {
+            if (n < 3) {
+                q.generatePuzzleSymmetry(qqwing.Symmetry.RANDOM);
+            } else {
+                q.generatePuzzle();
+            }
             q.solve();
             tries++;
             const closer = Math.abs(difficultytarget - q.getDifficulty());
@@ -62,17 +67,41 @@ class SudokuResolver extends Sudoku {
                     puzzle: q.getPuzzleString()
                 }
             }
+            if(tries%30===0){
+                console.clear();
+                console.log(tries,q.getDifficulty());
+            }
+            difficultylist[q.getDifficulty()]++;
         }
-        this.difficulty=best.difficulty;
+        this.difficulty = best.difficulty;
         var t2 = performance.now();
         console.log(t2 - t1, tries);
+        console.log(difficultylist);
+        var percentagelist=[0,difficultylist[1]/20,difficultylist[2]/20,difficultylist[3]/20,difficultylist[4]/20 ];
+        console.log(percentagelist);
         t.FromString(best.puzzle);
     }
 
     FromString = (boardstring) => {
         const t = this;
         var board = boardstring.split("-").join("").trim().split("\n");
-        var newboard = [ [ [], [], [] ], [ [], [], [] ], [ [], [], [] ] ];
+        var newboard = [
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ]
+        ];
         var y1 = 0;
         var i1 = 0;
         board.forEach((row, i) => {
@@ -87,11 +116,11 @@ class SudokuResolver extends Sudoku {
                         x1 = 0;
                     }
                 } else {
-                    r=null;
+                    r = null;
                     return;
                 }
             });
-            if(r!==null){
+            if (r !== null) {
                 i1++;
                 if (i1 > 2) {
                     i1 = 0;
@@ -141,7 +170,7 @@ class SudokuResolver extends Sudoku {
             t.errorcount += 1;
             //console.log(error.message, t.errorcount, "deep:", deep);
             t.CreateEmptyBoard();
-            t.CreateBoard(n, deep + 1);
+            t.CreateBoard2(n, deep + 1);
         }
         t.fullboard = t.CloneBoard();
         if (deep === 0) {
