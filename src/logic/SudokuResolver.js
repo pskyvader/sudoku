@@ -39,6 +39,7 @@ class SudokuResolver extends Sudoku {
     CreateBoard = (n) => {
         const t = this;
         var t1 = performance.now();
+        var t3 = performance.now();
         var q = new qqwing();
         q.setRecordHistory(true);
         q.setPrintStyle(qqwing.PrintStyle.READABLE);
@@ -48,11 +49,10 @@ class SudokuResolver extends Sudoku {
             difficulty: 0,
             puzzle: ""
         }
-        var difficultytarget = 10;
-        var difficultylist=[0,0,0,0,0];
+        var difficultytarget = n;
 
-        while (q.getDifficulty() !== difficultytarget && tries < 2000) {
-            if (n < 3) {
+        while (q.getDifficulty() !== difficultytarget && t3-t1<1000) {
+            if (difficultytarget < 3) {
                 q.generatePuzzleSymmetry(qqwing.Symmetry.RANDOM);
             } else {
                 q.generatePuzzle();
@@ -67,18 +67,12 @@ class SudokuResolver extends Sudoku {
                     puzzle: q.getPuzzleString()
                 }
             }
-            if(tries%30===0){
-                console.clear();
-                console.log(tries,q.getDifficulty());
-            }
-            difficultylist[q.getDifficulty()]++;
+            t3=performance.now();
+            // console.log(t3 - t1, tries,best.difficulty);
         }
         this.difficulty = best.difficulty;
         var t2 = performance.now();
         console.log(t2 - t1, tries);
-        console.log(difficultylist);
-        var percentagelist=[0,difficultylist[1]/20,difficultylist[2]/20,difficultylist[3]/20,difficultylist[4]/20 ];
-        console.log(percentagelist);
         t.FromString(best.puzzle);
     }
 
