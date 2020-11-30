@@ -63,6 +63,7 @@ class SudokuResolver extends Sudoku {
                 }
             }
         }
+        this.difficulty=best.difficulty;
         var t2 = performance.now();
         console.log(t2 - t1, tries);
         t.FromString(best.puzzle);

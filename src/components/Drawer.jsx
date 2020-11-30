@@ -71,7 +71,7 @@ function ResponsiveDrawer(props) {
     const drawer = (
         <div>
             <div className={classes.toolbar} />
-            {navigator.language +","+navigator.userLanguage}
+            {/* {navigator.language +","+navigator.userLanguage} */}
             <Divider />
             <List>
                 <Suspense fallback={renderLoader()}>

@@ -83,40 +83,8 @@ class Sudoku extends HelperSudoku {
         this.success = false;
         this.matrix = [];
         this.emptyspaces = [];
-        this.verticallines = [
-            [
-                [],
-                [],
-                []
-            ],
-            [
-                [],
-                [],
-                []
-            ],
-            [
-                [],
-                [],
-                []
-            ]
-        ]; //3x3 vertical lines
-        this.horizontallines = [
-            [
-                [],
-                [],
-                []
-            ],
-            [
-                [],
-                [],
-                []
-            ],
-            [
-                [],
-                [],
-                []
-            ]
-        ]; //3x3 horizontal lines
+        this.verticallines = [ [ [], [], [] ], [ [], [], [] ], [ [], [], [] ] ]; //3x3 vertical lines
+        this.horizontallines = [ [ [], [], [] ], [ [], [], [] ], [ [], [], [] ] ]; //3x3 horizontal lines
         this.list = []; //complete list
         for (let x = 0; x < 3; x++) {
             let rows = [];

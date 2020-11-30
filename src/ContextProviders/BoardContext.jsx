@@ -17,7 +17,7 @@ function debounce(fn, ms) {
 }
 
 export default function BoardContextProvider({ children }) {
-    const default_difficulty=2;
+    const default_difficulty = 2;
     const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", default_difficulty));
     const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
 
@@ -27,12 +27,12 @@ export default function BoardContextProvider({ children }) {
     board.setSuccess = setSuccess;
     board.success = Success;
 
-    
+
 
     React.useEffect(() => {
         if (cacheboard === null) {
             board.CreateBoard(default_difficulty);
-            LocalStorage.set("sudoku_board", board.CloneBoard(),365);
+            LocalStorage.set("sudoku_board", board.CloneBoard(), 365);
         }
     });
 
@@ -40,16 +40,16 @@ export default function BoardContextProvider({ children }) {
 
 
     const ResetBoard = (n) => {
-            const newboard = new SudokuResolver(n);
-            board.RestoreBoard(newboard.CloneBoard());
-            Save();
-            LocalStorage.set("difficulty", n,365);
-            setDifficulty(n);
-            return;
+        const newboard = new SudokuResolver(n);
+        board.RestoreBoard(newboard.CloneBoard());
+        Save();
+        LocalStorage.set("difficulty", newboard.difficulty, 365);
+        setDifficulty(newboard.difficulty);
+        return;
     }
 
     const Save = () => {
-        LocalStorage.set("sudoku_board", board.CloneBoard(),365);
+        LocalStorage.set("sudoku_board", board.CloneBoard(), 365);
     }
     const SaveBoard = debounce(Save, 3000);
 
