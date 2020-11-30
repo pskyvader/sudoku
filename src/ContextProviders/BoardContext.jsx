@@ -16,7 +16,7 @@ function debounce(fn, ms) {
     };
 }
 
-export default function BoardContextProvider({ children }) {
+const BoardContextProvider=({ children })=> {
     const default_difficulty = 2;
     const [Difficulty, setDifficulty] = React.useState(LocalStorage.get("difficulty", default_difficulty));
     const [OptionsActive, setOptionsActive] = React.useState(LocalStorage.get("options_active", false));
@@ -72,3 +72,5 @@ export default function BoardContextProvider({ children }) {
     );
 }
 
+
+export default BoardContextProvider;
