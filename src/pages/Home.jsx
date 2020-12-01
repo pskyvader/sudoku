@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme) => {
             alignItems: 'center',
         },
         hidebox:{
-            opacity:0.01
+            opacity:0.01,
+            display:"none"
         },
         rootgrid: {
             flexGrow: 1,
@@ -70,12 +71,7 @@ function debounce(fn, ms) {
 
 const ModalMessage=()=>{
     const { Success, setSuccess } = useContext(BoardContext);
-    const { IsTimerActive,IsFocused,ToggleTimer } = useContext(TimerContext);
     const classes = useStyles();
-    
-    if(IsTimerActive && Success){
-        ToggleTimer();
-    }
 
     const handleClose = () => {
         setSuccess(false);
@@ -113,9 +109,14 @@ const Home = () => {
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
 
 
-    // if(IsTimerActive && Success){
-    //     ToggleTimer();
-    // }
+
+    React.useEffect(() => {
+        if(IsTimerActive && Success){
+            ToggleTimer();
+        }
+    });
+
+    
 
 
     const BoxHeight = () => {

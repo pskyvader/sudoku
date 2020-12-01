@@ -43,13 +43,14 @@ export default function TimerContextProvider({ children }) {
 
     const ToggleTimer = () => {
         SetIsTimerActive(!IsTimerActive);
-        SetIsFocused(!IsTimerActive);
+        LocalStorage.set("IsTimerActive", !IsTimerActive);
     }
 
     const ResetTimer = () => {
         SetSeconds(0);
         LocalStorage.set("seconds", 0);
         SetIsTimerActive(true);
+        LocalStorage.set("IsTimerActive", true);
     }
     const Time=()=>{
         if(seconds<3600){

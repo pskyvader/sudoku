@@ -18,6 +18,8 @@
     "app-available":"App Mode Available. You can install this game as an app",
     "update-available":"Update Available!",
     "offline-available":"Offline Mode Available! Now you can play even if you're offline",
+    "play":"Play",
+    "pause":"Pause",
     "newgame":"New Game?",
     "victory1":"My Creator is proud of you :)",
     "victory2":"It was about time, isn't it?",
