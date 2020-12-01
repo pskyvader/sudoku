@@ -70,10 +70,12 @@ function debounce(fn, ms) {
 
 const Home = () => {
     const { board, Success, setSuccess } = useContext(BoardContext);
-    const { IsTimerActive } = useContext(TimerContext);
+    const { IsTimerActive,IsFocused,ToggleTimer } = useContext(TimerContext);
     const classes = useStyles();
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
+
+
 
     const handleClose = () => {
         setSuccess(false);
@@ -98,6 +100,11 @@ const Home = () => {
         return () => window.removeEventListener("resize", debouncedHandleResize);
     });
 
+
+    if(IsTimerActive && Success){
+        ToggleTimer();
+    }
+
     const renderLoader = () => Text("loading");
     const modal = (
         <Modal open={Success} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" >
@@ -117,7 +124,7 @@ const Home = () => {
     );
 
     return (
-        <Box className={clsx(classes.box , { [classes.hidebox]: !IsTimerActive, })} ref={canvas}>
+        <Box className={clsx(classes.box , { [classes.hidebox]: !IsFocused || !IsTimerActive, })} ref={canvas}>
             {modal}
             <Grid container justify="center" className={classes.rootgrid}>
                 {board.matrix.map((column, x) => (

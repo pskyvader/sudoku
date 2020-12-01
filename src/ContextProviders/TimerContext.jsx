@@ -5,33 +5,30 @@ export const TimerContext = createContext({});
 export default function TimerContextProvider({ children }) {
     const [seconds, SetSeconds] = React.useState(LocalStorage.get("seconds", 0));
     // const [RemainingSeconds, SetRemainingSeconds] = React.useState(LocalStorage.get("RemainingSeconds", 0));
-    const [IsTimerActive, SetIsTimerActive] = React.useState(true);
+    const [IsTimerActive, SetIsTimerActive] = React.useState(LocalStorage.get("IsTimerActive", true));
+    const [IsFocused, SetIsFocused] = React.useState(true);
 
     React.useEffect(() => {
         let interval = null;
-        if (IsTimerActive) {
+        if (IsTimerActive && IsFocused) {
             interval = setInterval(() => {
                 LocalStorage.set("seconds", seconds + 1);
                 SetSeconds(seconds + 1);
             }, 1000);
-        } else if (!IsTimerActive && seconds !== 0) {
+        } else if ((!IsTimerActive || !IsFocused) && seconds !== 0) {
             clearInterval(interval);
         }
         return () => clearInterval(interval);
-    }, [IsTimerActive, seconds]);
+    }, [IsTimerActive,IsFocused, seconds]);
 
     // User has switched back to the tab
     const onFocus = () => {
-        if(!IsTimerActive){
-            ToggleTimer();
-        }
+        SetIsFocused(true);
     };
 
     // User has switched away from the tab (AKA tab is hidden)
     const onBlur = () => {
-        if(IsTimerActive){
-            ToggleTimer();
-        }
+        SetIsFocused(false);
     };
 
     React.useEffect(() => {
@@ -46,11 +43,13 @@ export default function TimerContextProvider({ children }) {
 
     const ToggleTimer = () => {
         SetIsTimerActive(!IsTimerActive);
+        SetIsFocused(!IsTimerActive);
     }
 
     const ResetTimer = () => {
         SetSeconds(0);
         LocalStorage.set("seconds", 0);
+        SetIsTimerActive(true);
     }
     const Time=()=>{
         if(seconds<3600){
@@ -65,6 +64,7 @@ export default function TimerContextProvider({ children }) {
         Time,
         // RemainingSeconds,
         IsTimerActive,
+        IsFocused,
         ToggleTimer,
         ResetTimer
 
