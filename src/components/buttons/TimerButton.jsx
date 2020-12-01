@@ -1,8 +1,5 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import PauseCircleOutlineIcon from '@material-ui/icons/PauseCircleOutline';
-import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
-
 import { TimerContext } from '../../ContextProviders/TimerContext';
 
 const useStyles = makeStyles((theme) => {

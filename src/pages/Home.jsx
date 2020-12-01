@@ -68,18 +68,55 @@ function debounce(fn, ms) {
 }
 
 
+const ModalMessage=()=>{
+    const { Success, setSuccess } = useContext(BoardContext);
+    const { IsTimerActive,IsFocused,ToggleTimer } = useContext(TimerContext);
+    const classes = useStyles();
+    
+    if(IsTimerActive && Success){
+        ToggleTimer();
+    }
+
+    const handleClose = () => {
+        setSuccess(false);
+    };
+
+    const renderLoader = () => Text("loading");
+    const victory=Text("victory" + (Math.round(Math.random() * 9) + 1));
+    const victorycomment=Text("victorycomment" + (Math.round(Math.random() * 9) + 1));
+    const newgame=Text("newgame");
+
+    const modal = (
+        <Modal open={Success} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" >
+            <Suspense fallback={renderLoader()}>
+                <div className={classes.modal}>
+                    <Typography id="modal-title" variant="h4" gutterBottom>
+                        {victory}
+                    </Typography>
+                    <Typography id="modal-description" variant="h5" gutterBottom>
+                        {newgame}
+                    </Typography>
+                    <DifficultyButtons />
+                    <p> ... {victorycomment}</p>
+                </div>
+            </Suspense>
+        </Modal>
+    );
+    return modal;
+}
+
 const Home = () => {
-    const { board, Success, setSuccess } = useContext(BoardContext);
+    const { board, Success } = useContext(BoardContext);
     const { IsTimerActive,IsFocused,ToggleTimer } = useContext(TimerContext);
     const classes = useStyles();
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
 
 
+    // if(IsTimerActive && Success){
+    //     ToggleTimer();
+    // }
 
-    const handleClose = () => {
-        setSuccess(false);
-    };
 
     const BoxHeight = () => {
         if (canvas.current.clientWidth > 0) {
@@ -101,31 +138,11 @@ const Home = () => {
     });
 
 
-    if(IsTimerActive && Success){
-        ToggleTimer();
-    }
 
-    const renderLoader = () => Text("loading");
-    const modal = (
-        <Modal open={Success} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" >
-            <Suspense fallback={renderLoader()}>
-                <div className={classes.modal}>
-                    <Typography id="modal-title" variant="h4" gutterBottom>
-                        {Text("victory" + (Math.round(Math.random() * 9) + 1))}
-                    </Typography>
-                    <Typography id="modal-description" variant="h5" gutterBottom>
-                        {Text("newgame")}
-                    </Typography>
-                    <DifficultyButtons />
-                    <p> ... {Text("victorycomment" + (Math.round(Math.random() * 9) + 1))}</p>
-                </div>
-            </Suspense>
-        </Modal>
-    );
 
     return (
         <Box className={clsx(classes.box , { [classes.hidebox]: !IsFocused || !IsTimerActive, })} ref={canvas}>
-            {modal}
+            <ModalMessage/>
             <Grid container justify="center" className={classes.rootgrid}>
                 {board.matrix.map((column, x) => (
                     <Grid key={x} item xs={4} className={classes.grid}>
