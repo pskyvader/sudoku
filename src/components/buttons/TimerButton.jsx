@@ -33,7 +33,6 @@ const TimerButton = ({ mode = "button" }) => {
             <Time />
         </div>
     </Tooltip>
-
 }
 
 export default TimerButton;
