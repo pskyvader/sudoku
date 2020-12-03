@@ -70,15 +70,15 @@ class SudokuResolver extends Sudoku {
             t3 = performance.now();
             // console.log(t3 - t1, tries,best.difficulty);
         }
-        console.log(
-            q.getGuessCount(), 
-            q.getBoxLineReductionCount(), 
-            q.getPointingPairTripleCount(), 
-            q.getHiddenPairCount(), 
-            q.getNakedPairCount(), 
-            q.getHiddenSingleCount(), 
-            q.getSingleCount()
-        );
+        // console.log(
+        //     q.getGuessCount(), 
+        //     q.getBoxLineReductionCount(), 
+        //     q.getPointingPairTripleCount(), 
+        //     q.getHiddenPairCount(), 
+        //     q.getNakedPairCount(), 
+        //     q.getHiddenSingleCount(), 
+        //     q.getSingleCount()
+        // );
 
 
         this.difficulty = best.difficulty;

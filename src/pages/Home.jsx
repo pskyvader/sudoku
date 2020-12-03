@@ -53,6 +53,15 @@ const useStyles = makeStyles((theme) => {
             padding: theme.spacing(8),
             transform: `translate(-50%, -50%)`,
             outline: "none",
+            maxHeight: "75%",
+            overflow: "auto",
+            [theme.breakpoints.down('md')]: {
+                padding: theme.spacing(4),
+                top: "12.5%",
+                left: "12.5%",
+                right: "12.5%",
+                transform: `translate(0, 0)`,
+            },
         },
     }
 });
@@ -71,6 +80,7 @@ function debounce(fn, ms) {
 
 const ModalMessage = () => {
     const { Success, setSuccess } = useContext(BoardContext);
+    const { Time } = useContext(TimerContext);
     const classes = useStyles();
 
     const handleClose = () => {
@@ -81,11 +91,15 @@ const ModalMessage = () => {
     const victory = Text("victory" + (Math.round(Math.random() * 9) + 1));
     const victorycomment = Text("victorycomment" + (Math.round(Math.random() * 9) + 1));
     const newgame = Text("newgame");
+    const totaltime = Text("totaltime")+" "+Time();
 
     const modal = (
         <Modal open={Success} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" >
             <Suspense fallback={renderLoader()}>
                 <div className={classes.modal}>
+                    <Typography id="modal-time" variant="h6" gutterBottom>
+                        {totaltime}
+                    </Typography>
                     <Typography id="modal-title" variant="h4" gutterBottom>
                         {victory}
                     </Typography>
