@@ -19,7 +19,7 @@ export default function TimerContextProvider({ children }) {
             clearInterval(interval);
         }
         return () => clearInterval(interval);
-    }, [IsTimerActive,IsFocused, seconds]);
+    });
 
     // User has switched back to the tab
     const onFocus = () => {
@@ -52,6 +52,7 @@ export default function TimerContextProvider({ children }) {
         SetIsTimerActive(true);
         LocalStorage.set("IsTimerActive", true);
     }
+
     const Time=()=>{
         if(seconds<3600){
             return new Date(seconds * 1000).toISOString().substr(14, 5);

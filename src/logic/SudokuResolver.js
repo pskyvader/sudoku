@@ -70,6 +70,8 @@ class SudokuResolver extends Sudoku {
             t3=performance.now();
             // console.log(t3 - t1, tries,best.difficulty);
         }
+        
+        console.log(q.getSolveHistory());
         this.difficulty = best.difficulty;
         var t2 = performance.now();
         console.log(t2 - t1, tries);

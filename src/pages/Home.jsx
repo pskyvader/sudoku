@@ -29,9 +29,9 @@ const useStyles = makeStyles((theme) => {
             flexDirection: 'column',
             alignItems: 'center',
         },
-        hidebox:{
-            opacity:0.01,
-            display:"none"
+        hidebox: {
+            opacity: 0.01,
+            display: "none"
         },
         rootgrid: {
             flexGrow: 1,
@@ -69,7 +69,7 @@ function debounce(fn, ms) {
 }
 
 
-const ModalMessage=()=>{
+const ModalMessage = () => {
     const { Success, setSuccess } = useContext(BoardContext);
     const classes = useStyles();
 
@@ -78,9 +78,9 @@ const ModalMessage=()=>{
     };
 
     const renderLoader = () => Text("loading");
-    const victory=Text("victory" + (Math.round(Math.random() * 9) + 1));
-    const victorycomment=Text("victorycomment" + (Math.round(Math.random() * 9) + 1));
-    const newgame=Text("newgame");
+    const victory = Text("victory" + (Math.round(Math.random() * 9) + 1));
+    const victorycomment = Text("victorycomment" + (Math.round(Math.random() * 9) + 1));
+    const newgame = Text("newgame");
 
     const modal = (
         <Modal open={Success} onClose={handleClose} aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description" >
@@ -103,24 +103,25 @@ const ModalMessage=()=>{
 
 const Home = () => {
     const { board, Success } = useContext(BoardContext);
-    const { IsTimerActive,IsFocused,ToggleTimer } = useContext(TimerContext);
+    const { IsTimerActive, IsFocused, ToggleTimer } = useContext(TimerContext);
     const classes = useStyles();
     const canvas = React.useRef(null);
     const [height, setHeight] = React.useState(LocalStorage.get("box_height", 100));
 
 
 
-    React.useEffect(() => {
-        if(IsTimerActive && Success){
-            ToggleTimer();
-        }
-    });
+    // React.useEffect(() => {
+    //     if (IsTimerActive && Success) {
+    //         ToggleTimer();
+    //     }
+    // });
 
-    
+    // console.log(canvas);
+
 
 
     const BoxHeight = () => {
-        if (canvas.current.clientWidth > 0) {
+        if (canvas.current!==null && canvas.current.clientWidth > 0) {
             const finalheight = canvas.current.clientWidth / 3 - 3;// x / 3 (3 squares) -3 (3px borders ) 
             setHeight(finalheight);
             LocalStorage.set("box_height", finalheight);
@@ -142,8 +143,8 @@ const Home = () => {
 
 
     return (
-        <Box className={clsx(classes.box , { [classes.hidebox]: !IsFocused || !IsTimerActive, })} ref={canvas}>
-            <ModalMessage/>
+        <Box className={clsx(classes.box, { [classes.hidebox]: !IsFocused || !IsTimerActive, })} ref={canvas}>
+            {Success && <ModalMessage />}
             <Grid container justify="center" className={classes.rootgrid}>
                 {board.matrix.map((column, x) => (
                     <Grid key={x} item xs={4} className={classes.grid}>
