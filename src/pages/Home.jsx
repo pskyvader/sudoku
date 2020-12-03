@@ -110,11 +110,11 @@ const Home = () => {
 
 
 
-    // React.useEffect(() => {
-    //     if (IsTimerActive && Success) {
-    //         ToggleTimer();
-    //     }
-    // });
+    React.useEffect(() => {
+        if (IsTimerActive && Success) {
+            ToggleTimer();
+        }
+    });
 
     // console.log(canvas);
 

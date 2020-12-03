@@ -51,7 +51,7 @@ class SudokuResolver extends Sudoku {
         }
         var difficultytarget = n;
 
-        while (q.getDifficulty() !== difficultytarget && t3-t1<1000) {
+        while (q.getDifficulty() !== difficultytarget && t3 - t1 < 1000) {
             if (difficultytarget < 3) {
                 q.generatePuzzleSymmetry(qqwing.Symmetry.RANDOM);
             } else {
@@ -67,11 +67,20 @@ class SudokuResolver extends Sudoku {
                     puzzle: q.getPuzzleString()
                 }
             }
-            t3=performance.now();
+            t3 = performance.now();
             // console.log(t3 - t1, tries,best.difficulty);
         }
-        
-        console.log(q.getSolveHistory());
+        console.log(
+            q.getGuessCount(), 
+            q.getBoxLineReductionCount(), 
+            q.getPointingPairTripleCount(), 
+            q.getHiddenPairCount(), 
+            q.getNakedPairCount(), 
+            q.getHiddenSingleCount(), 
+            q.getSingleCount()
+        );
+
+
         this.difficulty = best.difficulty;
         var t2 = performance.now();
         console.log(t2 - t1, tries);
