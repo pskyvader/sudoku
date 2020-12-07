@@ -115,7 +115,7 @@ const SudokuNumber = ({ field }) => {
                     <SudokuOptions options={Options}> {FinalNumber}</SudokuOptions>
                 </Button>
                 <Suspense fallback={renderLoader()}>
-                    <Popper open={open && IsFocused && IsTimerActive} anchorEl={anchorRef.current} transition className={classes.popper}>
+                    <Popper open={open && IsFocused && IsTimerActive} anchorEl={anchorRef.current} transition className={classes.popper}  >
                         {({ TransitionProps, placement }) => (
                             <SudokuPopover
                                 TransitionProps={TransitionProps}
