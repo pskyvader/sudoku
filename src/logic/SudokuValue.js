@@ -27,6 +27,12 @@ class SudokuValue {
         }
         this.error = error;
     }
+    SetValueFocused = (focused) => {
+        if (this.SetFocused !== undefined) {
+            this.SetFocused(focused);
+        }
+        this.focused = focused;
+    }
     SetValueOptions = (options) => {
         if (this.SetOptions !== undefined) {
             this.SetOptions(options);

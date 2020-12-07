@@ -79,6 +79,11 @@ const SudokuPopover = (props) => {
         setOptionsActive(!OptionsActive);
     };
 
+    React.useEffect(()=>{
+        field.SetValueFocused(true);
+    })
+    
+
     const classes = useStyles();
     const optioncolor = OptionsActive ? classes.optioncolor : "";
     const box = [[1, 4, 7], [2, 5, 8], [3, 6, 9]];

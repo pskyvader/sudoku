@@ -14,7 +14,7 @@ const renderLoader = () => null;
 
 
 const useStyles = makeStyles((theme) => {
-    const { primary, getContrastText, background, grey } = theme.palette;
+    const { primary,secondary, getContrastText, background, grey } = theme.palette;
     const light = theme.palette.mode === "light";
     return {
         button: {
@@ -45,6 +45,11 @@ const useStyles = makeStyles((theme) => {
                 backgroundColor: primary.main,
             }
         },
+        focused:{
+            borderWidth:2,
+            borderColor: secondary.main,
+            borderStyle:"solid"
+        },
         disabled: {},
         popper: {
             zIndex: 1300
@@ -62,8 +67,6 @@ const SudokuNumber = ({ field }) => {
 
     const [open, setOpen] = React.useState(false);
 
-
-
     const handleClick = (event) => {
         setOpen((prev) => !prev);
     };
@@ -74,7 +77,7 @@ const SudokuNumber = ({ field }) => {
     };
 
 
-    let { number, locked, error, options } = field;
+    let { number, locked, error, options, focused } = field;
 
     const [FinalNumber, SetFinalNumber] = React.useState(number);
     field.SetFinalNumber = SetFinalNumber;
@@ -84,11 +87,21 @@ const SudokuNumber = ({ field }) => {
     field.SetError = SetError;
     field.error = FinalError;
 
+    const [Focused, SetFocused] = React.useState(focused);
+    field.SetFocused = SetFocused;
+    field.focused = Focused;
+
     const [Options, SetOptions] = React.useState(options);
     field.SetOptions = SetOptions;
     field.options = Options;
 
-    const className = clsx(classes.button, FinalError && classes.error, open && classes.selected);
+    const className = clsx(classes.button,
+        {
+            [classes.error]: FinalError,
+            [classes.selected]: open,
+            [classes.focused]: Focused,
+        }
+    );
     if (locked) {
         return (
             <Button disabled classes={{ root: className, disabled: classes.disabled, }}  >
