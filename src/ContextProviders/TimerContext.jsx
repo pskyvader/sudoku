@@ -10,7 +10,7 @@ export default function TimerContextProvider({ children }) {
 
     React.useEffect(() => {
         let interval = null;
-        const secondsInterval=5;
+        const secondsInterval=1;
         if (IsTimerActive && IsFocused) {
             interval = setInterval(() => {
                 LocalStorage.set("seconds", seconds + secondsInterval);

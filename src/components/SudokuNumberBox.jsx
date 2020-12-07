@@ -7,6 +7,7 @@ import Popper from '@material-ui/core/Popper';
 
 import SudokuOptions from './SudokuOptions';
 import { BoardContext } from '../ContextProviders/BoardContext';
+import { TimerContext } from '../ContextProviders/TimerContext';
 
 const SudokuPopover = lazy(() => import('./SudokuPopover'));
 
@@ -14,7 +15,7 @@ const renderLoader = () => null;
 
 
 const useStyles = makeStyles((theme) => {
-    const { primary,error,secondary, getContrastText, background, grey } = theme.palette;
+    const { primary, error, secondary, getContrastText, background, grey } = theme.palette;
     const light = theme.palette.mode === "light";
     return {
         button: {
@@ -31,6 +32,14 @@ const useStyles = makeStyles((theme) => {
                 backgroundColor: light ? grey[200] : grey[800],
             },
         },
+        focused: {
+            backgroundColor: secondary.light,
+            color: getContrastText(secondary.light),
+            '&$disabled': {
+                backgroundColor: secondary.light,
+                color: getContrastText(secondary.light),
+            },
+        },
         error: {
             color: error.main,
             '&$disabled': {
@@ -45,17 +54,6 @@ const useStyles = makeStyles((theme) => {
                 backgroundColor: primary.main,
             }
         },
-        focused:{
-            // borderWidth:2,
-            // borderColor: warning.main,
-            // borderStyle:"solid"
-            backgroundColor: secondary.light,
-            color: getContrastText(secondary.light),
-            '&$disabled': {
-                backgroundColor: secondary.light,
-                color: getContrastText(secondary.light),
-            },
-        },
         disabled: {},
         popper: {
             zIndex: 1300
@@ -68,6 +66,7 @@ const useStyles = makeStyles((theme) => {
 
 const SudokuNumber = ({ field }) => {
     const { SaveBoard } = useContext(BoardContext);
+    const { IsTimerActive, IsFocused } = useContext(TimerContext);
     const classes = useStyles();
     const anchorRef = React.useRef(null);
 
@@ -102,13 +101,7 @@ const SudokuNumber = ({ field }) => {
     field.SetOptions = SetOptions;
     field.options = Options;
 
-    const className = clsx(classes.button,
-        {
-            [classes.error]: FinalError,
-            [classes.selected]: open,
-            [classes.focused]: Focused,
-        }
-    );
+    const className = clsx(classes.button, open && classes.selected, focused && classes.focused, FinalError && classes.error);
     if (locked) {
         return (
             <Button disabled classes={{ root: className, disabled: classes.disabled, }}  >
@@ -121,18 +114,20 @@ const SudokuNumber = ({ field }) => {
                 <Button ref={anchorRef} className={className} onClick={handleClick}>
                     <SudokuOptions options={Options}> {FinalNumber}</SudokuOptions>
                 </Button>
-                <Suspense fallback={renderLoader()}>
-                    <Popper open={open} anchorEl={anchorRef.current} transition className={classes.popper}>
-                        {({ TransitionProps, placement }) => (
-                            <SudokuPopover
-                                TransitionProps={TransitionProps}
-                                placement={placement}
-                                handleClose={handleClose}
-                                field={field}
-                            />
-                        )}
-                    </Popper>
-                </Suspense>
+                {(IsFocused && IsTimerActive) &&
+                    <Suspense fallback={renderLoader()}>
+                        <Popper open={open} anchorEl={anchorRef.current} transition className={classes.popper}>
+                            {({ TransitionProps, placement }) => (
+                                <SudokuPopover
+                                    TransitionProps={TransitionProps}
+                                    placement={placement}
+                                    handleClose={handleClose}
+                                    field={field}
+                                />
+                            )}
+                        </Popper>
+                    </Suspense>
+                }
             </React.Fragment>
         );
     }

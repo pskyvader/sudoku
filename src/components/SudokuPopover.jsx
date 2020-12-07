@@ -81,7 +81,7 @@ const SudokuPopover = (props) => {
 
     React.useEffect(()=>{
         field.callback.Focused(field.x,field.y,field.i,field.j);
-    });
+    },[field]);
     
 
     const classes = useStyles();

@@ -31,7 +31,6 @@ const useStyles = makeStyles((theme) => {
         },
         hidebox: {
             opacity: 0.01,
-            display: "none"
         },
         rootgrid: {
             flexGrow: 1,
