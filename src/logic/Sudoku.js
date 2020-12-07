@@ -83,8 +83,40 @@ class Sudoku extends HelperSudoku {
         this.success = false;
         this.matrix = [];
         this.emptyspaces = [];
-        this.verticallines = [ [ [], [], [] ], [ [], [], [] ], [ [], [], [] ] ]; //3x3 vertical lines
-        this.horizontallines = [ [ [], [], [] ], [ [], [], [] ], [ [], [], [] ] ]; //3x3 horizontal lines
+        this.verticallines = [
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ]
+        ]; //3x3 vertical lines
+        this.horizontallines = [
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ],
+            [
+                [],
+                [],
+                []
+            ]
+        ]; //3x3 horizontal lines
         this.list = []; //complete list
         for (let x = 0; x < 3; x++) {
             let rows = [];
@@ -121,6 +153,32 @@ class Sudoku extends HelperSudoku {
             }
         }
         this.SetSuccessValue(true);
+    }
+
+    CleanFocused = () => {
+        for (let i = 0; i < this.list.length; i++) {
+            const element = this.list[i];
+            element.SetValueFocused(false);
+        }
+    }
+    CheckFocused = (x,y,i,j) => {
+        const square = this.matrix[x][y].checklist;
+        this.MarkFocused(square);
+
+        const vertical = this.verticallines[x][i];
+        this.MarkFocused(vertical);
+
+        const horizontal = this.horizontallines[y][j];
+        this.MarkFocused(horizontal);
+    }
+
+    MarkFocused = (arr) => {
+        let count = 0;
+        for (let i = 0; i < arr.length; i++) {
+            const element = arr[i];
+            element.SetValueFocused(true);
+        }
+        return count;
     }
 
 

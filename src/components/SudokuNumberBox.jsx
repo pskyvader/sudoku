@@ -14,7 +14,7 @@ const renderLoader = () => null;
 
 
 const useStyles = makeStyles((theme) => {
-    const { primary,secondary, getContrastText, background, grey } = theme.palette;
+    const { primary,error,secondary, getContrastText, background, grey } = theme.palette;
     const light = theme.palette.mode === "light";
     return {
         button: {
@@ -32,10 +32,10 @@ const useStyles = makeStyles((theme) => {
             },
         },
         error: {
-            color: theme.palette.error.main,
+            color: error.main,
             '&$disabled': {
-                color: theme.palette.error.contrastText,
-                backgroundColor: theme.palette.error.main
+                color: error.contrastText,
+                backgroundColor: error.main
             },
         },
         selected: {
@@ -46,9 +46,15 @@ const useStyles = makeStyles((theme) => {
             }
         },
         focused:{
-            borderWidth:2,
-            borderColor: secondary.main,
-            borderStyle:"solid"
+            // borderWidth:2,
+            // borderColor: warning.main,
+            // borderStyle:"solid"
+            backgroundColor: secondary.light,
+            color: getContrastText(secondary.light),
+            '&$disabled': {
+                backgroundColor: secondary.light,
+                color: getContrastText(secondary.light),
+            },
         },
         disabled: {},
         popper: {
@@ -86,6 +92,7 @@ const SudokuNumber = ({ field }) => {
     const [FinalError, SetError] = React.useState(error);
     field.SetError = SetError;
     field.error = FinalError;
+
 
     const [Focused, SetFocused] = React.useState(focused);
     field.SetFocused = SetFocused;

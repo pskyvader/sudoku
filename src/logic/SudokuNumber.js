@@ -19,6 +19,13 @@ class SudokuNumber {
             this.submatrix[i] = rows;
         }
     }
+    CleanFocused=()=>{
+        this.callback.CleanFocused();
+    }
+    Focused=(x,y,i,j)=>{
+        this.callback.CleanFocused();
+        this.callback.CheckFocused(x,y,i,j);
+    }
     Duplicates = () => {
         this.callback.CleanDuplicated();
         this.callback.CheckDuplicates();
