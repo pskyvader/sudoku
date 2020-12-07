@@ -93,6 +93,7 @@ const SudokuPopover = (props) => {
         field.options.clear();
         field.SetValueOptions(new Set(field.options));
         field.SetNumber("");
+        field.callback.CleanFocused();
         handleClose();
     }
 
@@ -100,6 +101,7 @@ const SudokuPopover = (props) => {
         field.options.clear();
         field.SetValueOptions(new Set(field.options));
         field.SetNumber(number);
+        field.callback.CleanFocused();
         handleClose();
     };
 
@@ -173,12 +175,12 @@ const SudokuPopover = (props) => {
 }
 
 const SudokuPopoverContainer = (props) => {
-    const { TransitionProps, placement, handleClose } = props;
+    const { TransitionProps, placement, handleClose ,field } = props;
     return (
         <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }} >
             <div>
                 <Paper>
-                    <ClickAwayListener onClickAway={handleClose}>
+                    <ClickAwayListener onClickAway={()=>{handleClose(); }}>
                         <div>
                             <SudokuPopover {...props} />
                         </div>

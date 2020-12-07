@@ -45,6 +45,7 @@ const BoardContextProvider=({ children })=> {
         Save();
         LocalStorage.set("difficulty", newboard.difficulty, 365);
         setDifficulty(newboard.difficulty);
+        board.CleanFocused();
         return;
     }
 

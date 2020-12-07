@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => {
             },
         },
         focused: {
-            backgroundColor: secondary.light,
-            color: getContrastText(secondary.light),
+            backgroundColor: secondary.main,
+            color: getContrastText(secondary.main),
             '&$disabled': {
                 backgroundColor: secondary.light,
                 color: getContrastText(secondary.light),
@@ -114,20 +114,18 @@ const SudokuNumber = ({ field }) => {
                 <Button ref={anchorRef} className={className} onClick={handleClick}>
                     <SudokuOptions options={Options}> {FinalNumber}</SudokuOptions>
                 </Button>
-                {(IsFocused && IsTimerActive) &&
-                    <Suspense fallback={renderLoader()}>
-                        <Popper open={open} anchorEl={anchorRef.current} transition className={classes.popper}>
-                            {({ TransitionProps, placement }) => (
-                                <SudokuPopover
-                                    TransitionProps={TransitionProps}
-                                    placement={placement}
-                                    handleClose={handleClose}
-                                    field={field}
-                                />
-                            )}
-                        </Popper>
-                    </Suspense>
-                }
+                <Suspense fallback={renderLoader()}>
+                    <Popper open={open && IsFocused && IsTimerActive} anchorEl={anchorRef.current} transition className={classes.popper}>
+                        {({ TransitionProps, placement }) => (
+                            <SudokuPopover
+                                TransitionProps={TransitionProps}
+                                placement={placement}
+                                handleClose={handleClose}
+                                field={field}
+                            />
+                        )}
+                    </Popper>
+                </Suspense>
             </React.Fragment>
         );
     }
