@@ -12,8 +12,8 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 
 import Text from '../languages/Language';
-
 import { BoardContext } from '../ContextProviders/BoardContext';
+import LocalStorage from '../logic/LocalStorage';
 
 const useStyles = makeStyles((theme) => {
     const { primary, secondary, getContrastText, background } = theme.palette;
@@ -76,6 +76,7 @@ const SudokuPopover = (props) => {
     const { handleClose, field } = props;
     const { OptionsActive, setOptionsActive } = useContext(BoardContext);
     const handleChange = () => {
+        LocalStorage.get("options_active", !OptionsActive);
         setOptionsActive(!OptionsActive);
     };
 
@@ -175,12 +176,12 @@ const SudokuPopover = (props) => {
 }
 
 const SudokuPopoverContainer = (props) => {
-    const { TransitionProps, placement, handleClose ,field } = props;
+    const { TransitionProps, placement, handleClose } = props;
     return (
         <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }} >
             <div>
                 <Paper>
-                    <ClickAwayListener onClickAway={()=>{handleClose(); }}>
+                    <ClickAwayListener onClickAway={handleClose}>
                         <div>
                             <SudokuPopover {...props} />
                         </div>
