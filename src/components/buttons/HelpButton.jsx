@@ -8,11 +8,13 @@ import Switch from '@material-ui/core/Switch';
 
 import Text from '../../languages/Language';
 import { BoardContext } from '../../ContextProviders/BoardContext';
+import LocalStorage from '../../logic/LocalStorage';
 
 
 const HelpButton = ({ mode = "button" }) => {
     const { HelpActive, setHelpActive } = useContext(BoardContext);
     const handleToggle = () => {
+        LocalStorage.set("help_active",!HelpActive , 365);
         setHelpActive(!HelpActive);
     }
 

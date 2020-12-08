@@ -74,15 +74,19 @@ const useStyles = makeStyles((theme) => {
 
 const SudokuPopover = (props) => {
     const { handleClose, field } = props;
-    const { OptionsActive, setOptionsActive } = useContext(BoardContext);
+    const { OptionsActive, setOptionsActive,HelpActive } = useContext(BoardContext);
     const handleChange = () => {
-        LocalStorage.get("options_active", !OptionsActive);
+        LocalStorage.set("options_active", !OptionsActive, 365);
         setOptionsActive(!OptionsActive);
     };
 
     React.useEffect(()=>{
-        field.callback.Focused(field.x,field.y,field.i,field.j);
-    },[field]);
+        if(HelpActive){
+            field.callback.Focused(field.x,field.y,field.i,field.j);
+        }else{
+            field.callback.CleanFocused();
+        }
+    },[field,HelpActive]);
     
 
     const classes = useStyles();
